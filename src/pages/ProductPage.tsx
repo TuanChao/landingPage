@@ -10,19 +10,23 @@ const IMG = "/image-zwcad";
 const whyItems = [
   {
     title: "Broad Compatibility",
-    text: "Work seamlessly with DWG, DXF, DWT, and other common file formats for smooth collaboration."
+    text: "Work seamlessly with DWG, DXF, DWT, and other common file formats for smooth collaboration.",
+    image: `${IMG}/zwcad/da36.png`
   },
   {
     title: "Familiar and Flexible Interface",
-    text: "Whether you prefer Classic or Ribbon, Dark or Light mode, ZWCAD helps your team start working immediately."
+    text: "Whether you prefer Classic or Ribbon, Dark or Light mode, ZWCAD helps your team start working immediately.",
+    image: `${IMG}/zwcad/da37.png`
   },
   {
     title: "Highly Customizable",
-    text: "Integrate or develop apps with LISP, VBA, ZRX, and .NET to fit your existing workflow."
+    text: "Integrate or develop apps with LISP, VBA, ZRX, and .NET to fit your existing workflow.",
+    image: `${IMG}/zwcad/da38.png`
   },
   {
     title: "Quick Migration",
-    text: "Migrate templates, fonts, command aliases, and printer settings quickly with minimal disruption."
+    text: "Migrate templates, fonts, command aliases, and printer settings quickly with minimal disruption.",
+    image: `${IMG}/zwcad/da39.png`
   }
 ];
 
@@ -178,26 +182,31 @@ export default function ProductPage() {
       </section>
 
       <section className="zw-section zw-what">
-        <div className="container zw-two-col">
-          <div className="zw-media">
-            <img src={`${IMG}/da34.png`} alt="What's ZWCAD" />
-            <button className="zw-play" type="button" aria-label="Play video">
-              ▶
-            </button>
-          </div>
-          <div className="zw-copy">
-            <span className="zw-pill">What's ZWCAD</span>
-            <h2 className="zw-title">
-              <span>Powerful CAD Solution</span>
-              <br />
-              Tailored to Your Needs
-            </h2>
-            <p>
-              ZWCAD is a powerful CAD solution for complex 2D drafting and advanced 3D navigation. Widely compatible
-              with <strong> DWG </strong> and other major formats, it enables seamless collaboration across industries.
-              With an <strong>intuitive interface</strong>, <strong>efficiency-boosting features</strong>, and{" "}
-              <strong>AI-powered tools</strong>, ZWCAD helps architects, engineers, and designers bring ideas to life.
-            </p>
+        <div className="db-inner">
+          <div className="db-cont">
+            <div className="db-right">
+              <div className="db-titles">What's ZWCAD</div>
+              <h2 className="db-subtitle">
+                <span>Powerful CAD Solution</span> Tailored to Your Needs
+              </h2>
+              <div className="db-intro">
+                ZWCAD is a powerful CAD solution for complex 2D drafting and advanced 3D navigation. Widely compatible
+                with <strong>DWG</strong> and other major formats, it enables seamless collaboration across industries.
+                With an <strong>intuitive interface, efficiency-boosting features</strong>, and{" "}
+                <strong>AI-powered tools</strong>, ZWCAD helps architects, engineers, and designers bring their ideas
+                to life without limits and confidently shape the future.
+              </div>
+            </div>
+            <div className="db-left">
+              <div className="db-imgbox">
+                <div className="db-img">
+                  <img src={`${IMG}/da34.png`} alt="What's ZWCAD" />
+                </div>
+                <button className="db-play" type="button" aria-label="Play video">
+                  ▶
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -221,14 +230,14 @@ export default function ProductPage() {
                 >
                   <div className="zw-acc-head">
                     <span>{item.title}</span>
-                    <span>{whyActive === idx ? "⌃" : "⌄"}</span>
+                    <span>{whyActive === idx ? "−" : "+"}</span>
                   </div>
                   {whyActive === idx ? <p>{item.text}</p> : null}
                 </button>
               ))}
             </div>
             <div className="zw-why-image">
-              <img src={`${IMG}/zwcad/comparison.gif`} alt="Why ZWCAD interface" />
+              <img src={whyItems[whyActive].image} alt={whyItems[whyActive].title} />
             </div>
           </div>
         </div>
