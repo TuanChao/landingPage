@@ -3,16 +3,18 @@
   "nav": [
     { "label": "Home", "path": "/" },
     {
-      "label": "ZWCAD Products",
-      "path": "/san-pham-zwcad",
+      "label": "Products",
+      "path": "/san-pham/zwcad",
       "children": [
-        { "label": "ZWCAD 2025", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Architecture", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Mechanical", "path": "/san-pham-zwcad" }
+        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
+        { "label": "ZW3D", "path": "/san-pham/zw3d" },
+        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
       ]
     },
     { "label": "News", "path": "/tin-tuc" },
-    { "label": "FAQ", "path": "/cau-hoi-thuong-gap" }
+    { "label": "Download", "path": "/tai-ve" },
+    { "label": "FAQ", "path": "/cau-hoi-thuong-gap" },
+    { "label": "Contact", "path": "/lien-he" }
   ],
   "hero": {
     "eyebrow": "ZWCAD DISTRIBUTOR IN VIETNAM",
@@ -23,15 +25,15 @@
     ]
   },
   "products": [
-    { "title": "ZWCAD", "description": "Cost-effective CAD platform with strong DWG compatibility." },
-    { "title": "ZWCAD Architecture", "description": "Architecture toolkit and rich content library." },
-    { "title": "ZWCAD Mechanical", "description": "Professional 2D mechanical drafting features." },
-    { "title": "CADbro", "description": "3D viewer and multi-format conversion for collaboration." }
+    { "slug": "zwcad", "title": "ZWCAD", "description": "Cost-effective CAD platform with strong DWG compatibility.", "badge": "Most popular" },
+    { "slug": "zw3d", "title": "ZW3D", "description": "Integrated 3D design and manufacturing solution.", "badge": "" },
+    { "slug": "zwcad-mfg", "title": "ZWCAD MFG", "description": "Professional 2D mechanical drafting features.", "badge": "" },
+    { "slug": "zwcad", "title": "CADbro", "description": "3D viewer and multi-format conversion for collaboration.", "badge": "Free" }
   ],
   "news": [
-    { "slug": "latest-zwcad-2026-comparison", "title": "Latest ZWCAD version comparison 2026", "excerpt": "A summary of new updates across releases." },
-    { "slug": "zwcad-vs-autocad", "title": "ZWCAD vs AutoCAD: which one fits better?", "excerpt": "Compare cost, features, and compatibility." },
-    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 2025 Year End Promotion", "excerpt": "Special offers for business deployment." }
+    { "slug": "latest-zwcad-2026-comparison", "title": "Latest ZWCAD version comparison 2026", "excerpt": "A summary of new updates across releases to help businesses choose the right version.", "date": "2026-01-15" },
+    { "slug": "zwcad-vs-autocad", "title": "ZWCAD vs AutoCAD: which one fits better?", "excerpt": "Compare cost, features, and compatibility to make the right decision for your team.", "date": "2025-12-20" },
+    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 2025 Year End Promotion", "excerpt": "Special offers for business deployment with attractive packages for year-end 2025.", "date": "2025-11-30" }
   ],
   "downloads": [
     { "slug": "zwcad-trial", "name": "ZWCAD Trial", "version": "2025" },

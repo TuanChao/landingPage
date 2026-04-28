@@ -1,0 +1,74 @@
+.langdd__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #c8d2e1;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  color: #1f242d;
+  font: inherit;
+  transition: border-color 0.15s;
+}
+
+.langdd__trigger:hover {
+  border-color: #2f84dd;
+}
+
+.langdd__flag {
+  width: 18px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.langdd__flag img {
+  width: 18px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.langdd__content {
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #dce3ef;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 25, 60, 0.14);
+  padding: 4px;
+  z-index: 1200;
+  animation: langdd-open 0.15s ease;
+}
+
+@keyframes langdd-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.langdd__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #1f242d;
+  outline: none;
+}
+
+.langdd__item[data-highlighted] {
+  background: #eef4ff;
+}
+
+.langdd__item-label {
+  flex: 1;
+}
+
+.langdd__check {
+  color: #2f84dd;
+}

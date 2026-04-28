@@ -6,7 +6,9 @@ export default function MainLayout() {
   return (
     <div className="app-shell">
       <SiteHeader />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <SiteFooter />
     </div>
   );

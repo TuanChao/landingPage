@@ -1,462 +1,401 @@
+import { useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import Seo from "../seo/Seo";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import {
-  Download, ShoppingCart, CheckCircle2, Zap, Globe, Cpu,
-  MonitorSmartphone, Settings2, FileCheck2, Star, ChevronRight,
-  Layers, Pencil, BarChart3, FileCode2, Users, Headphones,
-} from "lucide-react";
+import "./ProductPage.css";
 
-const HIGHLIGHTS = [
+type ProductKey = "zwcad" | "zw3d" | "zwcad-mfg";
+
+const IMG = "/image-zwcad";
+
+const whyItems = [
   {
-    icon: <Globe className="w-8 h-8 text-[#2f84dd]" />,
-    title: "Tương thích DWG 100%",
-    desc: "Mở, chỉnh sửa và lưu file DWG/DXF mà không mất dữ liệu.",
+    title: "Broad Compatibility",
+    text: "Work seamlessly with DWG, DXF, DWT, and other common file formats for smooth collaboration."
   },
   {
-    icon: <Zap className="w-8 h-8 text-[#2f84dd]" />,
-    title: "Hiệu suất vượt trội",
-    desc: "Nhanh hơn 1.98× khi soạn thảo 2D, 3× khi duyệt mô hình 3D.",
+    title: "Familiar and Flexible Interface",
+    text: "Whether you prefer Classic or Ribbon, Dark or Light mode, ZWCAD helps your team start working immediately."
   },
   {
-    icon: <MonitorSmartphone className="w-8 h-8 text-[#2f84dd]" />,
-    title: "Giao diện quen thuộc",
-    desc: "Ribbon và phím tắt tương tự AutoCAD, chuyển đổi không cần học lại.",
+    title: "Highly Customizable",
+    text: "Integrate or develop apps with LISP, VBA, ZRX, and .NET to fit your existing workflow."
   },
   {
-    icon: <Settings2 className="w-8 h-8 text-[#2f84dd]" />,
-    title: "Tuỳ biến cao",
-    desc: "LISP, API, menu — mở rộng theo đúng quy trình của doanh nghiệp.",
-  },
+    title: "Quick Migration",
+    text: "Migrate templates, fonts, command aliases, and printer settings quickly with minimal disruption."
+  }
 ];
 
-const ADVANCED_FEATURES = [
-  { icon: <Layers className="w-5 h-5" />, name: "Parametric Design", desc: "Ràng buộc hình học & kích thước tự động cập nhật." },
-  { icon: <FileCode2 className="w-5 h-5" />, name: "PDF Import", desc: "Nhập file PDF thành đối tượng CAD có thể chỉnh sửa." },
-  { icon: <FileCheck2 className="w-5 h-5" />, name: "File Compare", desc: "So sánh hai bản vẽ, phát hiện thay đổi tức thì." },
-  { icon: <Cpu className="w-5 h-5" />, name: "Point Cloud", desc: "Hiển thị và căn chỉnh dữ liệu đám mây điểm 3D." },
-  { icon: <BarChart3 className="w-5 h-5" />, name: "Sheet Set Manager", desc: "Quản lý tập hợp bản vẽ theo dự án một cách có hệ thống." },
-  { icon: <Pencil className="w-5 h-5" />, name: "Flexiblock", desc: "Block động linh hoạt, dễ tái sử dụng trong dự án." },
+const advancedFeatures = [
+  { name: "Parametric Design", desc: "Add geometric and dimension constraints to entities for quick size and shape adjustments." },
+  { name: "Flexiblock", desc: "Create blocks with actions and parameters that can be stretched and edited flexibly." },
+  { name: "Point Cloud", desc: "Attach, edit, and manage complex point cloud data with stable performance." },
+  { name: "Sheet Set Manager", desc: "View, access, manage and plot multiple drawings in one panel." },
+  { name: "PDF Import", desc: "Import multiple PDF pages as CAD objects in one step." },
+  { name: "File Compare", desc: "Spot differences between two drawings at once for faster review." },
+  { name: "Area Table", desc: "Calculate areas and generate area tables automatically in just a few steps." }
 ];
 
-const SMART_FEATURES = [
-  { icon: <Zap className="w-5 h-5" />, name: "Smart Match", desc: "Tự động nhận diện và ghép đối tượng tương tự." },
-  { icon: <Zap className="w-5 h-5" />, name: "Smart Select", desc: "Chọn nhóm đối tượng thông minh theo thuộc tính." },
-  { icon: <Zap className="w-5 h-5" />, name: "Smart Plot", desc: "In bản vẽ tự động với thiết lập tối ưu." },
-  { icon: <Zap className="w-5 h-5" />, name: "Smart Mouse", desc: "Thao tác chuột đa chức năng, tăng tốc soạn thảo." },
-  { icon: <Zap className="w-5 h-5" />, name: "Similar Search", desc: "Tìm kiếm nhanh đối tượng có hình dạng tương đồng." },
-  { icon: <Zap className="w-5 h-5" />, name: "Smart Voice", desc: "Điều khiển lệnh bằng giọng nói, rảnh tay vẽ hơn." },
+const innovativeFeatures = [
+  { name: "Smart Match", desc: "Automatically identify identical shapes and support batch editing." },
+  { name: "Similar Search", desc: "Search for similar blocks in local files based on graphics." },
+  { name: "Smart Plot", desc: "Batch plot across files with automatic paper size matching." },
+  { name: "Smart Select", desc: "Filter objects by color, type and attributes in one quick operation." },
+  { name: "Smart Mouse", desc: "Trigger frequently used commands with mouse gestures." },
+  { name: "Smart Voice", desc: "Annotate with voice messages to reduce text editing." }
 ];
 
-const EDITIONS = [
-  {
-    name: "ZWCAD Standard",
-    price: "Liên hệ",
-    badge: null,
-    desc: "Phù hợp doanh nghiệp vừa và nhỏ cần bản vẽ 2D chuyên nghiệp.",
-    features: [
-      "Soạn thảo 2D đầy đủ",
-      "Tương thích DWG/DXF",
-      "LISP & API",
-      "In ấn chuyên nghiệp",
-      "Hỗ trợ kỹ thuật",
-    ],
-    cta: "Liên hệ mua",
-    highlight: false,
-  },
-  {
-    name: "ZWCAD Professional",
-    price: "Liên hệ",
-    badge: "Phổ biến nhất",
-    desc: "Đầy đủ tính năng 2D/3D, AI và công cụ nâng cao cho kỹ sư.",
-    features: [
-      "Tất cả tính năng Standard",
-      "3D Navigation nhanh 3×",
-      "Parametric Design",
-      "Point Cloud & PDF Import",
-      "Smart AI Features",
-      "Sheet Set Manager",
-      "File Compare",
-    ],
-    cta: "Liên hệ mua",
-    highlight: true,
-  },
+const partnerLogos = [
+  "equans",
+  "ericsson",
+  "honeywell",
+  "jonson",
+  "hitachi",
+  "lg",
+  "zamil",
+  "saint-globain",
+  "avintia",
+  "emerson"
 ];
 
-const TESTIMONIALS = [
+const reviewCards = [
   {
-    name: "Nguyễn Văn An",
-    company: "Công ty Xây dựng Phú Hưng",
-    industry: "Kiến trúc & Xây dựng",
-    rating: 5,
-    quote: "ZWCAD giúp đội ngũ thiết kế của chúng tôi làm việc nhanh hơn 30% mà chi phí bản quyền tiết kiệm đáng kể so với AutoCAD.",
+    name: "Ag Hamzah K.",
+    role: "Senior Draftsman",
+    quote: "ZWCAD's one-time license and Smart Plot makes it a standout AutoCAD alternative for my daily drafting work."
   },
   {
-    name: "Trần Thị Bích",
-    company: "Cơ khí Đại Dương",
-    industry: "Cơ khí chế tạo",
-    rating: 5,
-    quote: "Tính năng Parametric Design của ZWCAD Professional rất mạnh, file DWG hoàn toàn tương thích với khách hàng dùng AutoCAD.",
+    name: "Lisa F.",
+    role: "Senior Designer",
+    quote: "Efficient, time saving for handling many drawings; ZWCAD is lightweight and keeps me productive."
   },
   {
-    name: "Lê Hoàng Nam",
-    company: "Tư vấn Thiết kế MEP",
-    industry: "Kỹ thuật hệ thống",
-    rating: 4,
-    quote: "Đội kỹ sư chuyển sang ZWCAD trong 2 ngày mà không cần đào tạo nhiều nhờ giao diện giống AutoCAD.",
-  },
+    name: "Mat K.",
+    role: "Design Consultant",
+    quote: "Cost-effective and user-friendly solution for SMEs; we rely on ZWCAD's perpetual license for daily work."
+  }
 ];
 
-const FAQS = [
-  {
-    q: "ZWCAD có tương thích với AutoCAD không?",
-    a: "Có. ZWCAD tương thích 100% với định dạng DWG/DXF của AutoCAD. Bạn có thể mở, chỉnh sửa và lưu file DWG mà không lo mất dữ liệu.",
-  },
-  {
-    q: "ZWCAD có hỗ trợ LISP và API không?",
-    a: "Có. ZWCAD hỗ trợ LISP, ARX/ZRX API, giúp bạn tái sử dụng toàn bộ lisp và plugin đang dùng với AutoCAD.",
-  },
-  {
-    q: "Có thể dùng thử ZWCAD trước khi mua không?",
-    a: "Có. Bạn có thể tải bản dùng thử 30 ngày miễn phí với đầy đủ tính năng Professional tại trang Tải về.",
-  },
-  {
-    q: "ZWCAD có bản quyền vĩnh viễn không?",
-    a: "Có. ZWCAD cung cấp cả gói bản quyền vĩnh viễn lẫn gói thuê bao năm, tuỳ nhu cầu doanh nghiệp.",
-  },
-  {
-    q: "Có hỗ trợ kỹ thuật tại Việt Nam không?",
-    a: "Có. FocusTech là đối tác phân phối chính thức tại Việt Nam, cung cấp hỗ trợ cài đặt, đào tạo và bảo hành.",
-  },
+const appGridItems = [
+  { icon: `${IMG}/zwcad/da40.png`, label: "GIS, Survey and Mapping" },
+  { icon: `${IMG}/zwcad/da41.png`, label: "Civil" },
+  { icon: `${IMG}/zwcad/da42.png`, label: "Architecture" },
+  { icon: `${IMG}/zwcad/da52.png`, label: "Construction" },
+  { icon: `${IMG}/zwcad/da43.png`, label: "Structural" },
+  { icon: `${IMG}/zwcad/da44.png`, label: "Mechanical" },
+  { icon: `${IMG}/zwcad/da45.png`, label: "HVAC Design" },
+  { icon: `${IMG}/zwcad/da46.png`, label: "Electrical" },
+  { icon: `${IMG}/zwcad/da47.png`, label: "Plant Design" }
 ];
+
+const metaMap: Record<ProductKey, { title: string; subtitle: string; description: string; keywords: string }> = {
+  zwcad: {
+    title: "ZWCAD",
+    subtitle: "Powerful CAD Solution Tailored to Your Needs",
+    description:
+      "ZWCAD is a powerful CAD solution for complex 2D drafting and advanced 3D navigation, with broad DWG compatibility and smart productivity tools.",
+    keywords: "zwcad, cad solution, dwg, smart cad tools"
+  },
+  zw3d: {
+    title: "ZW3D",
+    subtitle: "All-in-one 3D CAD/CAE/CAM platform",
+    description: "ZW3D supports product design and manufacturing in one integrated workflow.",
+    keywords: "zw3d, cad cam, cae"
+  },
+  "zwcad-mfg": {
+    title: "ZWCAD MFG",
+    subtitle: "Advanced 2D CAD for manufacturing",
+    description: "ZWCAD MFG helps create standardized drawings with mechanical design toolsets.",
+    keywords: "zwcad mfg, manufacturing cad"
+  }
+};
 
 export default function ProductPage() {
+  const { productSlug } = useParams<{ productSlug: string }>();
+  const meta = metaMap[productSlug as ProductKey];
+  const isZwcad = productSlug === "zwcad";
+
+  const [whyActive, setWhyActive] = useState(1);
+  const [featureTab, setFeatureTab] = useState<"advanced" | "innovative">("advanced");
+  const [featureActive, setFeatureActive] = useState(5);
+
+  const featureList = useMemo(
+    () => (featureTab === "advanced" ? advancedFeatures : innovativeFeatures),
+    [featureTab]
+  );
+
+  if (!meta) {
+    return (
+      <main className="container page-block">
+        <h1>San pham khong ton tai</h1>
+      </main>
+    );
+  }
+
+  if (!isZwcad) {
+    return (
+      <main className="container page-block">
+        <Seo title={`${meta.title} | ZWCAD Vietnam`} description={meta.description} keywords={meta.keywords} />
+        <h1>{meta.title}</h1>
+        <h2>{meta.subtitle}</h2>
+        <p>{meta.description}</p>
+      </main>
+    );
+  }
+
   return (
-    <main>
-      <Seo
-        title="ZWCAD – Phần mềm CAD chuyên nghiệp | ZWCAD Vietnam"
-        description="ZWCAD – giải pháp CAD tương thích DWG, hiệu suất cao, chi phí tối ưu. Soạn thảo 2D/3D chuyên nghiệp cho doanh nghiệp Việt Nam."
-        keywords="zwcad, phần mềm cad, zwcad vietnam, zwcad 2025, autocad alternative"
-      />
+    <main className="zw-page">
+      <Seo title={`${meta.title} | ZWCAD Vietnam`} description={meta.description} keywords={meta.keywords} />
 
-      {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0d1b2e] via-[#0f2444] to-[#1a3a6e] text-white">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: "radial-gradient(circle at 70% 50%, #2f84dd 0%, transparent 60%)" }} />
-        <div className="container mx-auto px-4 py-20 md:py-28 relative">
-          <div className="max-w-2xl">
-            <Badge variant="blue" className="mb-4 text-sm px-3 py-1">Phiên bản mới nhất 2025</Badge>
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
-              ZWCAD
-            </h1>
-            <p className="text-2xl md:text-3xl font-light text-blue-200 mb-4">
-              Kiến tạo những điều tuyệt vời
-            </p>
-            <p className="text-base md:text-lg text-slate-300 mb-8 max-w-xl">
-              Phần mềm CAD mạnh mẽ — tương thích DWG 100%, hiệu suất vượt trội,
-              giao diện quen thuộc. Giải pháp tối ưu cho doanh nghiệp Việt Nam.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button size="lg" className="bg-[#2f84dd] hover:bg-[#1a6ec4] text-white gap-2">
-                <Download className="w-5 h-5" />
-                Dùng thử miễn phí 30 ngày
-              </Button>
-              <Button size="lg" variant="outline"
-                className="border-white/40 text-white bg-white/10 hover:bg-white/20 gap-2">
-                <ShoppingCart className="w-5 h-5" />
-                Liên hệ mua bản quyền
-              </Button>
+      <section className="pp-hero">
+        <img className="pp-hero__bg" src={`${IMG}/zwcad/bg-section.png`} alt="" />
+        <div className="container">
+          <div className="pp-hero__body">
+            <span className="pp-hero__eyebrow">ZWCAD</span>
+            <h1 className="pp-hero__title">Create Amazing Things</h1>
+            <div className="pp-hero__pricing">
+              <p>
+                <strong>From $899,</strong> You own it forever
+              </p>
+              <p>Perpetual and network licenses available.</p>
             </div>
-            <div className="flex items-center gap-2 mt-6">
-              {[1,2,3,4,5].map(i => (
-                <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              ))}
-              <span className="text-sm text-slate-300 ml-1">4.8/5 từ khách hàng Việt Nam</span>
+            <div className="pp-hero__actions">
+              <a href="/tai-ve/zwcad-trial" className="pp-btn-primary">
+                Start 30-day Free Trial
+              </a>
+              <a href="/lien-he" className="pp-btn-outline">
+                See Pricing
+              </a>
+            </div>
+            <div className="pp-hero__score">
+              <span>4.6 out of 5 (316 reviews)</span>
+              <small>
+                1st <b>Easiest To Use</b> in General-Purpose CAD software
+              </small>
             </div>
           </div>
         </div>
-        {/* decorative grid lines */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block opacity-20 pointer-events-none"
-          style={{ backgroundImage: "repeating-linear-gradient(90deg, #2f84dd 0px, transparent 1px, transparent 80px)", backgroundSize: "80px 80px" }} />
       </section>
 
-      {/* ── HIGHLIGHTS ───────────────────────────────────── */}
-      <section className="bg-white border-b">
-        <div className="container mx-auto px-4 py-14">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {HIGHLIGHTS.map((h) => (
-              <div key={h.title} className="flex flex-col items-start gap-3">
-                <div className="p-2.5 rounded-lg bg-[#e8f2ff]">{h.icon}</div>
-                <h3 className="font-semibold text-[#1f242d]">{h.title}</h3>
-                <p className="text-sm text-[#596273]">{h.desc}</p>
-              </div>
-            ))}
+      <section className="zw-section zw-what">
+        <div className="container zw-two-col">
+          <div className="zw-media">
+            <img src={`${IMG}/da34.png`} alt="What's ZWCAD" />
+            <button className="zw-play" type="button" aria-label="Play video">
+              ▶
+            </button>
           </div>
-        </div>
-      </section>
-
-      {/* ── OVERVIEW ─────────────────────────────────────── */}
-      <section className="bg-[#f6f9fd] py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <Badge variant="blue" className="mb-3">Tổng quan sản phẩm</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1f242d] mb-5">
-              Giải pháp CAD toàn diện cho mọi ngành
+          <div className="zw-copy">
+            <span className="zw-pill">What's ZWCAD</span>
+            <h2 className="zw-title">
+              <span>Powerful CAD Solution</span>
+              <br />
+              Tailored to Your Needs
             </h2>
-            <p className="text-[#596273] text-lg leading-relaxed">
-              ZWCAD là phần mềm CAD chuyên nghiệp, hỗ trợ soạn thảo 2D phức tạp và điều hướng 3D nâng cao.
-              Được tin dùng bởi hàng triệu kỹ sư tại 100+ quốc gia, ZWCAD mang lại hiệu suất vượt trội
-              với chi phí tối ưu — lựa chọn lý tưởng thay thế AutoCAD cho doanh nghiệp Việt Nam.
+            <p>
+              ZWCAD is a powerful CAD solution for complex 2D drafting and advanced 3D navigation. Widely compatible
+              with <strong> DWG </strong> and other major formats, it enables seamless collaboration across industries.
+              With an <strong>intuitive interface</strong>, <strong>efficiency-boosting features</strong>, and{" "}
+              <strong>AI-powered tools</strong>, ZWCAD helps architects, engineers, and designers bring ideas to life.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {[
-              { stat: "1.98×", label: "Nhanh hơn khi soạn thảo 2D", color: "text-[#2f84dd]" },
-              { stat: "3×", label: "Nhanh hơn khi duyệt mô hình 3D", color: "text-[#2f84dd]" },
-              { stat: "100+", label: "Quốc gia sử dụng ZWCAD", color: "text-[#2f84dd]" },
-            ].map((s) => (
-              <div key={s.label} className="bg-white rounded-xl border p-8 text-center shadow-sm">
-                <div className={`text-5xl font-extrabold ${s.color} mb-2`}>{s.stat}</div>
-                <div className="text-[#596273] text-sm">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── FEATURES TABS ────────────────────────────────── */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge variant="blue" className="mb-3">Tính năng</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1f242d]">
-              Công cụ mạnh mẽ cho mọi tác vụ
-            </h2>
-          </div>
-          <Tabs defaultValue="advanced" className="max-w-4xl mx-auto">
-            <TabsList className="w-full mb-8 h-12 bg-[#f0f4fa] p-1">
-              <TabsTrigger value="advanced"
-                className="flex-1 h-10 data-[state=active]:bg-[#2f84dd] data-[state=active]:text-white font-medium">
-                Tính năng nâng cao
-              </TabsTrigger>
-              <TabsTrigger value="smart"
-                className="flex-1 h-10 data-[state=active]:bg-[#2f84dd] data-[state=active]:text-white font-medium">
-                Tính năng AI thông minh
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="advanced">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {ADVANCED_FEATURES.map((f) => (
-                  <Card key={f.name} className="hover:shadow-md transition-shadow border-[#e8edf5]">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-[#e8f2ff] text-[#2f84dd]">{f.icon}</div>
-                        <CardTitle className="text-base">{f.name}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-[#596273]">{f.desc}</CardDescription>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="smart">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {SMART_FEATURES.map((f) => (
-                  <Card key={f.name} className="hover:shadow-md transition-shadow border-[#e8edf5]">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-[#fff3e0] text-[#f59e0b]">{f.icon}</div>
-                        <CardTitle className="text-base">{f.name}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-[#596273]">{f.desc}</CardDescription>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
-
-      {/* ── PRODUCT EDITIONS ─────────────────────────────── */}
-      <section className="bg-[#f6f9fd] py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge variant="blue" className="mb-3">Phiên bản</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1f242d] mb-3">
-              Chọn phiên bản phù hợp
-            </h2>
-            <p className="text-[#596273]">Liên hệ FocusTech để nhận báo giá tốt nhất cho doanh nghiệp của bạn.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {EDITIONS.map((ed) => (
-              <Card key={ed.name}
-                className={`relative flex flex-col ${ed.highlight
-                  ? "border-2 border-[#2f84dd] shadow-lg shadow-[#2f84dd]/10"
-                  : "border-[#e8edf5]"}`}>
-                {ed.badge && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-[#2f84dd] text-white px-4 py-1 text-xs font-semibold">
-                      {ed.badge}
-                    </Badge>
+      <section className="zw-section zw-why">
+        <div className="container">
+          <span className="zw-pill">Why ZWCAD</span>
+          <h2 className="zw-title">
+            Compatible, Efficient, and Intuitive:
+            <br />
+            <span>Get Started with ZWCAD</span> in No Time
+          </h2>
+          <div className="zw-why-box">
+            <div className="zw-accordion">
+              {whyItems.map((item, idx) => (
+                <button
+                  key={item.title}
+                  type="button"
+                  className={`zw-acc-item ${whyActive === idx ? "active" : ""}`}
+                  onClick={() => setWhyActive(idx)}
+                >
+                  <div className="zw-acc-head">
+                    <span>{item.title}</span>
+                    <span>{whyActive === idx ? "⌃" : "⌄"}</span>
                   </div>
-                )}
-                <CardHeader className="pt-8">
-                  <CardTitle className="text-2xl">{ed.name}</CardTitle>
-                  <CardDescription className="text-[#596273]">{ed.desc}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <ul className="space-y-2.5 mb-6">
-                    {ed.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm text-[#1f242d]">
-                        <CheckCircle2 className="w-4 h-4 text-[#2f84dd] shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    className={`w-full gap-2 ${ed.highlight
-                      ? "bg-[#2f84dd] hover:bg-[#1a6ec4] text-white"
-                      : "border border-[#2f84dd] text-[#2f84dd] bg-transparent hover:bg-[#e8f2ff]"}`}
-                    size="lg">
-                    <ShoppingCart className="w-4 h-4" />
-                    {ed.cta}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── INDUSTRIES ───────────────────────────────────── */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge variant="blue" className="mb-3">Ngành nghề</Badge>
-            <h2 className="text-3xl font-bold text-[#1f242d]">
-              Được sử dụng rộng rãi trong nhiều lĩnh vực
-            </h2>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            {["Kiến trúc", "Xây dựng & Dân dụng", "Cơ khí chế tạo", "Điện & Điện tử",
-              "Hạ tầng & Giao thông", "Nội thất & Trang trí", "GIS & Bản đồ", "Đóng tàu"].map(ind => (
-              <div key={ind}
-                className="flex items-center gap-2 bg-[#f0f4fa] hover:bg-[#e8f2ff] transition-colors rounded-full px-5 py-2.5 text-sm font-medium text-[#1f242d] cursor-default">
-                <ChevronRight className="w-3.5 h-3.5 text-[#2f84dd]" />
-                {ind}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ─────────────────────────────────── */}
-      <section className="bg-[#f6f9fd] py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge variant="blue" className="mb-3">Khách hàng nói gì</Badge>
-            <h2 className="text-3xl font-bold text-[#1f242d]">Được tin dùng bởi hàng nghìn kỹ sư</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t) => (
-              <Card key={t.name} className="flex flex-col border-[#e8edf5] hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex gap-0.5 mb-3">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < t.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
-                    ))}
-                  </div>
-                  <p className="text-[#1f242d] text-sm leading-relaxed italic">"{t.quote}"</p>
-                </CardHeader>
-                <CardContent className="mt-auto pt-2">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#e8f2ff] flex items-center justify-center text-[#2f84dd] font-bold text-sm">
-                      {t.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-semibold text-sm text-[#1f242d]">{t.name}</div>
-                      <div className="text-xs text-[#596273]">{t.company}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ACCORDION ────────────────────────────────── */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <Badge variant="blue" className="mb-3">FAQ</Badge>
-            <h2 className="text-3xl font-bold text-[#1f242d]">Câu hỏi thường gặp</h2>
-          </div>
-          <div className="max-w-2xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
-              {FAQS.map((f, i) => (
-                <AccordionItem key={i} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-left text-[#1f242d] hover:no-underline hover:text-[#2f84dd] font-medium">
-                    {f.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-[#596273] leading-relaxed">
-                    {f.a}
-                  </AccordionContent>
-                </AccordionItem>
+                  {whyActive === idx ? <p>{item.text}</p> : null}
+                </button>
               ))}
-            </Accordion>
+            </div>
+            <div className="zw-why-image">
+              <img src={`${IMG}/zwcad/comparison.gif`} alt="Why ZWCAD interface" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── SUPPORT + CTA ────────────────────────────────── */}
-      <section className="bg-gradient-to-br from-[#0d1b2e] to-[#1a3a6e] text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="zw-section">
+        <div className="container">
+          <div className="zw-head-row">
+            <h2 className="zw-title">
+              <span>Powerful and Fast CAD:</span>
+              <br />
+              Do More in Less Time
+            </h2>
+            <p>
+              ZWCAD is packed with all the essential tools you need, along with advanced and innovative features
+              designed to boost productivity and help you deliver results faster.
+            </p>
+          </div>
+          <div className="zw-tab-row">
+            <button
+              type="button"
+              className={featureTab === "advanced" ? "active" : ""}
+              onClick={() => {
+                setFeatureTab("advanced");
+                setFeatureActive(5);
+              }}
+            >
+              Advanced Features
+            </button>
+            <button
+              type="button"
+              className={featureTab === "innovative" ? "active" : ""}
+              onClick={() => {
+                setFeatureTab("innovative");
+                setFeatureActive(0);
+              }}
+            >
+              Innovative Features
+            </button>
+          </div>
+          <div className="zw-feature-panel">
+            <aside>
+              {featureList.map((item, idx) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  className={featureActive === idx ? "active" : ""}
+                  onClick={() => setFeatureActive(idx)}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </aside>
+            <article>
+              <h3>{featureList[featureActive]?.name}</h3>
+              <p>{featureList[featureActive]?.desc}</p>
+              <img src={`${IMG}/zwcad/comparison.gif`} alt={featureList[featureActive]?.name} />
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section zw-compare">
+        <div className="container">
+          <h2 className="zw-title">
+            <span>Comparison</span> with AutoCAD
+          </h2>
+          <p className="zw-sub">ZWCAD delivers outstanding performance in both 2D drafting and 3D navigation.</p>
+          <div className="zw-compare-grid">
+            <div className="zw-compare-card">
+              <h4>Complex 2D Drafting</h4>
+              <strong>1.98x as fast as AutoCAD</strong>
+            </div>
+            <div className="zw-compare-card dark">
+              <h4>Advanced 3D Navigation</h4>
+              <strong>3x as fast as AutoCAD</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section zw-apps">
+        <div className="container zw-apps-box">
+          <div className="zw-app-grid">
+            {appGridItems.map((item) => (
+              <div key={item.label}>
+                <img src={item.icon} alt={item.label} />
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="zw-app-copy">
+            <h2>
+              Power Up Your CAD with
+              <br />
+              Abundant <span>Third-Party Applications</span>
+            </h2>
+            <p>
+              We offer over 400 third-party applications for a wide range of industries. You can always find a suitable
+              solution to work easier, faster, and more accurately.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section">
+        <div className="container zw-center">
+          <h2 className="zw-title">
+            They <span>Choose</span> Us
+          </h2>
+          <p className="zw-sub">Trusted by leading companies worldwide</p>
+          <div className="zw-logo-row">
+            {partnerLogos.map((logo) => (
+              <img key={logo} src={`${IMG}/logo/${logo}`} alt={logo} />
+            ))}
+          </div>
+          <div className="zw-case-card">
+            <img src={`${IMG}/lpyeah2025/re6.png`} alt="Case study" />
             <div>
-              <h2 className="text-3xl font-bold mb-4">Hỗ trợ chuyên sâu tại Việt Nam</h2>
-              <p className="text-slate-300 mb-6 leading-relaxed">
-                FocusTech là đối tác phân phối chính thức của ZWSOFT tại Việt Nam.
-                Đội ngũ kỹ thuật viên chuyên nghiệp sẵn sàng hỗ trợ cài đặt, đào tạo và bảo hành.
-              </p>
-              <div className="space-y-3">
-                {[
-                  { icon: <Headphones className="w-5 h-5" />, text: "Hotline: 0982 286 072 (Hà Nội) | 0918 134 888 (HCM)" },
-                  { icon: <Users className="w-5 h-5" />, text: "Đào tạo sử dụng, tư vấn triển khai tận nơi" },
-                  { icon: <FileCheck2 className="w-5 h-5" />, text: "Bảo hành bản quyền, hỗ trợ nâng cấp định kỳ" },
-                ].map((item) => (
-                  <div key={item.text} className="flex items-start gap-3">
-                    <div className="mt-0.5 p-1.5 rounded-lg bg-white/10 text-blue-300 shrink-0">{item.icon}</div>
-                    <span className="text-slate-300 text-sm">{item.text}</span>
-                  </div>
-                ))}
-              </div>
+              <p>Boosted R&D efficiency and lowered CAD costs by adopting ZWCAD for faster, more flexible workflows.</p>
+              <strong>VIMPO MAKINE</strong>
+              <span>MFG-Machinery | Turkey</span>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold mb-2">Bắt đầu ngay hôm nay</h3>
-              <p className="text-slate-300 text-sm mb-6">
-                Dùng thử 30 ngày miễn phí — không cần thẻ tín dụng, không cam kết.
-              </p>
-              <div className="flex flex-col gap-3">
-                <Button size="lg" className="bg-[#2f84dd] hover:bg-[#1a6ec4] text-white w-full gap-2">
-                  <Download className="w-5 h-5" />
-                  Tải dùng thử miễn phí
-                </Button>
-                <Button size="lg" variant="outline"
-                  className="border-white/30 text-white bg-transparent hover:bg-white/10 w-full gap-2">
-                  <Headphones className="w-5 h-5" />
-                  Liên hệ tư vấn
-                </Button>
-              </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section">
+        <div className="container">
+          <div className="zw-award">
+            <div>
+              <h2>Lead with top recognition</h2>
+              <p>Named to G2's Best Software Awards, and ranks #1 in G2's Easiest to Use General-Purpose CAD.</p>
             </div>
+          </div>
+          <div className="zw-review-grid">
+            {reviewCards.map((r) => (
+              <article key={r.name}>
+                <h4>{r.name}</h4>
+                <small>{r.role}</small>
+                <p>{r.quote}</p>
+                <b>5 out of 5</b>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section">
+        <div className="container">
+          <h2 className="zw-title zw-center-title">Discover More Products</h2>
+          <div className="zw-product-row">
+            <a href="/san-pham/zwcad-mfg">ZWCAD MFG</a>
+            <a href="#">ZWCAD Mobile</a>
+            <a href="/san-pham/zw3d">ZW3D</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-bottom-cta">
+        <div className="container">
+          <h2>Get started with ZWCAD 2027 Beta now</h2>
+          <p>Start sparking creativity and boosting efficiency right away.</p>
+          <div>
+            <a href="/tai-ve/zwcad-trial">Free Trial</a>
+            <a href="/lien-he">See Pricing</a>
+            <a href="/lien-he">Contact Sales</a>
           </div>
         </div>
       </section>

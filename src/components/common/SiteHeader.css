@@ -1,0 +1,50 @@
+.navdd__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: #1f242d;
+  padding: 16px 0;
+  text-decoration: none;
+}
+
+.navdd__trigger:hover {
+  color: #2f84dd;
+}
+
+.navdd__content {
+  min-width: 200px;
+  background: #fff;
+  border: 1px solid #dce3ef;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 25, 60, 0.14);
+  padding: 4px;
+  z-index: 1200;
+  animation: navdd-open 0.15s ease;
+}
+
+@keyframes navdd-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.navdd__item {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #1f242d;
+  text-decoration: none;
+  outline: none;
+}
+
+.navdd__item[data-highlighted] {
+  background: #eef4ff;
+  color: #2f84dd;
+}

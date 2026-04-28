@@ -9,7 +9,7 @@ export default function ContactSection() {
 
   const placeholders =
     language === "vi"
-      ? ["Ho va ten", "So dien thoai", "Email", "Nhu cau cua ban"]
+      ? ["Họ và tên", "Số điện thoại", "Email", "Nhu cầu của bạn"]
       : language === "en"
         ? ["Full name", "Phone number", "Email", "Your requirement"]
         : ["姓名", "电话号码", "邮箱", "您的需求"];
@@ -31,7 +31,7 @@ export default function ContactSection() {
           <input type="email" placeholder={placeholders[2]} />
           <textarea rows={4} placeholder={placeholders[3]} />
           <button type="button" className="btn btn-primary">
-            {language === "vi" ? "Gui thong tin" : language === "en" ? "Submit" : "提交信息"}
+            {language === "vi" ? "Gửi thông tin" : language === "en" ? "Submit" : "提交信息"}
           </button>
         </form>
       </div>

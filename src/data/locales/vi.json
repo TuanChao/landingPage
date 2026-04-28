@@ -1,84 +1,103 @@
 {
-  "searchPlaceholder": "Nhap tu khoa tim kiem",
+  "searchPlaceholder": "Nhập từ khóa tìm kiếm",
   "nav": [
     {
-      "label": "Trang chu",
+      "label": "Trang chủ",
       "path": "/"
     },
     {
-      "label": "San pham ZWCAD",
-      "path": "/san-pham-zwcad",
+      "label": "Sản phẩm",
+      "path": "/san-pham/zwcad",
       "children": [
-        { "label": "ZWCAD 2025", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Architecture", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Mechanical", "path": "/san-pham-zwcad" }
+        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
+        { "label": "ZW3D", "path": "/san-pham/zw3d" },
+        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
       ]
     },
     {
-      "label": "Tin tuc",
+      "label": "Tin tức",
       "path": "/tin-tuc"
     },
     {
-      "label": "Cau hoi thuong gap",
+      "label": "Tải về",
+      "path": "/tai-ve"
+    },
+    {
+      "label": "Câu hỏi thường gặp",
       "path": "/cau-hoi-thuong-gap"
+    },
+    {
+      "label": "Liên hệ",
+      "path": "/lien-he"
     }
   ],
   "hero": {
-    "eyebrow": "PHAN PHOI PHAN MEM ZWCAD TAI VIET NAM",
+    "eyebrow": "PHÂN PHỐI PHẦN MỀM ZWCAD TẠI VIỆT NAM",
     "slides": [
       {
         "title": "ZWCAD 2025",
-        "subtitle": "Kien tao nhung dieu tuyet voi",
+        "subtitle": "Kiến tạo những điều tuyệt vời",
         "cta": "Mua ngay",
         "theme": "slide-1"
       },
       {
         "title": "CADbro 2025",
-        "subtitle": "Doc, xem va trao doi du lieu 3D nhanh hon",
+        "subtitle": "Đọc, xem và trao đổi dữ liệu 3D nhanh hơn",
         "cta": "Xem ngay",
         "theme": "slide-2"
       },
       {
         "title": "ZWCAD Mechanical",
-        "subtitle": "Toi uu quy trinh thiet ke co khi 2D",
-        "cta": "Tim hieu",
+        "subtitle": "Tối ưu quy trình thiết kế cơ khí 2D",
+        "cta": "Tìm hiểu",
         "theme": "slide-3"
       }
     ]
   },
   "products": [
     {
+      "slug": "zwcad",
       "title": "ZWCAD",
-      "description": "Nen tang CAD chi phi hieu qua, nhe, tuong thich DWG."
+      "description": "Nền tảng CAD chi phí hiệu quả, nhẹ, tương thích DWG.",
+      "badge": "Phổ biến nhất"
     },
     {
-      "title": "ZWCAD Architecture",
-      "description": "Thu vien noi dung va cong cu cho ban ve kien truc."
+      "slug": "zw3d",
+      "title": "ZW3D",
+      "description": "Phần mềm thiết kế 3D & gia công tích hợp, mạnh mẽ và linh hoạt.",
+      "badge": ""
     },
     {
-      "title": "ZWCAD Mechanical",
-      "description": "Cong cu soan thao sheet 2D co khi chuyen nghiep."
+      "slug": "zwcad-mfg",
+      "title": "ZWCAD MFG",
+      "description": "Bộ công cụ soạn thảo bản vẽ 2D cơ khí chuyên nghiệp.",
+      "badge": ""
     },
     {
+      "slug": "zwcad",
       "title": "CADbro",
-      "description": "Phan mem view 3D va chuyen doi du lieu da dinh dang."
+      "description": "Phần mềm xem 3D và chuyển đổi dữ liệu đa định dạng.",
+      "badge": "Miễn phí"
     }
   ],
   "news": [
     {
       "slug": "so-sanh-phien-ban-zwcad-2026",
-      "title": "So sanh cac phien ban ZWCAD moi nhat 2026",
-      "excerpt": "Tong hop cap nhat giua cac phien ban ZWCAD moi nhat."
+      "title": "So sánh các phiên bản ZWCAD mới nhất 2026",
+      "excerpt": "Tổng hợp cập nhật giữa các phiên bản ZWCAD mới nhất, giúp doanh nghiệp lựa chọn phù hợp.",
+      "date": "2026-01-15"
     },
     {
       "slug": "so-sanh-zwcad-va-autocad",
-      "title": "So sanh ZWCAD va AutoCAD: Dau la lua chon toi uu?",
-      "excerpt": "Phan tich theo chi phi, tinh nang va su tuong thich."
+      "title": "So sánh ZWCAD và AutoCAD: Đâu là lựa chọn tối ưu?",
+      "excerpt": "Phân tích theo chi phí, tính năng và sự tương thích để giúp bạn đưa ra quyết định đúng đắn.",
+      "date": "2025-12-20"
     },
     {
       "slug": "khuyen-mai-zwcad-2025",
-      "title": "Chuong trinh khuyen mai ZWCAD 2025 Year End Promotion",
-      "excerpt": "Thong tin goi uu dai danh cho doanh nghiep."
+      "title": "Chương trình khuyến mãi ZWCAD 2025 Year End Promotion",
+      "excerpt": "Thông tin gói ưu đãi dành cho doanh nghiệp cuối năm 2025 với nhiều ưu đãi hấp dẫn.",
+      "date": "2025-11-30"
     }
   ],
   "downloads": [
@@ -96,27 +115,27 @@
   "faq": [
     {
       "slug": "zwcad-la-gi",
-      "question": "ZWCAD la gi?",
-      "answer": "ZWCAD la phan mem CAD phuc vu thiet ke 2D/3D tuong thich DWG."
+      "question": "ZWCAD là gì?",
+      "answer": "ZWCAD là phần mềm CAD phục vụ thiết kế 2D/3D tương thích DWG, được phát triển bởi ZWSOFT (Trung Quốc). Đây là giải pháp thay thế AutoCAD với chi phí thấp hơn đáng kể."
     },
     {
       "slug": "co-ho-tro-viet-nam-khong",
-      "question": "Co ho tro ky thuat tai Viet Nam khong?",
-      "answer": "Co. Doi ngu FocusTech ho tro trien khai, dao tao va bao tri."
+      "question": "Có hỗ trợ kỹ thuật tại Việt Nam không?",
+      "answer": "Có. Đội ngũ FocusTech hỗ trợ triển khai, đào tạo và bảo trì tại cả Hà Nội và TP.HCM."
     },
     {
       "slug": "co-ban-quyen-vinh-vien-khong",
-      "question": "Co ban quyen vinh vien khong?",
-      "answer": "Co, tuy theo goi san pham va nhu cau su dung."
+      "question": "Có bản quyền vĩnh viễn không?",
+      "answer": "Có, tùy theo gói sản phẩm và nhu cầu sử dụng. FocusTech tư vấn cụ thể cho từng doanh nghiệp."
     }
   ],
   "contact": {
-    "title": "Lien he",
+    "title": "Liên hệ",
     "company": "FocusTech",
     "lines": [
-      "Ha Noi: Tang 7, toa nha Zodiac, Ngo 19 Duy Tan, Cau Giay",
+      "Hà Nội: Tầng 7, tòa nhà Zodiac, Ngõ 19 Duy Tân, Cầu Giấy",
       "Hotline: 0982 286 072",
-      "HCM: Toa nha Halo, 37 Hoang Van Thu, Phu Nhuan",
+      "TP.HCM: Tòa nhà Halo, 37 Hoàng Văn Thụ, Phú Nhuận",
       "Hotline: 0918 134 888",
       "Email: contact@focustech.com.vn"
     ]

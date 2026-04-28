@@ -1,29 +1,34 @@
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { NavLink } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
 import LanguageDropdown from "../ui/LanguageDropdown";
 import { useSiteContent } from "../../hooks/useSiteContent";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import "./SiteHeader.css";
 
 export default function SiteHeader() {
   const content = useSiteContent();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="head_header">
+    <header className={`head_header${scrolled ? " scrolled" : ""}`}>
       <div className="head_h-main">
         <div className="container head_h-inner">
           <div className="head_h-left">
             <a className="head_h-logo" href="/">
-              <span className="brand-focus">FOCUS</span>
-              <span className="brand-zw">ZWSOFT</span>
+              <img src="/logoweb" alt="ZWCAD Vietnam" />
             </a>
           </div>
           <div className="head_h-right">
             <div className="head_h-area">
-              <input
-                className="search-input"
-                placeholder={content.searchPlaceholder}
-              />
-              <div className="head_h-language lang-switch">
+              <input className="search-input" placeholder={content.searchPlaceholder} />
+              <div className="lang-switch">
                 <LanguageDropdown />
               </div>
             </div>
@@ -38,13 +43,13 @@ export default function SiteHeader() {
               {content.nav.map((item) =>
                 item.children?.length ? (
                   <DropdownMenu.Root key={item.path}>
-                    <DropdownMenu.Trigger className="head_nav-one head_nav-trigger">
+                    <DropdownMenu.Trigger className="head_nav-one navdd__trigger">
                       {item.label} <ChevronDown size={14} />
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Portal>
-                      <DropdownMenu.Content className="nav-dd-content" sideOffset={6}>
+                      <DropdownMenu.Content className="navdd__content" sideOffset={6}>
                         {item.children.map((child) => (
-                          <DropdownMenu.Item key={child.path + child.label} className="nav-dd-item" asChild>
+                          <DropdownMenu.Item key={child.path + child.label} className="navdd__item" asChild>
                             <a href={child.path}>{child.label}</a>
                           </DropdownMenu.Item>
                         ))}

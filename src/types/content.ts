@@ -18,8 +18,8 @@ export interface SiteContent {
     eyebrow: string;
     slides: HeroSlide[];
   };
-  products: Array<{ title: string; description: string }>;
-  news: Array<{ slug: string; title: string; excerpt: string }>;
+  products: Array<{ slug: string; title: string; description: string; badge?: string }>;
+  news: Array<{ slug: string; title: string; excerpt: string; date?: string }>;
   downloads: Array<{ slug: string; name: string; version: string }>;
   faq: Array<{ slug: string; question: string; answer: string }>;
   contact: {

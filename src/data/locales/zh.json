@@ -3,35 +3,37 @@
   "nav": [
     { "label": "主页", "path": "/" },
     {
-      "label": "ZWCAD 产品",
-      "path": "/san-pham-zwcad",
+      "label": "产品",
+      "path": "/san-pham/zwcad",
       "children": [
-        { "label": "ZWCAD 2025", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Architecture", "path": "/san-pham-zwcad" },
-        { "label": "ZWCAD Mechanical", "path": "/san-pham-zwcad" }
+        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
+        { "label": "ZW3D", "path": "/san-pham/zw3d" },
+        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
       ]
     },
     { "label": "新闻", "path": "/tin-tuc" },
-    { "label": "常见问题", "path": "/cau-hoi-thuong-gap" }
+    { "label": "下载", "path": "/tai-ve" },
+    { "label": "常见问题", "path": "/cau-hoi-thuong-gap" },
+    { "label": "联系我们", "path": "/lien-he" }
   ],
   "hero": {
     "eyebrow": "越南 ZWCAD 官方代理",
     "slides": [
       { "title": "ZWCAD 2025", "subtitle": "创造更多精彩", "cta": "立即购买", "theme": "slide-1" },
       { "title": "CADbro 2025", "subtitle": "更快的多格式 3D 审阅", "cta": "立即查看", "theme": "slide-2" },
-      { "title": "ZWCAD Mechanical", "subtitle": "优化 2D 机械制图流程", "cta": "了解更多", "theme": "slide-3" }
+      { "title": "ZWCAD MFG", "subtitle": "优化 2D 机械制图流程", "cta": "了解更多", "theme": "slide-3" }
     ]
   },
   "products": [
-    { "title": "ZWCAD", "description": "高性价比 CAD 平台，DWG 兼容性强。" },
-    { "title": "ZWCAD Architecture", "description": "建筑专用工具与丰富内容库。" },
-    { "title": "ZWCAD Mechanical", "description": "专业 2D 机械制图功能。" },
-    { "title": "CADbro", "description": "用于协作的 3D 查看与多格式转换工具。" }
+    { "slug": "zwcad", "title": "ZWCAD", "description": "高性价比 CAD 平台，DWG 兼容性强。", "badge": "最受欢迎" },
+    { "slug": "zw3d", "title": "ZW3D", "description": "集成 3D 设计与加工的专业软件。", "badge": "" },
+    { "slug": "zwcad-mfg", "title": "ZWCAD MFG", "description": "专业 2D 机械制图功能。", "badge": "" },
+    { "slug": "zwcad", "title": "CADbro", "description": "用于协作的 3D 查看与多格式转换工具。", "badge": "免费" }
   ],
   "news": [
-    { "slug": "zwcad-2026-version-comparison", "title": "ZWCAD 2026 最新版本对比", "excerpt": "汇总各版本的重要更新内容。" },
-    { "slug": "zwcad-vs-autocad", "title": "ZWCAD 与 AutoCAD 对比", "excerpt": "从成本、功能与兼容性进行分析。" },
-    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 2025 年末促销", "excerpt": "面向企业部署的优惠方案。" }
+    { "slug": "zwcad-2026-version-comparison", "title": "ZWCAD 2026 最新版本对比", "excerpt": "汇总各版本的重要更新内容。", "date": "2026-01-15" },
+    { "slug": "zwcad-vs-autocad", "title": "ZWCAD 与 AutoCAD 对比", "excerpt": "从成本、功能与兼容性进行分析。", "date": "2025-12-20" },
+    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 年末促销", "excerpt": "面向企业部署的优惠方案。", "date": "2025-11-30" }
   ],
   "downloads": [
     { "slug": "zwcad-trial", "name": "ZWCAD Trial", "version": "2025" },

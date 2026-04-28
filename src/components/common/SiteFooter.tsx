@@ -16,36 +16,27 @@ export default function SiteFooter() {
           <div className="new_footer-right">
             <div className="new_footer-list">
               <div className="new_footer-item">
-                <div className="new_footer-one new_footer-bold">Products</div>
+                <div className="new_footer-one new_footer-bold">Sản phẩm</div>
                 <div className="new_footer-twobox">
-                  <a className="new_footer-two" href="/san-pham-zwcad">
-                    ZWCAD
-                  </a>
-                  <a className="new_footer-two" href="/tai-ve/zwcad-trial">
-                    Download Trial
-                  </a>
+                  <a className="new_footer-two" href="/san-pham/zwcad">ZWCAD</a>
+                  <a className="new_footer-two" href="/san-pham/zw3d">ZW3D</a>
+                  <a className="new_footer-two" href="/san-pham/zwcad-mfg">ZWCAD MFG</a>
+                  <a className="new_footer-two" href="/tai-ve/zwcad-trial">Tải bản dùng thử</a>
                 </div>
               </div>
               <div className="new_footer-item">
-                <div className="new_footer-one new_footer-bold">Support</div>
+                <div className="new_footer-one new_footer-bold">Hỗ trợ</div>
                 <div className="new_footer-twobox">
-                  <a className="new_footer-two" href="/cau-hoi-thuong-gap">
-                    FAQ
-                  </a>
-                  <a className="new_footer-two" href="/tin-tuc">
-                    News
-                  </a>
+                  <a className="new_footer-two" href="/cau-hoi-thuong-gap">Câu hỏi thường gặp</a>
+                  <a className="new_footer-two" href="/tin-tuc">Tin tức</a>
                 </div>
               </div>
               <div className="new_footer-item">
-                <div className="new_footer-one new_footer-bold">Contact</div>
+                <div className="new_footer-one new_footer-bold">Liên hệ</div>
                 <div className="new_footer-twobox">
-                  <a className="new_footer-two" href="mailto:contact@focustech.com.vn">
-                    contact@focustech.com.vn
-                  </a>
-                  <a className="new_footer-two" href="tel:0982286072">
-                    0982 286 072
-                  </a>
+                  <a className="new_footer-two" href="mailto:contact@focustech.com.vn">contact@focustech.com.vn</a>
+                  <a className="new_footer-two" href="tel:0982286072">0982 286 072</a>
+                  <a className="new_footer-two" href="/lien-he">Gửi yêu cầu</a>
                 </div>
               </div>
             </div>
