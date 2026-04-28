@@ -1,0 +1,56 @@
+{
+  "searchPlaceholder": "输入搜索关键词",
+  "nav": [
+    { "label": "主页", "path": "/" },
+    {
+      "label": "ZWCAD 产品",
+      "path": "/san-pham-zwcad",
+      "children": [
+        { "label": "ZWCAD 2025", "path": "/san-pham-zwcad" },
+        { "label": "ZWCAD Architecture", "path": "/san-pham-zwcad" },
+        { "label": "ZWCAD Mechanical", "path": "/san-pham-zwcad" }
+      ]
+    },
+    { "label": "新闻", "path": "/tin-tuc" },
+    { "label": "常见问题", "path": "/cau-hoi-thuong-gap" }
+  ],
+  "hero": {
+    "eyebrow": "越南 ZWCAD 官方代理",
+    "slides": [
+      { "title": "ZWCAD 2025", "subtitle": "创造更多精彩", "cta": "立即购买", "theme": "slide-1" },
+      { "title": "CADbro 2025", "subtitle": "更快的多格式 3D 审阅", "cta": "立即查看", "theme": "slide-2" },
+      { "title": "ZWCAD Mechanical", "subtitle": "优化 2D 机械制图流程", "cta": "了解更多", "theme": "slide-3" }
+    ]
+  },
+  "products": [
+    { "title": "ZWCAD", "description": "高性价比 CAD 平台，DWG 兼容性强。" },
+    { "title": "ZWCAD Architecture", "description": "建筑专用工具与丰富内容库。" },
+    { "title": "ZWCAD Mechanical", "description": "专业 2D 机械制图功能。" },
+    { "title": "CADbro", "description": "用于协作的 3D 查看与多格式转换工具。" }
+  ],
+  "news": [
+    { "slug": "zwcad-2026-version-comparison", "title": "ZWCAD 2026 最新版本对比", "excerpt": "汇总各版本的重要更新内容。" },
+    { "slug": "zwcad-vs-autocad", "title": "ZWCAD 与 AutoCAD 对比", "excerpt": "从成本、功能与兼容性进行分析。" },
+    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 2025 年末促销", "excerpt": "面向企业部署的优惠方案。" }
+  ],
+  "downloads": [
+    { "slug": "zwcad-trial", "name": "ZWCAD Trial", "version": "2025" },
+    { "slug": "cadbro-trial", "name": "CADbro Trial", "version": "2025" }
+  ],
+  "faq": [
+    { "slug": "what-is-zwcad", "question": "什么是 ZWCAD？", "answer": "ZWCAD 是一款支持 DWG 的 2D/3D CAD 设计软件。" },
+    { "slug": "vietnam-support", "question": "在越南是否提供技术支持？", "answer": "是的，FocusTech 提供部署、培训和维护支持。" },
+    { "slug": "perpetual-license", "question": "是否有永久授权？", "answer": "有，具体取决于所选套餐和业务需求。" }
+  ],
+  "contact": {
+    "title": "联系我们",
+    "company": "FocusTech",
+    "lines": [
+      "河内：Zodiac 大厦 7 层，19 Duy Tan，Cau Giay",
+      "热线：0982 286 072",
+      "胡志明市：Halo 大厦，37 Hoang Van Thu，Phu Nhuan",
+      "热线：0918 134 888",
+      "邮箱：contact@focustech.com.vn"
+    ]
+  }
+}

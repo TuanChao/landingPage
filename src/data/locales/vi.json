@@ -1,0 +1,124 @@
+{
+  "searchPlaceholder": "Nhap tu khoa tim kiem",
+  "nav": [
+    {
+      "label": "Trang chu",
+      "path": "/"
+    },
+    {
+      "label": "San pham ZWCAD",
+      "path": "/san-pham-zwcad",
+      "children": [
+        { "label": "ZWCAD 2025", "path": "/san-pham-zwcad" },
+        { "label": "ZWCAD Architecture", "path": "/san-pham-zwcad" },
+        { "label": "ZWCAD Mechanical", "path": "/san-pham-zwcad" }
+      ]
+    },
+    {
+      "label": "Tin tuc",
+      "path": "/tin-tuc"
+    },
+    {
+      "label": "Cau hoi thuong gap",
+      "path": "/cau-hoi-thuong-gap"
+    }
+  ],
+  "hero": {
+    "eyebrow": "PHAN PHOI PHAN MEM ZWCAD TAI VIET NAM",
+    "slides": [
+      {
+        "title": "ZWCAD 2025",
+        "subtitle": "Kien tao nhung dieu tuyet voi",
+        "cta": "Mua ngay",
+        "theme": "slide-1"
+      },
+      {
+        "title": "CADbro 2025",
+        "subtitle": "Doc, xem va trao doi du lieu 3D nhanh hon",
+        "cta": "Xem ngay",
+        "theme": "slide-2"
+      },
+      {
+        "title": "ZWCAD Mechanical",
+        "subtitle": "Toi uu quy trinh thiet ke co khi 2D",
+        "cta": "Tim hieu",
+        "theme": "slide-3"
+      }
+    ]
+  },
+  "products": [
+    {
+      "title": "ZWCAD",
+      "description": "Nen tang CAD chi phi hieu qua, nhe, tuong thich DWG."
+    },
+    {
+      "title": "ZWCAD Architecture",
+      "description": "Thu vien noi dung va cong cu cho ban ve kien truc."
+    },
+    {
+      "title": "ZWCAD Mechanical",
+      "description": "Cong cu soan thao sheet 2D co khi chuyen nghiep."
+    },
+    {
+      "title": "CADbro",
+      "description": "Phan mem view 3D va chuyen doi du lieu da dinh dang."
+    }
+  ],
+  "news": [
+    {
+      "slug": "so-sanh-phien-ban-zwcad-2026",
+      "title": "So sanh cac phien ban ZWCAD moi nhat 2026",
+      "excerpt": "Tong hop cap nhat giua cac phien ban ZWCAD moi nhat."
+    },
+    {
+      "slug": "so-sanh-zwcad-va-autocad",
+      "title": "So sanh ZWCAD va AutoCAD: Dau la lua chon toi uu?",
+      "excerpt": "Phan tich theo chi phi, tinh nang va su tuong thich."
+    },
+    {
+      "slug": "khuyen-mai-zwcad-2025",
+      "title": "Chuong trinh khuyen mai ZWCAD 2025 Year End Promotion",
+      "excerpt": "Thong tin goi uu dai danh cho doanh nghiep."
+    }
+  ],
+  "downloads": [
+    {
+      "slug": "zwcad-trial",
+      "name": "ZWCAD Trial",
+      "version": "2025"
+    },
+    {
+      "slug": "cadbro-trial",
+      "name": "CADbro Trial",
+      "version": "2025"
+    }
+  ],
+  "faq": [
+    {
+      "slug": "zwcad-la-gi",
+      "question": "ZWCAD la gi?",
+      "answer": "ZWCAD la phan mem CAD phuc vu thiet ke 2D/3D tuong thich DWG."
+    },
+    {
+      "slug": "co-ho-tro-viet-nam-khong",
+      "question": "Co ho tro ky thuat tai Viet Nam khong?",
+      "answer": "Co. Doi ngu FocusTech ho tro trien khai, dao tao va bao tri."
+    },
+    {
+      "slug": "co-ban-quyen-vinh-vien-khong",
+      "question": "Co ban quyen vinh vien khong?",
+      "answer": "Co, tuy theo goi san pham va nhu cau su dung."
+    }
+  ],
+  "contact": {
+    "title": "Lien he",
+    "company": "FocusTech",
+    "lines": [
+      "Ha Noi: Tang 7, toa nha Zodiac, Ngo 19 Duy Tan, Cau Giay",
+      "Hotline: 0982 286 072",
+      "HCM: Toa nha Halo, 37 Hoang Van Thu, Phu Nhuan",
+      "Hotline: 0918 134 888",
+      "Email: contact@focustech.com.vn"
+    ]
+  }
+}
