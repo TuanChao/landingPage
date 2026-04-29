@@ -1,0 +1,20 @@
+.faq-page {
+  padding: 40px 0;
+}
+
+.faq-page__item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  background: #fff;
+  margin-bottom: 14px;
+}
+
+.faq-page__item h3 {
+  margin: 0;
+}
+
+.faq-page__item p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}

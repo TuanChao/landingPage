@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import Seo from "../seo/Seo";
-import { useSiteContent } from "../hooks/useSiteContent";
+import Seo from "../../seo/Seo";
+import { useSiteContent } from "../../hooks/useSiteContent";
+import "./DownloadDetailPage.css";
 
 export default function DownloadDetailPage() {
   const { slug } = useParams();
@@ -13,14 +14,14 @@ export default function DownloadDetailPage() {
 
   if (!download) {
     return (
-      <main className="container page-block">
+      <main className="container download-detail-page">
         <h1>Ban tai khong ton tai</h1>
       </main>
     );
   }
 
   return (
-    <main className="container page-block">
+    <main className="container download-detail-page">
       <Seo
         title={`Tai ve ${download.name} | ZWCAD Vietnam`}
         description={`Chi tiet tai ve ${download.name} phien ban ${download.version}.`}

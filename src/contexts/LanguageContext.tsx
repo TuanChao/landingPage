@@ -1,24 +1,30 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import type { Language, LocalizedText } from "../types/site";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import type { Language } from "../types/site";
+import { STORAGE_KEY } from "../i18n";
 
 interface LanguageContextValue {
   language: Language;
   setLanguage: (next: Language) => void;
-  t: (text: LocalizedText) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("vi");
+  const { i18n } = useTranslation();
+  const language = (i18n.resolvedLanguage ?? i18n.language ?? "vi") as Language;
 
   const value = useMemo<LanguageContextValue>(
     () => ({
       language,
-      setLanguage,
-      t: (text) => text[language]
+      setLanguage: (next) => {
+        void i18n.changeLanguage(next);
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(STORAGE_KEY, next);
+        }
+      }
     }),
-    [language]
+    [i18n, language]
   );
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

@@ -283,6 +283,7 @@
 }
 
 .zw-acc-item {
+  position: relative;
   border: 0;
   width: 100%;
   text-align: left;
@@ -306,7 +307,22 @@
 }
 
 .zw-acc-item.active {
-  border-bottom-color: #2fa57a;
+  border-bottom-color: transparent;
+}
+
+.zw-acc-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #2fa57a;
+  animation: acc-progress 15s linear forwards;
+}
+
+@keyframes acc-progress {
+  from { width: 0%; }
+  to   { width: 100%; }
 }
 
 .zw-why-image {
@@ -318,6 +334,263 @@
 .zw-why-image img {
   width: 100%;
   display: block;
+}
+
+/* ─── de-main: Powerful and Fast CAD section ─── */
+.de-main {
+  background: #f5f6f8;
+  padding: 80px 0 68px;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.de-inner {
+  /* spacing handled by de-main gap */
+}
+
+.de-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.de-lt { flex: 1; }
+
+.de-titles {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: #1a2232;
+}
+
+.de-span { color: #1762e7; }
+
+.de-rt {
+  flex: 1;
+  padding-top: 6px;
+}
+
+.de-intro {
+  margin: 0;
+  color: #4a5568;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* ── Tab switcher: chip style (matches trang mẫu) ── */
+.de-swiperbox { /* spacing handled by de-main gap */ }
+
+.de-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.de-tab {
+  height: 52px;
+  padding: 0 32px;
+  background: #fff;
+  border: 1.5px solid #ccd4e3;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #687487;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.de-tab.active {
+  border-color: #1762e7;
+  color: #1a2232;
+  box-shadow: 0 0 0 3px rgba(23, 98, 231, 0.12);
+}
+
+.de-tab:hover:not(.active) {
+  border-color: #8fa8ce;
+  color: #2d3748;
+}
+
+/* ── Main panel: card container ── */
+.dea-cont {
+  display: flex;
+  align-items: flex-start;
+  background: #e7e9ee;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+/* Left nav */
+.dea-left {
+  flex-shrink: 0;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 2px;
+  border-right: 1px solid #d5dbe6;
+  align-self: stretch;
+}
+
+.dea-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+  transition: background 0.15s;
+}
+
+.dea-nav:hover { background: rgba(23, 98, 231, 0.08); }
+
+.dea-nav.active {
+  background: linear-gradient(90deg, #2590f2, #1458df);
+}
+
+.dea-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dea-icon img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.dea-nav.active .dea-icon img {
+  filter: brightness(0) invert(1);
+}
+
+.dea-name {
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: #2d3748;
+  line-height: 1.3;
+}
+
+.dea-nav.active .dea-name { color: #fff; }
+
+/* Right side */
+.dea-right {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* Feature description column */
+.dea-pc-lt {
+  flex-shrink: 0;
+  width: 260px;
+  padding: 32px 28px;
+  border-right: 1px solid #d5dbe6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff;
+}
+
+.dea-feature-name {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1a2232;
+  line-height: 1.25;
+}
+
+.dea-feature-desc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #4a5568;
+  line-height: 1.8;
+}
+
+/* Video column */
+.dea-pc-rt {
+  flex: 1;
+  background: #0b0f1a;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+}
+
+.dea-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Bottom CTA ── */
+.de-bottom {
+  text-align: center;
+}
+
+.de-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  border: 2px solid #1762e7;
+  border-radius: 999px;
+  color: #1762e7;
+  font-weight: 700;
+  font-size: 0.97rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.de-btn:hover {
+  background: #1762e7;
+  color: #fff;
+}
+
+@media (max-width: 980px) {
+  .de-top { flex-direction: column; gap: 16px; }
+
+  .dea-cont { flex-direction: column; }
+
+  .dea-left {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none;
+    border-bottom: 1px solid #d5dbe6;
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .dea-nav {
+    width: auto;
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+
+  .dea-nav.active { background: linear-gradient(90deg, #2590f2, #1458df); }
+  .dea-icon { display: none; }
+  .dea-name { font-size: 0.82rem; }
+
+  .dea-right { flex-direction: column; }
+
+  .dea-pc-lt {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #d5dbe6;
+    padding: 20px 24px;
+  }
+
+  .dea-pc-rt { width: 100%; aspect-ratio: 16 / 9; }
 }
 
 .zw-head-row {
@@ -741,4 +1014,8 @@
   .zw-feature-panel aside {
     grid-template-columns: 1fr;
   }
+}
+
+.product-page__fallback {
+  padding: 40px 0;
 }

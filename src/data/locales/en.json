@@ -1,48 +1,142 @@
 {
   "searchPlaceholder": "Search keyword",
   "nav": [
-    { "label": "Home", "path": "/" },
+    {
+      "label": "Home",
+      "path": "/"
+    },
     {
       "label": "Products",
       "path": "/san-pham/zwcad",
       "children": [
-        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
-        { "label": "ZW3D", "path": "/san-pham/zw3d" },
-        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
+        {
+          "label": "ZWCAD",
+          "path": "/san-pham/zwcad"
+        },
+        {
+          "label": "ZW3D",
+          "path": "/san-pham/zw3d"
+        },
+        {
+          "label": "ZWCAD MFG",
+          "path": "/san-pham/zwcad-mfg"
+        }
       ]
     },
-    { "label": "News", "path": "/tin-tuc" },
-    { "label": "Download", "path": "/tai-ve" },
-    { "label": "FAQ", "path": "/cau-hoi-thuong-gap" },
-    { "label": "Contact", "path": "/lien-he" }
+    {
+      "label": "News",
+      "path": "/tin-tuc"
+    },
+    {
+      "label": "Download",
+      "path": "/tai-ve"
+    },
+    {
+      "label": "FAQ",
+      "path": "/cau-hoi-thuong-gap"
+    },
+    {
+      "label": "Contact",
+      "path": "/lien-he"
+    }
   ],
   "hero": {
     "eyebrow": "ZWCAD DISTRIBUTOR IN VIETNAM",
     "slides": [
-      { "title": "ZWCAD 2025", "subtitle": "Create amazing things", "cta": "Buy now", "theme": "slide-1" },
-      { "title": "CADbro 2025", "subtitle": "Fast multi-CAD 3D review", "cta": "Explore", "theme": "slide-2" },
-      { "title": "ZWCAD Mechanical", "subtitle": "Optimize 2D mechanical drafting", "cta": "Learn more", "theme": "slide-3" }
+      {
+        "title": "ZWCAD 2025",
+        "subtitle": "Create amazing things",
+        "cta": "Buy now",
+        "theme": "slide-1"
+      },
+      {
+        "title": "CADbro 2025",
+        "subtitle": "Fast multi-CAD 3D review",
+        "cta": "Explore",
+        "theme": "slide-2"
+      },
+      {
+        "title": "ZWCAD Mechanical",
+        "subtitle": "Optimize 2D mechanical drafting",
+        "cta": "Learn more",
+        "theme": "slide-3"
+      }
     ]
   },
   "products": [
-    { "slug": "zwcad", "title": "ZWCAD", "description": "Cost-effective CAD platform with strong DWG compatibility.", "badge": "Most popular" },
-    { "slug": "zw3d", "title": "ZW3D", "description": "Integrated 3D design and manufacturing solution.", "badge": "" },
-    { "slug": "zwcad-mfg", "title": "ZWCAD MFG", "description": "Professional 2D mechanical drafting features.", "badge": "" },
-    { "slug": "zwcad", "title": "CADbro", "description": "3D viewer and multi-format conversion for collaboration.", "badge": "Free" }
+    {
+      "slug": "zwcad",
+      "title": "ZWCAD",
+      "description": "Cost-effective CAD platform with strong DWG compatibility.",
+      "badge": "Most popular"
+    },
+    {
+      "slug": "zw3d",
+      "title": "ZW3D",
+      "description": "Integrated 3D design and manufacturing solution.",
+      "badge": ""
+    },
+    {
+      "slug": "zwcad-mfg",
+      "title": "ZWCAD MFG",
+      "description": "Professional 2D mechanical drafting features.",
+      "badge": ""
+    },
+    {
+      "slug": "zwcad",
+      "title": "CADbro",
+      "description": "3D viewer and multi-format conversion for collaboration.",
+      "badge": "Free"
+    }
   ],
   "news": [
-    { "slug": "latest-zwcad-2026-comparison", "title": "Latest ZWCAD version comparison 2026", "excerpt": "A summary of new updates across releases to help businesses choose the right version.", "date": "2026-01-15" },
-    { "slug": "zwcad-vs-autocad", "title": "ZWCAD vs AutoCAD: which one fits better?", "excerpt": "Compare cost, features, and compatibility to make the right decision for your team.", "date": "2025-12-20" },
-    { "slug": "zwcad-2025-promotion", "title": "ZWCAD 2025 Year End Promotion", "excerpt": "Special offers for business deployment with attractive packages for year-end 2025.", "date": "2025-11-30" }
+    {
+      "slug": "latest-zwcad-2026-comparison",
+      "title": "Latest ZWCAD version comparison 2026",
+      "excerpt": "A summary of new updates across releases to help businesses choose the right version.",
+      "date": "2026-01-15"
+    },
+    {
+      "slug": "zwcad-vs-autocad",
+      "title": "ZWCAD vs AutoCAD: which one fits better?",
+      "excerpt": "Compare cost, features, and compatibility to make the right decision for your team.",
+      "date": "2025-12-20"
+    },
+    {
+      "slug": "zwcad-2025-promotion",
+      "title": "ZWCAD 2025 Year End Promotion",
+      "excerpt": "Special offers for business deployment with attractive packages for year-end 2025.",
+      "date": "2025-11-30"
+    }
   ],
   "downloads": [
-    { "slug": "zwcad-trial", "name": "ZWCAD Trial", "version": "2025" },
-    { "slug": "cadbro-trial", "name": "CADbro Trial", "version": "2025" }
+    {
+      "slug": "zwcad-trial",
+      "name": "ZWCAD Trial",
+      "version": "2025"
+    },
+    {
+      "slug": "cadbro-trial",
+      "name": "CADbro Trial",
+      "version": "2025"
+    }
   ],
   "faq": [
-    { "slug": "what-is-zwcad", "question": "What is ZWCAD?", "answer": "ZWCAD is CAD software for 2D/3D design with DWG compatibility." },
-    { "slug": "vietnam-support", "question": "Do you provide support in Vietnam?", "answer": "Yes. FocusTech provides deployment, training and support." },
-    { "slug": "perpetual-license", "question": "Is there a perpetual license?", "answer": "Yes, depending on package and business needs." }
+    {
+      "slug": "what-is-zwcad",
+      "question": "What is ZWCAD?",
+      "answer": "ZWCAD is CAD software for 2D/3D design with DWG compatibility."
+    },
+    {
+      "slug": "vietnam-support",
+      "question": "Do you provide support in Vietnam?",
+      "answer": "Yes. FocusTech provides deployment, training and support."
+    },
+    {
+      "slug": "perpetual-license",
+      "question": "Is there a perpetual license?",
+      "answer": "Yes, depending on package and business needs."
+    }
   ],
   "contact": {
     "title": "Contact",
@@ -53,6 +147,15 @@
       "HCM: Halo Building, 37 Hoang Van Thu, Phu Nhuan",
       "Hotline: 0918 134 888",
       "Email: contact@focustech.com.vn"
-    ]
+    ],
+    "form": {
+      "placeholders": [
+        "Full name",
+        "Phone number",
+        "Email",
+        "Your requirement"
+      ],
+      "submit": "Submit"
+    }
   }
 }

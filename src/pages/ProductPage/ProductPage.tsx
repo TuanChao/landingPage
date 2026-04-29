@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Seo from "../seo/Seo";
+import Seo from "../../seo/Seo";
 import "./ProductPage.css";
 
 type ProductKey = "zwcad" | "zw3d" | "zwcad-mfg";
@@ -30,23 +30,95 @@ const whyItems = [
   }
 ];
 
-const advancedFeatures = [
-  { name: "Parametric Design", desc: "Add geometric and dimension constraints to entities for quick size and shape adjustments." },
-  { name: "Flexiblock", desc: "Create blocks with actions and parameters that can be stretched and edited flexibly." },
-  { name: "Point Cloud", desc: "Attach, edit, and manage complex point cloud data with stable performance." },
-  { name: "Sheet Set Manager", desc: "View, access, manage and plot multiple drawings in one panel." },
-  { name: "PDF Import", desc: "Import multiple PDF pages as CAD objects in one step." },
-  { name: "File Compare", desc: "Spot differences between two drawings at once for faster review." },
-  { name: "Area Table", desc: "Calculate areas and generate area tables automatically in just a few steps." }
+type DeFeature = {
+  name: string;
+  desc: string;
+  icon: string;
+  video: string;
+};
+
+const advancedFeatures: DeFeature[] = [
+  {
+    name: "Parametric Design",
+    desc: "Add geometric and dimension constraints to entities for quick size and shape adjustments.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/01_Parametric_Design.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/zwcad_ov/01_Parametric_Design.mp4"
+  },
+  {
+    name: "Flexiblock",
+    desc: "Flexiblock contains actions and parameters and allows you to change its shape freely.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/02_Flexiblock.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Flexiblock.mp4"
+  },
+  {
+    name: "Point Cloud",
+    desc: "Read and process complex point clouds smoothly. You can attach, edit, and manage them.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/03_Point_Cloud.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Point%20Cloud.mp4"
+  },
+  {
+    name: "Sheet Set Manager",
+    desc: "View, access, manage, and plot multiple drawings. All of them can be done in one panel.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/04_Sheet_Se_Manager.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Sheet%20Set%20Manager.mp4"
+  },
+  {
+    name: "PDF Import",
+    desc: "Import multiple PDF pages as CAD objects in one step.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/05_PDF_Import.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/PDF%20Import.mp4"
+  },
+  {
+    name: "File Compare",
+    desc: "Spot the differences between two drawings at once.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/06_File_Compare.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/File%20Compare.mp4"
+  },
+  {
+    name: "Area Table",
+    desc: "Automatically calculate area and generate area tables in just a few steps.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/07_Area_Table.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Area%20Table.mp4"
+  }
 ];
 
-const innovativeFeatures = [
-  { name: "Smart Match", desc: "Automatically identify identical shapes and support batch editing." },
-  { name: "Similar Search", desc: "Search for similar blocks in local files based on graphics." },
-  { name: "Smart Plot", desc: "Batch plot across files with automatic paper size matching." },
-  { name: "Smart Select", desc: "Filter objects by color, type and attributes in one quick operation." },
-  { name: "Smart Mouse", desc: "Trigger frequently used commands with mouse gestures." },
-  { name: "Smart Voice", desc: "Annotate with voice messages to reduce text editing." }
+const innovativeFeatures: DeFeature[] = [
+  {
+    name: "Smart Match",
+    desc: "Automatically identify identical shapes and support batch editing.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/1_Smart_Match.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/zwcad_ov/1_Smart_Match.mp4"
+  },
+  {
+    name: "Similar Search",
+    desc: "Search for similar blocks in local files based on a specified graphic.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/2_Similar_Search.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/zwcad_ov/2_Similar_Search.mp4"
+  },
+  {
+    name: "Smart Plot",
+    desc: "Optimize the interface for ease of use and improve plotting efficiency by batch plotting across files and automatic paper size matching.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/3_Smart_Plot.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/zwcad_ov/3_Smart_Plot.mp4"
+  },
+  {
+    name: "Smart Select",
+    desc: "Filter objects based on multiple conditions such as colors, type and attributes.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/4_Smart_Select.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Smart%20Select.mp4"
+  },
+  {
+    name: "Smart Mouse",
+    desc: "Trigger frequently-used commands easily with mouse gestures.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/5_Smart_Mouse.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Smart%20Mouse.mp4"
+  },
+  {
+    name: "Smart Voice",
+    desc: "Annotate with voice messages, saving you the hassle of text editing.",
+    icon: "https://zwcdn.zwsoft.com/web/images/zwcad_ov/6_Smart_Voice.svg",
+    video: "https://statics.zwsoft.com/static/style2020/mp4/cad-ov-2024/Smart%20Voice.mp4"
+  }
 ];
 
 const partnerLogos = [
@@ -121,16 +193,33 @@ export default function ProductPage() {
 
   const [whyActive, setWhyActive] = useState(1);
   const [featureTab, setFeatureTab] = useState<"advanced" | "innovative">("advanced");
-  const [featureActive, setFeatureActive] = useState(5);
+  const [featureActive, setFeatureActive] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const featureList = useMemo(
     () => (featureTab === "advanced" ? advancedFeatures : innovativeFeatures),
     [featureTab]
   );
 
+  const currentFeature = featureList[featureActive] ?? featureList[0];
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.load();
+    vid.play().catch(() => {});
+  }, [currentFeature.video]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setWhyActive(prev => (prev + 1) % whyItems.length);
+    }, 15000);
+    return () => clearTimeout(timer);
+  }, [whyActive]);
+
   if (!meta) {
     return (
-      <main className="container page-block">
+      <main className="container product-page__fallback">
         <h1>San pham khong ton tai</h1>
       </main>
     );
@@ -138,7 +227,7 @@ export default function ProductPage() {
 
   if (!isZwcad) {
     return (
-      <main className="container page-block">
+      <main className="container product-page__fallback">
         <Seo title={`${meta.title} | ZWCAD Vietnam`} description={meta.description} keywords={meta.keywords} />
         <h1>{meta.title}</h1>
         <h2>{meta.subtitle}</h2>
@@ -184,6 +273,16 @@ export default function ProductPage() {
       <section className="zw-section zw-what">
         <div className="db-inner">
           <div className="db-cont">
+            <div className="db-left">
+              <div className="db-imgbox">
+                <div className="db-img">
+                  <img src={`${IMG}/da34.png`} alt="What's ZWCAD" />
+                </div>
+                <button className="db-play" type="button" aria-label="Play video">
+                  ▶
+                </button>
+              </div>
+            </div>
             <div className="db-right">
               <div className="db-titles">What's ZWCAD</div>
               <h2 className="db-subtitle">
@@ -195,16 +294,6 @@ export default function ProductPage() {
                 With an <strong>intuitive interface, efficiency-boosting features</strong>, and{" "}
                 <strong>AI-powered tools</strong>, ZWCAD helps architects, engineers, and designers bring their ideas
                 to life without limits and confidently shape the future.
-              </div>
-            </div>
-            <div className="db-left">
-              <div className="db-imgbox">
-                <div className="db-img">
-                  <img src={`${IMG}/da34.png`} alt="What's ZWCAD" />
-                </div>
-                <button className="db-play" type="button" aria-label="Play video">
-                  ▶
-                </button>
               </div>
             </div>
           </div>
@@ -243,60 +332,97 @@ export default function ProductPage() {
         </div>
       </section>
 
-      <section className="zw-section">
-        <div className="container">
-          <div className="zw-head-row">
-            <h2 className="zw-title">
-              <span>Powerful and Fast CAD:</span>
-              <br />
-              Do More in Less Time
-            </h2>
-            <p>
-              ZWCAD is packed with all the essential tools you need, along with advanced and innovative features
-              designed to boost productivity and help you deliver results faster.
-            </p>
+      <section className="de-main">
+        {/* Header */}
+        <div className="de-inner container">
+          <div className="de-top">
+            <div className="de-lt">
+              <h2 className="de-titles">
+                <span className="de-span">Powerful and Fast CAD</span>: Do More in Less Time
+              </h2>
+            </div>
+            <div className="de-rt">
+              <p className="de-intro">
+                ZWCAD is packed with all the essential tools you need, along with advanced and innovative features
+                designed to boost productivity and help you deliver results faster.
+              </p>
+            </div>
           </div>
-          <div className="zw-tab-row">
+        </div>
+
+        {/* Tab switcher */}
+        <div className="de-swiperbox container">
+          <div className="de-tabs">
             <button
               type="button"
-              className={featureTab === "advanced" ? "active" : ""}
-              onClick={() => {
-                setFeatureTab("advanced");
-                setFeatureActive(5);
-              }}
+              className={`de-tab${featureTab === "advanced" ? " active" : ""}`}
+              onClick={() => { setFeatureTab("advanced"); setFeatureActive(0); }}
             >
               Advanced Features
             </button>
             <button
               type="button"
-              className={featureTab === "innovative" ? "active" : ""}
-              onClick={() => {
-                setFeatureTab("innovative");
-                setFeatureActive(0);
-              }}
+              className={`de-tab${featureTab === "innovative" ? " active" : ""}`}
+              onClick={() => { setFeatureTab("innovative"); setFeatureActive(0); }}
             >
               Innovative Features
             </button>
           </div>
-          <div className="zw-feature-panel">
-            <aside>
+        </div>
+
+        {/* Content */}
+        <div className="dea-main container">
+          <div className="dea-cont">
+            {/* Left nav */}
+            <nav className="dea-left">
               {featureList.map((item, idx) => (
                 <button
                   key={item.name}
                   type="button"
-                  className={featureActive === idx ? "active" : ""}
+                  className={`dea-nav${featureActive === idx ? " active" : ""}`}
                   onClick={() => setFeatureActive(idx)}
                 >
-                  {item.name}
+                  <span className="dea-icon">
+                    <img src={item.icon} alt="" loading="lazy" width={28} height={28} />
+                  </span>
+                  <span className="dea-name">{item.name}</span>
                 </button>
               ))}
-            </aside>
-            <article>
-              <h3>{featureList[featureActive]?.name}</h3>
-              <p>{featureList[featureActive]?.desc}</p>
-              <img src={`${IMG}/zwcad/comparison.gif`} alt={featureList[featureActive]?.name} />
-            </article>
+            </nav>
+
+            {/* Right: info + video */}
+            <div className="dea-right">
+              <div className="dea-pc-lt">
+                <p className="dea-feature-name">{currentFeature.name}</p>
+                <p className="dea-feature-desc">{currentFeature.desc}</p>
+              </div>
+              <div className="dea-pc-rt">
+                <video
+                  key={currentFeature.video}
+                  ref={videoRef}
+                  muted
+                  autoPlay
+                  loop
+                  playsInline
+                  className="dea-video"
+                >
+                  <source src={currentFeature.video} type="video/mp4" />
+                </video>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="de-bottom container">
+          <a
+            href="https://www.zwsoft.com/product/zwcad/whats-new#previous-features"
+            className="de-btn"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Learn more features by versions
+          </a>
         </div>
       </section>
 
@@ -411,3 +537,4 @@ export default function ProductPage() {
     </main>
   );
 }
+

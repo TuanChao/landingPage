@@ -5,9 +5,9 @@ import type { Language } from "../../types/site";
 import "./LanguageDropdown.css";
 
 const languageMap: Record<Language, { label: string; flag: string }> = {
-  vi: { label: "Tiếng Việt", flag: "https://flagcdn.com/w20/vn.png" },
-  en: { label: "English",    flag: "https://flagcdn.com/w20/us.png" },
-  zh: { label: "中文",        flag: "https://flagcdn.com/w20/cn.png" },
+  vi: { label: "Ti?ng Vi?t", flag: "https://flagcdn.com/w20/vn.png" },
+  en: { label: "English", flag: "https://flagcdn.com/w20/us.png" },
+  zh: { label: "??", flag: "https://flagcdn.com/w20/cn.png" }
 };
 
 export default function LanguageDropdown() {
@@ -15,7 +15,7 @@ export default function LanguageDropdown() {
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="langdd__trigger" aria-label="Ngôn ngữ">
+      <DropdownMenu.Trigger className="langdd__trigger" aria-label="Ng�n ng?">
         <span className="langdd__flag" aria-hidden="true">
           <img src={languageMap[language].flag} alt="" />
         </span>
@@ -25,11 +25,7 @@ export default function LanguageDropdown() {
       <DropdownMenu.Portal>
         <DropdownMenu.Content className="langdd__content" sideOffset={8} align="end">
           {(["vi", "en", "zh"] as Language[]).map((lang) => (
-            <DropdownMenu.Item
-              key={lang}
-              className="langdd__item"
-              onSelect={() => setLanguage(lang)}
-            >
+            <DropdownMenu.Item key={lang} className="langdd__item" onSelect={() => setLanguage(lang)}>
               <span className="langdd__flag" aria-hidden="true">
                 <img src={languageMap[lang].flag} alt="" />
               </span>

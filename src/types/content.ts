@@ -26,5 +26,9 @@ export interface SiteContent {
     title: string;
     company: string;
     lines: string[];
+    form: {
+      placeholders: [string, string, string, string];
+      submit: string;
+    };
   };
 }

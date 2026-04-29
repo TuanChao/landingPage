@@ -4,7 +4,7 @@ import vi from "./locales/vi.json";
 import en from "./locales/en.json";
 import zh from "./locales/zh.json";
 
-const contentMap: Record<Language, SiteContent> = {
+export const contentMap: Record<Language, SiteContent> = {
   vi: vi as SiteContent,
   en: en as SiteContent,
   zh: zh as SiteContent

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSiteContent } from "../../hooks/useSiteContent";
+import "./HeroSection.css";
 
 export default function HeroSection() {
   const { hero } = useSiteContent();
@@ -30,7 +31,6 @@ export default function HeroSection() {
   return (
     <header className="hero">
       <div className={`hero-banner ${activeSlide.theme}`}>
-        {/* decorative shapes */}
         <div className="hero-deco-ring hero-deco-ring-1" aria-hidden="true" />
         <div className="hero-deco-ring hero-deco-ring-2" aria-hidden="true" />
         <div className="hero-deco-dots" aria-hidden="true">
@@ -40,18 +40,16 @@ export default function HeroSection() {
         </div>
 
         <div className="container hero-grid">
-          {/* left: text */}
           <div className={`hero-left ${animating ? "hero-fade-out" : "hero-fade-in"}`}>
             <p className="eyebrow">{hero.eyebrow}</p>
             <h1 className="hero-title">{activeSlide.title}</h1>
             <p className="lead">{activeSlide.subtitle}</p>
             <div className="hero-actions">
               <a href="#contact" className="btn-hero-cta">{activeSlide.cta}</a>
-              <a href="#features" className="btn-hero-ghost">Xem sản phẩm</a>
+              <a href="#features" className="btn-hero-ghost">Xem s?n ph?m</a>
             </div>
           </div>
 
-          {/* right: decorative mockup */}
           <div className="hero-right" aria-hidden="true">
             <div className="hero-mockup">
               <div className="mockup-bar">
@@ -71,9 +69,8 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* slide controls */}
         <div className="hero-controls">
-          <button type="button" className="slider-arrow" onClick={prevSlide} aria-label="Slide trước">‹</button>
+          <button type="button" className="slider-arrow" onClick={prevSlide} aria-label="Slide tr�?c">�</button>
           <div className="slider-dots" aria-hidden="true">
             {slides.map((_, index) => (
               <button
@@ -85,7 +82,7 @@ export default function HeroSection() {
               />
             ))}
           </div>
-          <button type="button" className="slider-arrow" onClick={nextSlide} aria-label="Slide sau">›</button>
+          <button type="button" className="slider-arrow" onClick={nextSlide} aria-label="Slide sau">�</button>
         </div>
       </div>
     </header>

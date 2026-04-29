@@ -1,3 +1,109 @@
+.head_header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: #fff;
+  border-bottom: 1px solid #e8edf5;
+  transition: top 0.3s ease;
+}
+
+.head_header.scrolled {
+  top: -7vh;
+}
+
+.head_h-main {
+  width: 100%;
+}
+
+.head_h-inner {
+  min-height: 7vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.head_h-left {
+  display: flex;
+  align-items: center;
+}
+
+.head_h-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.head_h-logo img {
+  height: 5vh;
+  max-height: 40px;
+  min-height: 24px;
+  width: auto;
+  display: block;
+}
+
+.head_h-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.head_h-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  height: 40px;
+  min-width: 320px;
+  border-radius: 14px;
+  border: 1px solid #8f9cb2;
+  background: #fff;
+  padding: 0 14px;
+  font: inherit;
+}
+
+.lang-switch {
+  display: inline-flex;
+}
+
+.head_nav {
+  border-top: 1px solid #eef2f8;
+}
+
+.head_nav-inner {
+  width: 100%;
+}
+
+.head_nav-cont {
+  min-height: 4vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.head_nav-navbox {
+  display: flex;
+  gap: 28px;
+}
+
+.head_nav-one {
+  text-decoration: none;
+  color: #1f242d;
+  position: relative;
+  padding: 16px 0;
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.head_nav-one.active {
+  color: #2f84dd;
+  font-weight: 600;
+}
+
 .navdd__trigger {
   display: inline-flex;
   align-items: center;
@@ -28,7 +134,7 @@
 
 @keyframes navdd-open {
   from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .navdd__item {
@@ -47,4 +153,38 @@
 .navdd__item[data-highlighted] {
   background: #eef4ff;
   color: #2f84dd;
+}
+
+@media (max-width: 980px) {
+  .head_h-inner {
+    min-height: auto;
+    padding: 16px 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .head_h-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .head_h-area {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .head_nav-cont {
+    justify-content: flex-start;
+  }
+
+  .head_nav-navbox {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 4px;
+  }
 }

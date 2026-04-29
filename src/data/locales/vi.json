@@ -9,9 +9,18 @@
       "label": "Sản phẩm",
       "path": "/san-pham/zwcad",
       "children": [
-        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
-        { "label": "ZW3D", "path": "/san-pham/zw3d" },
-        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
+        {
+          "label": "ZWCAD",
+          "path": "/san-pham/zwcad"
+        },
+        {
+          "label": "ZW3D",
+          "path": "/san-pham/zw3d"
+        },
+        {
+          "label": "ZWCAD MFG",
+          "path": "/san-pham/zwcad-mfg"
+        }
       ]
     },
     {
@@ -138,6 +147,15 @@
       "TP.HCM: Tòa nhà Halo, 37 Hoàng Văn Thụ, Phú Nhuận",
       "Hotline: 0918 134 888",
       "Email: contact@focustech.com.vn"
-    ]
+    ],
+    "form": {
+      "placeholders": [
+        "H? v? t?n",
+        "S? ?i?n tho?i",
+        "Email",
+        "Nhu c?u c?a b?n"
+      ],
+      "submit": "G?i th?ng tin"
+    }
   }
 }

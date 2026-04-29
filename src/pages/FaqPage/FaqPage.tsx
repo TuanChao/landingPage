@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import Seo from "../seo/Seo";
-import { useSiteContent } from "../hooks/useSiteContent";
+import Seo from "../../seo/Seo";
+import { useSiteContent } from "../../hooks/useSiteContent";
+import "./FaqPage.css";
 
 export default function FaqPage() {
   const content = useSiteContent();
   return (
-    <main className="container page-block">
+    <main className="container faq-page">
       <Seo
         title="Cau hoi thuong gap | ZWCAD Vietnam"
         description="Tong hop cau hoi thuong gap ve san pham, ban quyen va ho tro ZWCAD."
@@ -14,7 +15,7 @@ export default function FaqPage() {
       <h1>Cau hoi thuong gap</h1>
       <h2>Danh sach FAQ</h2>
       {content.faq.map((faq) => (
-        <article key={faq.slug} className="card page-list-item">
+        <article key={faq.slug} className="faq-page__item">
           <h3>{faq.question}</h3>
           <p>{faq.answer}</p>
           <Link to={`/cau-hoi-thuong-gap/${faq.slug}`}>Xem chi tiet</Link>

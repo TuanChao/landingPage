@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import Seo from "../seo/Seo";
-import { useSiteContent } from "../hooks/useSiteContent";
+import Seo from "../../seo/Seo";
+import { useSiteContent } from "../../hooks/useSiteContent";
+import "./NewsDetailPage.css";
 
 export default function NewsDetailPage() {
   const { slug } = useParams();
@@ -10,14 +11,14 @@ export default function NewsDetailPage() {
 
   if (!article) {
     return (
-      <main className="container page-block">
+      <main className="container news-detail-page">
         <h1>Tin tuc khong ton tai</h1>
       </main>
     );
   }
 
   return (
-    <main className="container page-block">
+    <main className="container news-detail-page">
       <Seo
         title={`${article.title} | ZWCAD Vietnam`}
         description={article.excerpt}

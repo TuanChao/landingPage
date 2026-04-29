@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import Seo from "../seo/Seo";
-import { useSiteContent } from "../hooks/useSiteContent";
+import Seo from "../../seo/Seo";
+import { useSiteContent } from "../../hooks/useSiteContent";
+import "./FaqDetailPage.css";
 
 export default function FaqDetailPage() {
   const { slug } = useParams();
@@ -10,14 +11,14 @@ export default function FaqDetailPage() {
 
   if (!faq) {
     return (
-      <main className="container page-block">
+      <main className="container faq-detail-page">
         <h1>Cau hoi khong ton tai</h1>
       </main>
     );
   }
 
   return (
-    <main className="container page-block">
+    <main className="container faq-detail-page">
       <Seo
         title={`${faq.question} | ZWCAD Vietnam`}
         description={faq.answer}

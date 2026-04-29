@@ -1,10 +1,9 @@
-import HeroSection from "../components/sections/HeroSection";
-import FeatureSection from "../components/sections/FeatureSection";
-import NewsSection from "../components/sections/NewsSection";
-import SupportSection from "../components/sections/SupportSection";
-import ContactSection from "../components/sections/ContactSection";
-import "../styles/landing.css";
-import Seo from "../seo/Seo";
+import HeroSection from "../../components/sections/HeroSection";
+import FeatureSection from "../../components/sections/FeatureSection";
+import NewsSection from "../../components/sections/NewsSection";
+import SupportSection from "../../components/sections/SupportSection";
+import ContactSection from "../../components/sections/ContactSection";
+import Seo from "../../seo/Seo";
 
 export default function LandingPage() {
   return (
