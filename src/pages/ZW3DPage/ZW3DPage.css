@@ -1,0 +1,378 @@
+/* ── Shared imports from ProductPage ── */
+@import "../ProductPage/ProductPage.css";
+
+/* ══════════════════════════════════════
+   ZW3D Page overrides & new sections
+══════════════════════════════════════ */
+
+.z3-page {
+  background: #fff;
+  color: #1e2430;
+  font-size: 14px;
+}
+
+.z3-section {
+  padding: 90px 0;
+}
+
+/* ── Hero (da-main) ── */
+.da-main {
+  background: linear-gradient(135deg, #0d1f4e 0%, #1a3c8f 60%, #1762e7 100%);
+  padding: 100px 0 80px;
+  color: #fff;
+}
+
+.da-inner {
+  /* uses .container */
+}
+
+.da-cont {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.da-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.da-titles {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  margin: 0 0 20px;
+}
+
+.da-intro {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 28px;
+}
+
+.da-span {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.da-linkbox {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.da-link {
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #0f4ece;
+  transition: opacity 0.2s;
+}
+
+.da-link:hover {
+  opacity: 0.88;
+}
+
+.da-link-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.7);
+}
+
+.da-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.da-box {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.da-img img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+}
+
+/* ── What's ZW3D (db-main) ── */
+.db-main {
+  background: #f5f6f8;
+  padding: 80px 0;
+}
+
+.db-inner {
+  /* uses .container */
+}
+
+.db-cont {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.db-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.db-tip {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.db-titles {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a2232;
+  margin: 0 0 20px;
+}
+
+.db-span {
+  color: #1762e7;
+}
+
+.db-textbox p {
+  color: #374256;
+  line-height: 1.7;
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+.db-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.db-imgbox {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.db-img img {
+  width: 100%;
+  display: block;
+}
+
+.db-gif {
+  position: absolute;
+  inset: 0;
+}
+
+.db-gif video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── All-in-One CAx (dc-main) ── */
+.dc-main {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.dc-top {
+  margin-bottom: 48px;
+}
+
+.dc-left {
+  max-width: 640px;
+}
+
+.dc-titles {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a2232;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.dc-span {
+  color: #1762e7;
+}
+
+.dc-intro {
+  font-size: 15px;
+  color: #374256;
+  line-height: 1.7;
+}
+
+.dc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.dc-card {
+  background: #f5f6f8;
+  border-radius: 14px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+
+.dc-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+
+.dc-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dc-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dc-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1a2232;
+}
+
+/* ── Feature panel (reuses de-/dea- from ProductPage) ── */
+.z3-page .dea-cont {
+  flex-direction: row-reverse;
+}
+
+.z3-page .dea-pc-lt {
+  flex: 1;
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dea-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a2232;
+  margin: 0 0 12px;
+}
+
+.dea-desc {
+  font-size: 0.95rem;
+  color: #374256;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Why ZW3D ── */
+.z3-why {
+  background: #f5f6f8;
+}
+
+.z3-titles {
+  font-size: 36px;
+  font-weight: 600;
+  color: #1a2232;
+  margin: 0 0 40px;
+}
+
+.z3-center {
+  text-align: center;
+}
+
+.z3-why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.z3-why-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  border: 1px solid #e8ecf2;
+}
+
+.z3-why-icon {
+  font-size: 2rem;
+  margin-bottom: 14px;
+}
+
+.z3-why-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a2232;
+  margin: 0 0 8px;
+}
+
+.z3-why-desc {
+  font-size: 0.88rem;
+  color: #5a6476;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Case studies marquee (reuses di- from ProductPage) ── */
+.z3-cases {
+  padding-bottom: 0;
+}
+
+.z3-cases .container {
+  margin-bottom: 40px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1060px) {
+  .dc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .z3-why-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .da-cont,
+  .db-cont {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .da-right,
+  .da-left,
+  .db-right,
+  .db-left {
+    width: 100%;
+  }
+
+  .z3-page .dea-cont {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  .dc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .z3-why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dl-cont {
+    grid-template-columns: 1fr;
+  }
+}

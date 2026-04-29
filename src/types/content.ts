@@ -19,7 +19,7 @@ export interface SiteContent {
     slides: HeroSlide[];
   };
   products: Array<{ slug: string; title: string; description: string; badge?: string }>;
-  news: Array<{ slug: string; title: string; excerpt: string; date?: string }>;
+  news: Array<{ slug: string; title: string; excerpt: string; date?: string; image?: string; category?: string; author?: string; body?: string }>;
   downloads: Array<{ slug: string; name: string; version: string }>;
   faq: Array<{ slug: string; question: string; answer: string }>;
   contact: {

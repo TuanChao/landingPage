@@ -1,14 +1,35 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import LanguageDropdown from "../ui/LanguageDropdown";
 import { useSiteContent } from "../../hooks/useSiteContent";
 import "./SiteHeader.css";
 
+const PRODUCT_NAV: Record<string, { name: string; logo: string; href: string }> = {
+  "/san-pham/zwcad": {
+    name: "ZWCAD",
+    logo: "/image-zwcad/logo/zwcadmb",
+    href: "/san-pham/zwcad",
+  },
+  "/san-pham/zw3d": {
+    name: "ZW3D",
+    logo: "/image-zwcad/logo/zwc3d",
+    href: "/san-pham/zw3d",
+  },
+  "/san-pham/zwcad-mfg": {
+    name: "ZWCAD MFG",
+    logo: "/image-zwcad/logo/zwcadmfg",
+    href: "/san-pham/zwcad-mfg",
+  },
+};
+
 export default function SiteHeader() {
   const content = useSiteContent();
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  const currentProduct = PRODUCT_NAV[location.pathname] ?? null;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -39,6 +60,14 @@ export default function SiteHeader() {
       <nav className="head_nav">
         <div className="container head_nav-inner">
           <div className="head_nav-cont">
+            {currentProduct && (
+              <a href={currentProduct.href} className="head_nav-product">
+                <div className="head_nav-logo">
+                  <img src={currentProduct.logo} alt={currentProduct.name} />
+                </div>
+                <span className="head_nav-text">{currentProduct.name}</span>
+              </a>
+            )}
             <div className="head_nav-navbox">
               {content.nav.map((item) =>
                 item.children?.length ? (

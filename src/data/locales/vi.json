@@ -93,20 +93,94 @@
     {
       "slug": "so-sanh-phien-ban-zwcad-2026",
       "title": "So sánh các phiên bản ZWCAD mới nhất 2026",
-      "excerpt": "Tổng hợp cập nhật giữa các phiên bản ZWCAD mới nhất, giúp doanh nghiệp lựa chọn phù hợp.",
-      "date": "2026-01-15"
+      "excerpt": "ZWCAD MFG là giải pháp CAD tiên tiến dành cho các chuyên gia trong ngành sản xuất, giúp nâng cao tính tiêu chuẩn hoá và tối ưu hiệu suất.",
+      "date": "2026-01-15",
+      "category": "Sản phẩm"
     },
     {
       "slug": "so-sanh-zwcad-va-autocad",
       "title": "So sánh ZWCAD và AutoCAD: Đâu là lựa chọn tối ưu?",
-      "excerpt": "Phân tích theo chi phí, tính năng và sự tương thích để giúp bạn đưa ra quyết định đúng đắn.",
-      "date": "2025-12-20"
+      "excerpt": "AutoCAD và ZWCAD là hai phần mềm CAD hàng đầu dùng trong thiết kế kỹ thuật, xây dựng, cơ khí và nhiều ngành nghề khác. Mỗi phần mềm đều có điểm mạnh riêng.",
+      "date": "2025-12-20",
+      "category": "Kiến thức"
     },
     {
       "slug": "khuyen-mai-zwcad-2025",
-      "title": "Chương trình khuyến mãi ZWCAD 2025 Year End Promotion",
-      "excerpt": "Thông tin gói ưu đãi dành cho doanh nghiệp cuối năm 2025 với nhiều ưu đãi hấp dẫn.",
-      "date": "2025-11-30"
+      "title": "Chương trình Khuyến mãi ZWCAD 2025 Year End Promotion",
+      "excerpt": "Phần mềm CAD. Phần mềm CAM. Phần mềm ZWCAD.",
+      "date": "2025-11-30",
+      "image": "/image-zwcad/news/khuyen-mai-2025.jpg",
+      "category": "Khuyến mãi"
+    },
+    {
+      "slug": "focustech-most-improved-partner-2022",
+      "title": "FOCUSTECH – MOST IMPROVED PARTNER 2022",
+      "excerpt": "FocusTech vinh dự nhận giải thưởng Most Improved Partner 2022 từ ZWSOFT, khẳng định vị thế đại lý ủy quyền hàng đầu tại Việt Nam.",
+      "date": "2022-12-10",
+      "category": "Tin tức"
+    },
+    {
+      "slug": "zwcad-2023-sheet-set-manager",
+      "title": "ZWCAD 2023: Sheet Set Manager, một giải pháp tuyệt vời để quản lý bản vẽ",
+      "excerpt": "Khi một dự án bao gồm nhiều tầm vẽ, tính hiệu quả của việc quản lý bản vẽ sẽ giảm đi gây ảnh hưởng đến hiệu quả thiết kế. Bạn đã bao giờ mở nhiều thư mục...",
+      "date": "2023-06-15",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zwcad-2023-tinh-nang-moi",
+      "title": "Tính năng mới trên phiên bản ZWCAD 2023",
+      "excerpt": "Khám phá những cải tiến về hiệu suất, chính xác, giao diện và mô hình 3D với phiên bản ZWCAD 2023. Với phiên bản này người dùng sẽ được trải nghiệm.",
+      "date": "2023-05-20",
+      "image": "/image-zwcad/news/zwcad-2023.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zwcad-2023-bo-sung-cong-cu",
+      "title": "ZWCAD 2023: Bổ sung nhiều công cụ tạo bảng mạnh mẽ hơn",
+      "excerpt": "Đối với các kỹ sư dùng phần mềm CAD, việc xử lý bảng là một phần công việc năng ngày. Mỗi bảng tốt sẽ có thông tin rõ ràng và...",
+      "date": "2023-04-10",
+      "image": "/image-zwcad/news/zwcad-2023-table.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zwcad-2022-hieu-qua-than-thien",
+      "title": "ZWCAD 2022: Hiệu quả, thân thiện với người dùng, kết nối với hệ sinh thái CAD",
+      "excerpt": "Vào ngày 6 năm 2022, ZWSOFT - nhà cung cấp các giải pháp all-in-one CAD đáng tin cậy, chính thức thông bao phát hành phiên bản mới nhất của...",
+      "date": "2022-06-10",
+      "image": "/image-zwcad/news/zwcad-2022.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zw3d-2023-thiet-ke-linh-hoat",
+      "title": "ZW3D 2023 Thiết kế linh hoạt, gia công nhanh chóng",
+      "excerpt": "Giải pháp CAD/CAM 3D tích hợp được cung cấp bởi bạn thiết kế mô hình 3D từ phát triển, thiết kế cho toàn bộ quá trình phát triển sản phẩm.",
+      "date": "2023-08-01",
+      "image": "/image-zwcad/news/zw3d-2023.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zwcad-2022-giai-phap-thiet-ke",
+      "title": "ZWCAD 2022: Giải Pháp Thiết Kế Nhanh Hơn Và Thân Thiện Hơn",
+      "excerpt": "Vào ngày 22 tháng 07 năm 2021, ZWSOFT, nhà cung cấp đáng tin cậy...",
+      "date": "2021-07-22",
+      "image": "/image-zwcad/news/zwcad-2022-b.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zw3d-2022-cac-tinh-nang",
+      "title": "ZW3D 2022 - Các tính năng CAD/CAM đẳng cấp sẽ nằm trong tay bạn",
+      "excerpt": "Ngày 14/04/2021, ZWSOFT công bố chính thức ra mắt ZW3D 2022, phiên bản mới nhất của giải pháp CAD/CAM 3D tích hợp hàng đầu.",
+      "date": "2021-04-14",
+      "image": "/image-zwcad/news/zw3d-2022.jpg",
+      "category": "Sản phẩm"
+    },
+    {
+      "slug": "zwcad-2021-nhanh-hon-muot-hon",
+      "title": "ZWCAD 2021: Nhanh hơn và Mượt mà hơn",
+      "excerpt": "ZWCAD 2021 chính thức ra mắt ngày 01/09/2020 - Phiên bản mới nhanh hơn và mượt mà hơn cho giải pháp CAD mềm mẻ, đáng tin cậy và liurong.",
+      "date": "2020-09-01",
+      "image": "/image-zwcad/news/zwcad-2021.jpg",
+      "category": "Sản phẩm"
     }
   ],
   "downloads": [

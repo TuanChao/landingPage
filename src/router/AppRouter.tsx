@@ -10,6 +10,8 @@ import DownloadDetailPage from "../pages/DownloadDetailPage";
 import FaqPage from "../pages/FaqPage";
 import FaqDetailPage from "../pages/FaqDetailPage";
 import ContactPage from "../pages/ContactPage";
+import ZW3DPage from "../pages/ZW3DPage/ZW3DPage";
+import ZWCADMFGPage from "../pages/ZWCADMFGPage/ZWCADMFGPage";
 
 export default function AppRouter() {
   return (
@@ -18,6 +20,8 @@ export default function AppRouter() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/trang-chu" element={<Navigate to="/" replace />} />
         <Route path="/san-pham-zwcad" element={<Navigate to="/san-pham/zwcad" replace />} />
+        <Route path="/san-pham/zw3d" element={<ZW3DPage />} />
+        <Route path="/san-pham/zwcad-mfg" element={<ZWCADMFGPage />} />
         <Route path="/san-pham/:productSlug" element={<ProductPage />} />
         <Route path="/tin-tuc" element={<NewsPage />} />
         <Route path="/tin-tuc/:slug" element={<NewsDetailPage />} />

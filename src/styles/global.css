@@ -59,7 +59,7 @@ body,
 }
 
 body {
-  font-family: "Be Vietnam Pro", sans-serif;
+  font-family: notosansbold, "Noto Sans", Helvetica, Arial, sans-serif;
   color: var(--text);
   background: var(--bg);
 }
@@ -69,8 +69,10 @@ a {
 }
 
 .container {
-  width: min(1120px, 92vw);
+  width: min(1400px, 92vw);
   margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .btn {

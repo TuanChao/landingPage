@@ -46,7 +46,7 @@ export default function HeroSection() {
             <p className="lead">{activeSlide.subtitle}</p>
             <div className="hero-actions">
               <a href="#contact" className="btn-hero-cta">{activeSlide.cta}</a>
-              <a href="#features" className="btn-hero-ghost">Xem s?n ph?m</a>
+              <a href="#features" className="btn-hero-ghost">Xem sản phẩm</a>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export default function HeroSection() {
         </div>
 
         <div className="hero-controls">
-          <button type="button" className="slider-arrow" onClick={prevSlide} aria-label="Slide tr�?c">�</button>
+          <button type="button" className="slider-arrow" onClick={prevSlide} aria-label="Slide trước">‹</button>
           <div className="slider-dots" aria-hidden="true">
             {slides.map((_, index) => (
               <button
@@ -82,7 +82,7 @@ export default function HeroSection() {
               />
             ))}
           </div>
-          <button type="button" className="slider-arrow" onClick={nextSlide} aria-label="Slide sau">�</button>
+          <button type="button" className="slider-arrow" onClick={nextSlide} aria-label="Slide sau">›</button>
         </div>
       </div>
     </header>

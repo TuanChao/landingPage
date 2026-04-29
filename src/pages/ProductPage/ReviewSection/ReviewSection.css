@@ -1,0 +1,94 @@
+.rv-section {
+  padding: 0;
+  margin-top: 32px;
+}
+
+.rv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.rv-card {
+  background: #fff;
+  border: 1px solid #e8ecf2;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.rv-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.rv-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e8ecf2;
+  flex-shrink: 0;
+}
+
+.rv-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a2232;
+}
+
+.rv-role {
+  font-size: 0.85rem;
+  color: #6b7485;
+  margin-top: 2px;
+}
+
+.rv-quot {
+  font-size: 2rem;
+  line-height: 1;
+  color: #1a2232;
+  font-family: Georgia, serif;
+}
+
+.rv-quote {
+  margin: 6px 0 16px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #2d3748;
+  flex: 1;
+}
+
+.rv-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.rv-stars {
+  color: #f5a623;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.rv-score {
+  font-size: 0.88rem;
+  color: #5a6476;
+}
+
+.rv-score b {
+  color: #1a2232;
+}
+
+@media (max-width: 760px) {
+  .rv-grid {
+    grid-template-columns: 1fr;
+  }
+}

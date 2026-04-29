@@ -1,6 +1,8 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Seo from "../../seo/Seo";
+import AwardSection from "./AwardSection/AwardSection";
+import ReviewSection from "./ReviewSection/ReviewSection";
 import "./ProductPage.css";
 
 type ProductKey = "zwcad" | "zw3d" | "zwcad-mfg";
@@ -134,22 +136,35 @@ const partnerLogos = [
   "emerson"
 ];
 
-const reviewCards = [
+const caseStudies = [
   {
-    name: "Ag Hamzah K.",
-    role: "Senior Draftsman",
-    quote: "ZWCAD's one-time license and Smart Plot makes it a standout AutoCAD alternative for my daily drafting work."
+    name: "Thang Tien Engineering",
+    post: "AEC-MEP | Vietnam",
+    quote: "Delivered 39 major projects worth $122.5M faster and more collaboratively through ZWCAD's efficient multi-team workflow.",
+    img: `${IMG}/lpyeah2025/re1.png`,
+    logo: `${IMG}/lpyeah2025/re_logo1.svg`,
   },
   {
-    name: "Lisa F.",
-    role: "Senior Designer",
-    quote: "Efficient, time saving for handling many drawings; ZWCAD is lightweight and keeps me productive."
+    name: "VIMPO MAKİNE",
+    post: "MFG-Machinery | Turkey",
+    quote: "Boosted R&D efficiency and lowered CAD costs by adopting ZWCAD for faster, more flexible 2D workflows.",
+    img: `${IMG}/lpyeah2025/re3.png`,
+    logo: `${IMG}/lpyeah2025/re_logo3.svg`,
   },
   {
-    name: "Mat K.",
-    role: "Design Consultant",
-    quote: "Cost-effective and user-friendly solution for SMEs; we rely on ZWCAD's perpetual license for daily work."
-  }
+    name: "Steurer GmbH",
+    post: "MFG-Interiors | Italy",
+    quote: "Accelerated design-to-production delivery using ZWCAD's unified 2D/3D drafting tools and precise, workshop-ready outputs.",
+    img: `${IMG}/lpyeah2025/re5.png`,
+    logo: `${IMG}/lpyeah2025/re_logo5.svg`,
+  },
+  {
+    name: "Madro sp. z o.o.",
+    post: "AEC-Architecture | Poland",
+    quote: "Improved bid-to-construction accuracy and reduced waste with ZWCAD's seamless DWG compatibility and streamlined workflows.",
+    img: `${IMG}/lpyeah2025/re6.png`,
+    logo: `${IMG}/lpyeah2025/re_logo6.svg`,
+  },
 ];
 
 const appGridItems = [
@@ -207,7 +222,7 @@ export default function ProductPage() {
     const vid = videoRef.current;
     if (!vid) return;
     vid.load();
-    vid.play().catch(() => {});
+    vid.play().catch(() => { });
   }, [currentFeature.video]);
 
   useEffect(() => {
@@ -397,17 +412,19 @@ export default function ProductPage() {
                 <p className="dea-feature-desc">{currentFeature.desc}</p>
               </div>
               <div className="dea-pc-rt">
-                <video
-                  key={currentFeature.video}
-                  ref={videoRef}
-                  muted
-                  autoPlay
-                  loop
-                  playsInline
-                  className="dea-video"
-                >
-                  <source src={currentFeature.video} type="video/mp4" />
-                </video>
+                <div className="dea-imgbox">
+                  <video
+                    key={currentFeature.video}
+                    ref={videoRef}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    className="dea-video"
+                  >
+                    <source src={currentFeature.video} type="video/mp4" />
+                  </video>
+                </div>
               </div>
             </div>
           </div>
@@ -434,10 +451,14 @@ export default function ProductPage() {
           <p className="zw-sub">ZWCAD delivers outstanding performance in both 2D drafting and 3D navigation.</p>
           <div className="zw-compare-grid">
             <div className="zw-compare-card">
+              <img src={`${IMG}/zwcad/comparison.gif`} alt="Complex 2D Drafting" className="zw-compare-media" />
               <h4>Complex 2D Drafting</h4>
               <strong>1.98x as fast as AutoCAD</strong>
             </div>
             <div className="zw-compare-card dark">
+              <video className="zw-compare-media" muted autoPlay loop playsInline>
+                <source src={`${IMG}/zwcad/df_video.mp4`} type="video/mp4" />
+              </video>
               <h4>Advanced 3D Navigation</h4>
               <strong>3x as fast as AutoCAD</strong>
             </div>
@@ -446,79 +467,144 @@ export default function ProductPage() {
       </section>
 
       <section className="zw-section zw-apps">
-        <div className="container zw-apps-box">
-          <div className="zw-app-grid">
-            {appGridItems.map((item) => (
-              <div key={item.label}>
-                <img src={item.icon} alt={item.label} />
-                <span>{item.label}</span>
+        <div className="dg-main">
+          <div className="dg-inner container">
+            <div className="dg-cont">
+
+              <div className="dg-right">
+                <div className="dg-top">
+                  <h2 className="dg-titles">
+                    Power Up Your CAD with Abundant{" "}
+                    <span className="dg-span">Third-Party Applications</span>
+                  </h2>
+                  <div className="dg-intro">
+                    We offer over 400 third-party applications for a wide range of industries. No matter what industry
+                    you're in, you can always find the right solution to help you work easier, faster, and more
+                    accurately.
+                  </div>
+                  <a href="https://www.zwsoft.com/product/application" className="dg-link" target="_blank" rel="noreferrer">
+                    Explore Our Third-Party Applications
+                  </a>
+                </div>
+                <div className="dg-bottom">
+                  <div className="dg-bottom-text">
+                    <div className="dg-textbox">
+                      Our platform supports rich APIs including LISP, VBA, ZRX, and .NET, enabling developers to
+                      migrate or build applications with ease.
+                    </div>
+                    <a href="https://www.zwsoft.com/support/zwcad-devdoc" className="dg-buttom" target="_blank" rel="noreferrer">
+                      Get Application Development Support
+                    </a>
+                  </div>
+                  <div className="dg-img">
+                    <img src={`${IMG}/zwcad/da48.png`} alt="" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="dg-left">
+                <div className="dg-list">
+                  {appGridItems.map((item) => (
+                    <div key={item.label} className="dg-item">
+                      <div className="dg-icon">
+                        <img src={item.icon} alt="" loading="lazy" />
+                      </div>
+                      <div className="dg-text">
+                        <div className="dg-name">{item.label}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="zw-section di-main">
+        <div className="container di-inner">
+          <div className="di-top">
+            <h2 className="di-titles">
+              They <span className="di-span">Choose</span> Us
+            </h2>
+            <div className="di-synopsis">Trusted by leading companies worldwide</div>
+          </div>
+
+          <div className="di-center">
+            {partnerLogos.map((logo) => (
+              <div key={logo} className="di-logo">
+                <img src={`${IMG}/logo/${logo}`} alt={logo} />
               </div>
             ))}
           </div>
-          <div className="zw-app-copy">
-            <h2>
-              Power Up Your CAD with
-              <br />
-              Abundant <span>Third-Party Applications</span>
-            </h2>
-            <p>
-              We offer over 400 third-party applications for a wide range of industries. You can always find a suitable
-              solution to work easier, faster, and more accurately.
-            </p>
+
+          <div className="di-bottom">
+            <div className="di-marquee-track">
+              {[...caseStudies, ...caseStudies].map((s, i) => (
+                <div key={i} className="dib-item">
+                  <div className="dib-img">
+                    <img src={s.img} alt={s.name} />
+                  </div>
+                  <div className="dib-body">
+                    <div className="dib-quot">"</div>
+                    <div className="dib-intro">{s.quote}</div>
+                    <div className="dib-footer">
+                      <div>
+                        <div className="dib-name">{s.name}</div>
+                        <div className="dib-post">{s.post}</div>
+                      </div>
+                      <img className="dib-logo-img" src={s.logo} alt={s.name} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="di-buttom">
+            <a className="di-more" href="https://www.zwsoft.com/story?product=ZWCAD" target="_blank" rel="noreferrer">
+              Explore More Case Stories
+            </a>
           </div>
         </div>
       </section>
 
-      <section className="zw-section">
-        <div className="container zw-center">
-          <h2 className="zw-title">
-            They <span>Choose</span> Us
-          </h2>
-          <p className="zw-sub">Trusted by leading companies worldwide</p>
-          <div className="zw-logo-row">
-            {partnerLogos.map((logo) => (
-              <img key={logo} src={`${IMG}/logo/${logo}`} alt={logo} />
-            ))}
-          </div>
-          <div className="zw-case-card">
-            <img src={`${IMG}/lpyeah2025/re6.png`} alt="Case study" />
-            <div>
-              <p>Boosted R&D efficiency and lowered CAD costs by adopting ZWCAD for faster, more flexible workflows.</p>
-              <strong>VIMPO MAKINE</strong>
-              <span>MFG-Machinery | Turkey</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AwardSection />
+
+      <ReviewSection />
 
       <section className="zw-section">
         <div className="container">
-          <div className="zw-award">
-            <div>
-              <h2>Lead with top recognition</h2>
-              <p>Named to G2's Best Software Awards, and ranks #1 in G2's Easiest to Use General-Purpose CAD.</p>
+          <div className="dl-inner">
+            <h2 className="dl-titles d-bold">Discover More Products</h2>
+            <div className="dl-cont">
+              <a href="/san-pham/zwcad-mfg" className="dl-item">
+                <div className="dl-img"><img src="/image-zwcad/logo/zwcadmfg" alt="ZWCAD MFG" /></div>
+                <div className="dl-text">
+                  <h3 className="dl-name d-bold">ZWCAD MFG</h3>
+                  <div className="dl-intro">Advanced 2D CAD for Manufacturing</div>
+                </div>
+              </a>
+              <a href="#" className="dl-item">
+                <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD Mobile" /></div>
+                <div className="dl-text">
+                  <h3 className="dl-name d-bold">ZWCAD Mobile</h3>
+                  <div className="dl-intro">Fast, Accurate, Easy-to-Use CAD App</div>
+                </div>
+              </a>
+              <a href="/san-pham/zw3d" className="dl-item">
+                <div className="dl-img"><img src="/image-zwcad/logo/zwc3d" alt="ZW3D" /></div>
+                <div className="dl-text">
+                  <h3 className="dl-name d-bold">ZW3D</h3>
+                  <div className="dl-intro">Affordable All-in-One 3D CAD/CAE/CAM</div>
+                </div>
+              </a>
             </div>
-          </div>
-          <div className="zw-review-grid">
-            {reviewCards.map((r) => (
-              <article key={r.name}>
-                <h4>{r.name}</h4>
-                <small>{r.role}</small>
-                <p>{r.quote}</p>
-                <b>5 out of 5</b>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="zw-section">
-        <div className="container">
-          <h2 className="zw-title zw-center-title">Discover More Products</h2>
-          <div className="zw-product-row">
-            <a href="/san-pham/zwcad-mfg">ZWCAD MFG</a>
-            <a href="#">ZWCAD Mobile</a>
-            <a href="/san-pham/zw3d">ZW3D</a>
+            <div className="dl-textbox">
+              <p>1. Price may vary by country or region.</p>
+              <p>2. All trademarks, logos, and brand names are the property of their respective owners. AutoCAD is a registered trademark of Autodesk, Inc.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -527,10 +613,10 @@ export default function ProductPage() {
         <div className="container">
           <h2>Get started with ZWCAD 2027 Beta now</h2>
           <p>Start sparking creativity and boosting efficiency right away.</p>
-          <div>
+          <div className="zw-cta-btns">
             <a href="/tai-ve/zwcad-trial">Free Trial</a>
             <a href="/lien-he">See Pricing</a>
-            <a href="/lien-he">Contact Sales</a>
+            <a href="/lien-he" className="outline">Contact Sales</a>
           </div>
         </div>
       </section>
