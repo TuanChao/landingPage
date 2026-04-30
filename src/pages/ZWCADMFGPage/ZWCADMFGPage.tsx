@@ -1,100 +1,75 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Seo from "../../seo/Seo";
 import AwardSection from "../ProductPage/AwardSection/AwardSection";
 import ReviewSection from "../ProductPage/ReviewSection/ReviewSection";
+import routesName from "~routes/enum.routes";
 import "./ZWCADMFGPage.css";
 
+const CDN = "https://zwcdn.zwsoft.com/web/images/zwcad_mfg_ov";
 const IMG = "/image-zwcad";
 
-const features = [
+const whyFeatures = [
   {
-    tab: "Drawing Standards",
-    title: "Frame Templates & Title Block",
-    desc: "Frame templates that meet national and international standards. Easily customize file name, designer, date, and more in the title block. Edit frame size and scale with just a few clicks.",
-    img: "https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png",
+    title: "Create standard drawings with an extensive library of standard parts",
+    desc: "Quickly create drawings compliant with national and international standards, including ISO, EN, DIN, ANSI, ASME, PN, IS, JIS and more. From bolts to screws, and rivets to studs, you'll find the right parts for every project.",
+    img: `${IMG}/zwcad/da40.png`,
   },
   {
-    tab: "Power Dimension",
-    title: "Intelligent Auto-Dimensioning",
-    desc: "Power Dimension automatically generates appropriate dimensions by recognizing objects. Create different kinds of dimensions — linear, angular, radial — using just one command.",
-    img: "https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png",
+    title: "Speed up your design process with intelligent tools",
+    desc: "Automate and accelerate your design workflow with a rich set of drawing tools, intelligent annotation tools, an extensive symbol library and automatic BOMs associated with balloons and part properties.",
+    img: `${IMG}/zwcad/da37.png`,
   },
   {
-    tab: "Symbols & Annotations",
-    title: "Complete Mechanical Symbol Library",
-    desc: "A full blend of symbol annotations for mechanical design: tolerance zones, unequal tolerances, datum identifiers, geometric tolerances, and surface textures — all in one place.",
-    img: "https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png",
+    title: "Unify design standards across your team with customizations",
+    desc: "Build your own templates with customizable border frames, part library, dimension styles, fonts, technical requirements, and more. Consistent standards across your team ensure accuracy and alignment from start to finish.",
+    img: `${IMG}/zwcad/da38.png`,
   },
   {
-    tab: "BOM & Balloons",
-    title: "Automated BOM Generation",
-    desc: "Quickly create balloons, edit related attributes, and align them automatically. The software generates BOMs linked to balloons and part attributes — double-click to update after any modification.",
-    img: "https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png",
-  },
-  {
-    tab: "Part Library",
-    title: "Rich Standard Parts Library",
-    desc: "Find a wide range of standard parts including fasteners, piping fittings, and structural members. The advanced library covers ISO, EN, DIN, ANSI, JIS and more. Import custom parts in simple steps.",
-    img: "https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png",
+    title: "Manage data and enhance collaboration through PLM integration",
+    desc: "Seamlessly integrate with popular PLM systems, such as Teamcenter® and Windchill® to manage design data more efficiently and strengthen team collaboration.",
+    img: `${IMG}/zwcad/da41.png`,
   },
 ];
 
-const highlights = [
-  {
-    icon: "📐",
-    title: "Multi-Standard Compliance",
-    desc: "Templates and part libraries that meet ISO, EN, DIN, ANSI, JIS and many national standards out of the box.",
-  },
-  {
-    icon: "⚡",
-    title: "One-Command Dimensioning",
-    desc: "Power Dimension recognizes object types automatically and generates the right dimension with a single command.",
-  },
-  {
-    icon: "📋",
-    title: "Auto BOM Linking",
-    desc: "Balloons and BOM tables stay linked — any part attribute change updates the BOM automatically.",
-  },
-  {
-    icon: "🔩",
-    title: "Massive Part Library",
-    desc: "Thousands of standard fasteners, fittings, and structural members ready to drag-and-drop into your drawing.",
-  },
+const timingRows = [
+  { task: "Part 1: Set up frame",           mfg: "00:34", zwcad: "01:44" },
+  { task: "Part 2: Modify design",           mfg: "02:22", zwcad: "03:18" },
+  { task: "Part 3: Create part drawing",     mfg: "03:25", zwcad: "05:44" },
+  { task: "Part 4: Create assembly drawing", mfg: "01:50", zwcad: "05:58" },
 ];
 
-const caseStudies = [
+const testimonials = [
   {
-    name: "VIMPO MAKİNE",
-    post: "MFG-Machinery | Turkey",
-    quote: "Boosted R&D efficiency and lowered CAD costs by adopting ZWCAD MFG for faster, standards-compliant 2D mechanical workflows.",
+    name: "Gates",
+    post: "MFG-Automotive | China",
+    quote: "It is highly compatible with popular CAD software and runs smoothly even when you open multiple windows. Its part library is very huge and practical. You can directly use the parts in the library without having to draw them from scratch.",
     img: `${IMG}/lpyeah2025/re3.png`,
     logo: `${IMG}/lpyeah2025/re_logo3.svg`,
   },
   {
-    name: "Steurer GmbH",
-    post: "MFG-Interiors | Italy",
-    quote: "Accelerated design-to-production delivery using ZWCAD MFG's intelligent dimensioning and workshop-ready drawing outputs.",
+    name: "Linglong Tire",
+    post: "MFG-Automotive | China",
+    quote: "It boosts our design efficiency while cutting down on the expenses of software procurement and implementation.",
     img: `${IMG}/lpyeah2025/re5.png`,
     logo: `${IMG}/lpyeah2025/re_logo5.svg`,
   },
   {
-    name: "Thang Tien Engineering",
-    post: "AEC-MEP | Vietnam",
-    quote: "Delivered major projects faster with ZWCAD MFG's auto BOM generation and multi-standard frame templates.",
+    name: "Wolong",
+    post: "MFG-Others | China",
+    quote: "It offers some unique functions that enhance our workflow, such as intelligent annotation, super card and detail view. The BOMs generated by it can seamlessly interact with PDM and ERP systems.",
     img: `${IMG}/lpyeah2025/re1.png`,
     logo: `${IMG}/lpyeah2025/re_logo1.svg`,
   },
-  {
-    name: "Madro sp. z o.o.",
-    post: "MFG-Architecture | Poland",
-    quote: "Reduced rework with ZWCAD MFG's DWG compatibility and streamlined mechanical annotation workflows.",
-    img: `${IMG}/lpyeah2025/re6.png`,
-    logo: `${IMG}/lpyeah2025/re_logo6.svg`,
-  },
+];
+
+const relatedProducts = [
+  { to: routesName.SAN_PHAM_ZWCAD, logo: `${IMG}/logo/zwcadmb`, name: "ZWCAD",     sub: "DWG-Compatible CAD for Better Productivity" },
+  { to: routesName.SAN_PHAM_ZW3D,  logo: `${IMG}/logo/zwc3d`,   name: "ZW3D",      sub: "Affordable All-in-One 3D CAD/CAE/CAM" },
 ];
 
 export default function ZWCADMFGPage() {
-  const [activeFeature, setActiveFeature] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   return (
     <>
@@ -104,133 +79,159 @@ export default function ZWCADMFGPage() {
         keywords="zwcad mfg, manufacturing cad, mechanical drawing, bom, part library"
       />
 
-      <main className="mfg-page">
+      <div className="mfg-page">
 
-        {/* ── Hero ── */}
-        <div className="mfg-hero">
-          <div className="container">
-            <div className="mfg-hero__cont">
-              <div className="mfg-hero__left">
-                <div className="mfg-hero__eyebrow">ZWCAD MFG</div>
-                <h1 className="mfg-hero__title">
-                  Advanced 2D CAD for Manufacturing Professionals
-                </h1>
-                <p className="mfg-hero__sub">
-                  Built on the ZWCAD platform — faster standard designs, smarter annotations, and an automated BOM workflow for the entire manufacturing process.
-                </p>
-                <div className="mfg-hero__btns">
-                  <a className="mfg-btn-primary" href="/tai-ve">Start 30-day Free Trial</a>
-                  <a className="mfg-btn-outline" href="/lien-he">Contact Sales</a>
-                </div>
+        {/* ── Banner / Hero ── */}
+        <div className="mfg-banner">
+          <div className="mfg-banner__overlay" />
+          <div className="container mfg-banner__inner">
+            <div className="mfg-banner__left">
+              <div className="mfg-banner__tag">ZWCAD MFG</div>
+              <h1 className="mfg-banner__title">
+                Advanced 2D CAD<br />for Manufacturing
+              </h1>
+              <p className="mfg-banner__sub">
+                From $1,699 — you own it forever. Perpetual and network licenses available.
+              </p>
+              <div className="mfg-banner__btns">
+                <Link className="mfg-btn-fill" to={routesName.TAI_VE}>Start 30-day Free Trial</Link>
+                <Link className="mfg-btn-line" to={routesName.LIEN_HE}>Buy Now</Link>
               </div>
-              <div className="mfg-hero__right">
-                <div className="mfg-hero__imgbox">
-                  <img
-                    src="https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png"
-                    alt="ZWCAD MFG"
-                    className="mfg-hero__logo"
-                  />
-                </div>
+            </div>
+            <div className="mfg-banner__right">
+              <div className="mfg-banner__video-wrap" onClick={() => setVideoOpen(true)}>
+                <img
+                  src={`${CDN}/da29.png`}
+                  alt="Watch ZWCAD MFG Overview"
+                  className="mfg-banner__video-thumb"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = `${IMG}/zwcad/comparison.gif`; }}
+                />
+                <button className="mfg-play-btn" aria-label="Play video">
+                  <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* ── Wistia video modal ── */}
+        {videoOpen && (
+          <div className="mfg-modal" onClick={() => setVideoOpen(false)}>
+            <div className="mfg-modal__inner" onClick={(e) => e.stopPropagation()}>
+              <button className="mfg-modal__close" onClick={() => setVideoOpen(false)}>×</button>
+              <iframe
+                src="https://fast.wistia.net/embed/iframe/pmom8zvt2r?autoPlay=1"
+                allowFullScreen
+                className="mfg-modal__iframe"
+                title="ZWCAD MFG Overview"
+              />
+            </div>
+          </div>
+        )}
 
         {/* ── What's ZWCAD MFG ── */}
-        <div className="mfg-what">
-          <div className="container">
-            <div className="mfg-what__cont">
-              <div className="mfg-what__left">
-                <div className="mfg-what__imgbox">
-                  <img
-                    src="https://statics.zwsoft.com/upload/en/20250414/64beab377ae26f3ce4e89c31e84f8598.png"
-                    alt="ZWCAD MFG overview"
-                  />
-                </div>
-              </div>
-              <div className="mfg-what__right">
-                <div className="db-tip d-bold">What's ZWCAD MFG</div>
-                <h2 className="mfg-what__title">
-                  2D CAD built for <span className="mfg-accent">mechanical design</span> and manufacturing
-                </h2>
-                <div className="mfg-what__body">
-                  <p>
-                    ZWCAD MFG is an advanced CAD solution purpose-built for manufacturing professionals. Built on the proven ZWCAD platform, it extends standard 2D drafting with <strong>mechanical-specific tools</strong> — frame templates, intelligent dimensioning, symbol libraries, and automated BOM generation.
-                  </p>
-                  <p>
-                    Whether you're creating detailed part drawings or managing complex assembly documents, ZWCAD MFG helps you <strong>work faster</strong> and stay <strong>standards-compliant</strong> from day one.
-                  </p>
-                </div>
-              </div>
+        <div className="mfg-ctn1">
+          <div className="container mfg-ctn1__inner">
+            <div className="mfg-ctn1__img">
+              <img src={`${IMG}/zwcad/da45.png`} alt="ZWCAD MFG overview" />
             </div>
-          </div>
-        </div>
-
-        {/* ── Key Features ── */}
-        <div className="mfg-features">
-          <div className="container">
-            <div className="mfg-features__top">
-              <h2 className="mfg-section-title">
-                Powerful Tools for <span className="mfg-accent">Every Stage</span> of Mechanical Design
+            <div className="mfg-ctn1__text">
+              <div className="mfg-s-tag">What's ZWCAD MFG</div>
+              <h2 className="mfg-s-title">
+                Advanced CAD Solution to Enhance Overall<br /><span className="mfg-accent">Manufacturing Efficiency</span>
               </h2>
-              <p className="mfg-section-sub">
-                From drawing setup to final BOM export — ZWCAD MFG covers the entire mechanical drafting workflow.
+              <p className="mfg-s-desc">
+                Built on the powerful ZWCAD platform, it enables users to create standardized, high-quality designs easier and faster by offering an extensive library of standard parts, intelligent drawing tools, and other productivity-enhancing features.
               </p>
-            </div>
-
-            <div className="mfg-tabs">
-              {features.map((f, i) => (
-                <button
-                  key={f.tab}
-                  className={`mfg-tab${activeFeature === i ? " active" : ""}`}
-                  onClick={() => setActiveFeature(i)}
-                >
-                  {f.tab}
-                </button>
-              ))}
-            </div>
-
-            <div className="mfg-panel">
-              <div className="mfg-panel__img">
-                <img src={features[activeFeature].img} alt={features[activeFeature].title} />
-              </div>
-              <div className="mfg-panel__body">
-                <h3 className="mfg-panel__title">{features[activeFeature].title}</h3>
-                <p className="mfg-panel__desc">{features[activeFeature].desc}</p>
-                <a className="mfg-panel__link" href="/tai-ve">Try it free →</a>
+              <p className="mfg-s-desc">
+                Moreover, it can be seamlessly integrated into PLM systems to achieve efficient management throughout the product lifecycle.
+              </p>
+              <div className="mfg-ctn1__btns">
+                <Link className="mfg-btn-fill" to={routesName.TAI_VE}>Start Free Trial</Link>
+                <Link className="mfg-btn-ghost" to={routesName.LIEN_HE}>See Pricing →</Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ── Highlights ── */}
-        <div className="mfg-highlights">
+        {/* ── Why ZWCAD MFG (4 feature blocks) ── */}
+        <div className="mfg-ctn4">
           <div className="container">
-            <h2 className="mfg-section-title mfg-center">Why ZWCAD MFG?</h2>
-            <div className="mfg-highlights__grid">
-              {highlights.map((h) => (
-                <div key={h.title} className="mfg-highlight-card">
-                  <div className="mfg-highlight-icon">{h.icon}</div>
-                  <h3 className="mfg-highlight-title">{h.title}</h3>
-                  <p className="mfg-highlight-desc">{h.desc}</p>
+            <h2 className="mfg-s-title mfg-center">Why ZWCAD MFG</h2>
+            <div className="mfg-altfeats">
+              {whyFeatures.map((f, i) => (
+                <div key={f.title} className={`mfg-altfeat${i % 2 !== 0 ? " mfg-altfeat--rev" : ""}`}>
+                  <div className="mfg-altfeat__img">
+                    <img src={f.img} alt={f.title} />
+                  </div>
+                  <div className="mfg-altfeat__body">
+                    <h3 className="mfg-altfeat__title">{f.title}</h3>
+                    <p className="mfg-altfeat__desc">{f.desc}</p>
+                    <Link className="mfg-altfeat__link" to={routesName.TAI_VE}>Learn more →</Link>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ── They Choose Us ── */}
+        {/* ── Benefits / Comparison (bg2) ── */}
+        <div className="mfg-ctn5">
+          <div className="container mfg-ctn5__inner">
+            <div className="mfg-ctn5__left">
+              <div className="mfg-s-tag" style={{ background: "rgba(255,255,255,.15)", border: "1px solid rgba(255,255,255,.4)" }}>Benefits of Using ZWCAD MFG</div>
+              <h2 className="mfg-s-title mfg-white">
+                Boost Productivity by <span style={{ color: "#7dd87d" }}>51%</span>
+              </h2>
+              <p className="mfg-s-desc mfg-white-sub">
+                We compared ZWCAD and ZWCAD MFG using a hand pump as an example — performing common design tasks from drafting to detailing. ZWCAD MFG significantly boosted productivity by 51% compared to ZWCAD.
+              </p>
+              <div className="mfg-compare-table">
+                <div className="mfg-compare-head">
+                  <span>Project Task</span>
+                  <span className="mfg-col-mfg">ZWCAD MFG</span>
+                  <span>ZWCAD</span>
+                </div>
+                {timingRows.map((r) => (
+                  <div key={r.task} className="mfg-compare-row">
+                    <span>{r.task}</span>
+                    <span className="mfg-col-mfg">{r.mfg}</span>
+                    <span>{r.zwcad}</span>
+                  </div>
+                ))}
+                <div className="mfg-compare-row mfg-compare-row--total">
+                  <span><strong>Total Time</strong></span>
+                  <span className="mfg-col-mfg"><strong>08:11</strong></span>
+                  <span><strong>16:44</strong></span>
+                </div>
+              </div>
+              <Link className="mfg-btn-fill mfg-ctn5__cta" to={routesName.LIEN_HE}>Get a Quote</Link>
+            </div>
+            <div className="mfg-ctn5__right">
+              <div className="mfg-ctn5__imggrid">
+                {[da46, da47, da48, da52].map((src, i) => (
+                  <div key={i} className="mfg-ctn5__imgitem">
+                    <img src={src} alt="ZWCAD MFG feature" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Testimonials ── */}
         <div className="mfg-cases">
           <div className="container">
-            <h2 className="mfg-section-title mfg-center">They Choose ZWCAD MFG</h2>
+            <h2 className="mfg-s-title mfg-center">They Choose Us</h2>
+            <p className="mfg-s-desc mfg-center" style={{ maxWidth: 560, margin: "0 auto 40px" }}>
+              Trusted by leading manufacturing companies worldwide
+            </p>
           </div>
           <div className="di-marquee">
             <div className="di-marquee-track">
-              {[...caseStudies, ...caseStudies].map((s, i) => (
+              {[...testimonials, ...testimonials].map((s, i) => (
                 <div key={i} className="dib-item">
-                  <div className="dib-img">
-                    <img src={s.img} alt={s.name} />
-                  </div>
+                  <div className="dib-img"><img src={s.img} alt={s.name} /></div>
                   <div className="dib-body">
                     <div className="dib-quot">"</div>
                     <div className="dib-intro">{s.quote}</div>
@@ -248,62 +249,51 @@ export default function ZWCADMFGPage() {
           </div>
         </div>
 
-        {/* ── Awards ── */}
+        {/* ── Awards & Reviews ── */}
         <AwardSection />
-
-        {/* ── Reviews ── */}
         <ReviewSection />
 
-        {/* ── Discover More ── */}
-        <section className="mfg-section">
-          <div className="container">
-            <div className="dl-inner">
-              <h2 className="dl-titles d-bold">Discover More Products</h2>
-              <div className="dl-cont">
-                <a href="/san-pham/zwcad" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZWCAD</h3>
-                    <div className="dl-intro">DWG-Compatible CAD for Better Productivity</div>
-                  </div>
-                </a>
-                <a href="/san-pham/zw3d" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwc3d" alt="ZW3D" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZW3D</h3>
-                    <div className="dl-intro">Affordable All-in-One 3D CAD/CAE/CAM</div>
-                  </div>
-                </a>
-                <a href="#" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD Mobile" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZWCAD Mobile</h3>
-                    <div className="dl-intro">Fast, Accurate, Easy-to-Use CAD App</div>
-                  </div>
-                </a>
-              </div>
-              <div className="dl-textbox">
-                <p>1. Price may vary by country or region.</p>
-                <p>2. All trademarks, logos, and brand names are the property of their respective owners.</p>
-              </div>
+        {/* ── CTA (bg3) ── */}
+        <div className="mfg-ctn7">
+          <div className="mfg-ctn7__overlay" />
+          <div className="container mfg-ctn7__inner">
+            <div className="mfg-ctn7__left">
+              <h3 className="mfg-ctn7__title">Get started with ZWCAD MFG today</h3>
+              <p className="mfg-ctn7__sub">Revolutionize the way you create — enjoy a 30-day free trial.</p>
+            </div>
+            <div className="mfg-ctn7__right">
+              <Link className="mfg-btn-fill" to={routesName.TAI_VE}>Start 30-day Free Trial</Link>
+              <Link className="mfg-btn-line" to={routesName.LIEN_HE}>Buy Now</Link>
+              <Link className="mfg-btn-line" to={routesName.LIEN_HE}>Contact Sales</Link>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* ── CTA ── */}
-        <section className="zw-bottom-cta">
+        {/* ── Related products ── */}
+        <div className="mfg-ctn8">
           <div className="container">
-            <h2>Get started with ZWCAD MFG today</h2>
-            <p>Revolutionize the way you create — enjoy a 30-day free trial.</p>
-            <div className="zw-cta-btns">
-              <a href="/tai-ve">Free Trial</a>
-              <a href="/lien-he">See Pricing</a>
-              <a href="/lien-he" className="outline">Contact Sales</a>
+            <h2 className="mfg-s-title mfg-center">Explore More Products</h2>
+            <div className="mfg-related">
+              {relatedProducts.map((p) => (
+                <Link key={p.name} to={p.to} className="mfg-related__card">
+                  <div className="mfg-related__logo">
+                    <img src={p.logo} alt={p.name} />
+                  </div>
+                  <h3 className="mfg-related__name">{p.name}</h3>
+                  <p className="mfg-related__sub">{p.sub}</p>
+                  <span className="mfg-related__link">Learn more →</span>
+                </Link>
+              ))}
             </div>
           </div>
-        </section>
+        </div>
 
-      </main>
+      </div>
     </>
   );
 }
+
+const da46 = "/image-zwcad/zwcad/da46.png";
+const da47 = "/image-zwcad/zwcad/da47.png";
+const da48 = "/image-zwcad/zwcad/da48.png";
+const da52 = "/image-zwcad/zwcad/da52.png";

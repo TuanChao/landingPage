@@ -1,279 +1,345 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import Seo from "../../seo/Seo";
 import AwardSection from "../ProductPage/AwardSection/AwardSection";
 import ReviewSection from "../ProductPage/ReviewSection/ReviewSection";
+import routesName from "~routes/enum.routes";
 import "./ZW3DPage.css";
 
-const IMG = "/image-zwcad";
+const Z = "/zw3d";
 
-const capabilities = [
-  { icon: `${IMG}/zw3d/cap1.png`, label: "Part Design" },
-  { icon: `${IMG}/zw3d/cap2.png`, label: "Assembly Design" },
-  { icon: `${IMG}/zw3d/cap3.png`, label: "2D Drawing" },
-  { icon: `${IMG}/zw3d/cap4.png`, label: "Sheet Metal" },
-  { icon: `${IMG}/zw3d/cap5.png`, label: "Mold Design" },
-  { icon: `${IMG}/zw3d/cap6.png`, label: "Simulation (CAE)" },
-  { icon: `${IMG}/zw3d/cap7.png`, label: "CAM Machining" },
-  { icon: `${IMG}/zw3d/cap8.png`, label: "Collaboration" },
-];
-
-const features = [
+const featureModules = [
   {
     tab: "Part Design",
-    title: "Powerful Part Design",
-    desc: "Create complex solid and surface models with a full set of modeling tools. History-based and direct editing modes give you full control over geometry.",
-    video: "https://statics.zwsoft.com/static/style2020/mp4/3d_ov_2025/model.mp4",
+    title: "Comprehensive Part Design",
+    desc: "Mixed modeling combining parametric and direct editing. Surface modeling, sheet metal, structural design, harness, ECAD/MCAD, piping, mold, and electrode design — all in one environment.",
+    img: `${Z}/3d_ov6.png`,
   },
   {
     tab: "Assembly",
     title: "Efficient Assembly Design",
-    desc: "Manage large assemblies with ease using top-down and bottom-up design approaches. Intelligent interference detection keeps your design accurate.",
-    video: "https://statics.zwsoft.com/static/style2020/mp4/3d_ov_2025/model.mp4",
+    desc: "Handle up to 20,000 components with advanced display engines. Flexible assembly with automated constraint updates, smart fastener automation, standard parts library, and interference check.",
+    img: `${Z}/3d_ov7.png`,
   },
   {
-    tab: "CAE Simulation",
+    tab: "2D Drawing",
+    title: "Sync 2D Drawings with 3D Models",
+    desc: "Real-time updates between 3D and 2D. PMI support, annotation and symbol libraries, batch output, auto-drafting, and advanced projection for rapid drawing generation.",
+    img: `${Z}/drawing.png`,
+  },
+  {
+    tab: "Simulation (CAE)",
     title: "Integrated Structural Simulation",
-    desc: "Run FEA structural analysis directly inside ZW3D without exporting. Validate your designs early and reduce costly physical prototyping.",
-    video: "https://statics.zwsoft.com/static/style2020/mp4/3d_ov_2025/model.mp4",
+    desc: "Unified working environment between design and simulation. Consistent data continuity, comprehensive tools for structural, vibration, heat transfer, and fatigue analysis. Supports 20+ file formats.",
+    img: `${Z}/base-plate-CAE-color.png`,
   },
   {
-    tab: "CAM Machining",
+    tab: "CAM",
     title: "Full CAM for CNC Machining",
-    desc: "Generate efficient toolpaths for 2.5-axis to 5-axis machining. Simulate material removal and post-process directly to your CNC machine.",
-    video: "https://statics.zwsoft.com/static/style2020/mp4/3d_ov_2025/model.mp4",
+    desc: "2–5 axis machining strategies, VoluMill™ CAM add-on with 5× efficiency, post-processing for CNC compatibility, and machining verification & simulation.",
+    img: `${Z}/middle-panel-cam.png`,
+  },
+  {
+    tab: "Collaboration",
+    title: "Seamless Team Collaboration",
+    desc: "Fully embedded collaboration with web-based access, shared workspaces, component reuse, version management, threaded comments, trackable approval history, and real-time data sync.",
+    img: `${Z}/3d_ov17.png`,
   },
 ];
 
 const whyItems = [
   {
-    icon: "💰",
-    title: "Affordable Perpetual License",
-    desc: "Own ZW3D forever from $3,000 with flexible upgrade options — no subscription lock-in.",
+    title: "Lower Investment with Increased Value",
+    desc: "Perpetual license — one-time purchase with full ownership, no recurring subscription. Competitive pricing at a fraction of premium competitors' costs, with flexible upgrade policy and no penalty fees.",
+    img: `${Z}/3d_ov11.png`,
+    points: ["Perpetual license, own it forever", "From $3,000 with 1-year maintenance", "Flexible upgrade, no penalty fees", "Offline desktop access, faster performance"],
   },
   {
-    icon: "🔗",
-    title: "High Compatibility",
-    desc: "Open and save STEP, IGES, Parasolid, CATIA, NX, SolidWorks, and 30+ formats natively.",
+    title: "Seamlessly Integrate Your Legacy Data",
+    desc: "25+ import/export formats with accurate conversion retaining attributes, display states, and PMI. IPX modeling history, quick direct editing, and rapid data conversion — 500MB .step files in 80 seconds.",
+    img: `${Z}/3d_ov12.png`,
+    points: ["25+ formats: STEP, IGES, CATIA, NX, SolidWorks, JT...", "Accurate conversion retaining PMI & display states", "Quick direct editing on native and imported geometry", "500MB .step imported in 80 seconds"],
   },
   {
-    icon: "⚡",
-    title: "Fast on Low-End Hardware",
-    desc: "Optimized kernel delivers smooth performance even on entry-level workstations.",
+    title: "Technical Expertise to Empower Your R&D",
+    desc: "Establish design standards and parametric design systems enabling rapid iterations. Purpose-built for general machinery design with industry-specific modules.",
+    img: `${Z}/3d_ov13.png`,
+    points: ["Design standards & process automation", "Parametric system for rapid design iterations", "Modules for machinery, mold, sheet metal, piping", "Active support from ZWSOFT engineering team"],
   },
-  {
-    icon: "📐",
-    title: "Easy to Learn",
-    desc: "Intuitive UI with minimal learning curve — switch from other CAD tools in days, not months.",
-  },
+];
+
+const partnerLogos = [
+  "alcan-lg", "baowu-lg", "bridgestone-lg", "hyundai-lg", "johnson-lg",
+  "mitsubishi-lg", "smltc-lg", "sony-lg", "taiyoyuden-lg", "yamaha-lg",
 ];
 
 const caseStudies = [
   {
-    name: "Steurer GmbH",
-    post: "MFG-Interiors | Italy",
-    quote: "Accelerated design-to-production delivery using ZW3D's unified 2D/3D drafting tools and precise, workshop-ready outputs.",
-    img: `${IMG}/lpyeah2025/re5.png`,
-    logo: `${IMG}/lpyeah2025/re_logo5.svg`,
+    name: "NEXT Robotics",
+    post: "MFG-Machinery | Thailand",
+    quote: "Reduced software costs by 65% and accelerated design by 40%, reaching 300% faster performance in key operations with ZW3D's all-in-one platform.",
+    img: `${Z}/re2.png`,
+    logo: `${Z}/re_logo2.svg`,
   },
   {
-    name: "VIMPO MAKİNE",
-    post: "MFG-Machinery | Turkey",
-    quote: "Boosted R&D efficiency and lowered CAD costs by adopting ZW3D for faster, more flexible 3D workflows.",
-    img: `${IMG}/lpyeah2025/re3.png`,
-    logo: `${IMG}/lpyeah2025/re_logo3.svg`,
+    name: "Huynh Duc MFG",
+    post: "MFG-Precision Engineering | Vietnam",
+    quote: "Cut design cycles from weeks to days using ZW3D's fully integrated CAD/CAM environment.",
+    img: `${Z}/re4.png`,
+    logo: `${Z}/re_logo4.svg`,
   },
   {
-    name: "Madro sp. z o.o.",
-    post: "MFG-Architecture | Poland",
-    quote: "Improved design accuracy and reduced rework with ZW3D's seamless data compatibility and streamlined 3D workflows.",
-    img: `${IMG}/lpyeah2025/re6.png`,
-    logo: `${IMG}/lpyeah2025/re_logo6.svg`,
+    name: "Welltec",
+    post: "MFG-Machinery | China",
+    quote: "Completed all CAD/CAE/CAM designs for injection molding machines in just 1.5 months and delivered the final product within four months, greatly enhancing productivity and product quality.",
+    img: `${Z}/re2.png`,
+    logo: `${Z}/re_logo2.svg`,
   },
   {
-    name: "Thang Tien Engineering",
-    post: "AEC-MEP | Vietnam",
-    quote: "Delivered complex projects faster using ZW3D's powerful assembly and drawing tools for multi-team collaboration.",
-    img: `${IMG}/lpyeah2025/re1.png`,
-    logo: `${IMG}/lpyeah2025/re_logo1.svg`,
+    name: "APEX",
+    post: "Other MFG Industries | Malaysia",
+    quote: "ZW3D is fully integrated into our steel furniture designs. With about 90% of our R&D designs created in ZW3D, it has streamlined our workflow and efficiency.",
+    img: `${Z}/re4.png`,
+    logo: `${Z}/re_logo4.svg`,
   },
 ];
 
 export default function ZW3DPage() {
   const [activeFeature, setActiveFeature] = useState(0);
+  const f = featureModules[activeFeature];
+
+  const [diagExploded, setDiagExploded] = useState(false);
+  const [diagReturning, setDiagReturning] = useState(false);
+  const [diagScale, setDiagScale] = useState(1);
+  const scaleBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (scaleBoxRef.current) setDiagScale(scaleBoxRef.current.offsetWidth / 728);
+    };
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, []);
 
   return (
     <>
       <Seo
-        title="ZW3D - Affordable All-in-One 3D CAD/CAE/CAM Software"
-        description="ZW3D provides a unified CAx solution for the machinery industry, integrating CAD/CAE/CAM workflows and reducing costs with flexible licensing."
-        keywords="zw3d, 3d cad software, cae, cam, machinery design"
+        title="ZW3D - Unify Design, Simulation, and Manufacturing"
+        description="ZW3D is an affordable all-in-one 3D CAD/CAE/CAM platform that unifies design, simulation, and manufacturing. From $3,000, own it forever."
+        keywords="zw3d, 3d cad software, cae, cam, machinery design, perpetual license"
       />
 
-      <main className="z3-page">
+      <div className="z3-page">
 
         {/* ── Hero ── */}
-        <div className="da-main">
-          <div className="da-inner container">
-            <div className="da-cont">
-              <div className="da-left">
-                <h1 className="da-titles d-bold">
-                  ZW3D — Unify Design, Simulation, and Manufacturing to Improve Productivity
-                </h1>
-                <div className="da-intro">
-                  <span className="da-span d-bold">From $3,000</span>, own it forever with 1-year maintenance.
-                </div>
-                <div className="da-linkbox">
-                  <a className="da-link d-bold" href="/tai-ve">Start 30-day Free Trial</a>
-                  <a className="da-link da-link-outline d-bold" href="/lien-he">See Pricing</a>
-                </div>
+        <div className="z3-hero">
+          <div className="container z3-hero__inner">
+            <div className="z3-hero__left">
+              <div className="z3-hero__tag">ZW3D 2026</div>
+              <h1 className="z3-hero__title">
+                Unify Design, Simulation,<br />and Manufacturing
+              </h1>
+              <p className="z3-hero__sub">
+                From <strong>$3,000</strong> — own it forever with 1-year maintenance. Perpetual license, no recurring subscription.
+              </p>
+              <div className="z3-hero__btns">
+                <Link className="z3-btn-fill" to={routesName.TAI_VE}>Start 30-day Free Trial</Link>
+                <Link className="z3-btn-line" to={routesName.LIEN_HE}>See Pricing</Link>
               </div>
-              <div className="da-right">
-                <div className="da-box">
-                  <div className="da-img">
-                    <img src="https://statics.zwsoft.com/static/style2020/images/3d_ov_2025/3d_ov20.png" alt="ZW3D" />
-                  </div>
-                </div>
-              </div>
+            </div>
+            <div className="z3-hero__right">
+              <img src={`${Z}/3d_ov20.png`} alt="ZW3D 3D CAD" className="z3-hero__img" />
             </div>
           </div>
         </div>
 
         {/* ── What's ZW3D ── */}
-        <div className="db-main">
-          <div className="db-inner container">
-            <div className="db-cont">
-              <div className="db-right">
-                <div className="db-tip d-bold">What's ZW3D</div>
-                <h2 className="db-titles d-bold">
-                  Agile <span className="db-span">3D CAD</span> built for professional engineers
-                </h2>
-                <div className="db-textbox">
-                  <p>
-                    With industry-standard 3D CAD capabilities, ZW3D offers an affordable solution with a <strong>perpetual license</strong> and <strong>flexible upgrade options.</strong> Its <strong>high compatibility</strong> ensures smooth data integration and seamless use of legacy files.
-                  </p>
-                  <p>
-                    Thanks to its intuitive user interface, <strong>transitioning is easy,</strong> and <strong>the learning curve is minimal.</strong> Additionally, ZW3D provides <strong>stable performance</strong> and <strong>fast operation,</strong> even on <strong>low-end workstations.</strong>
-                  </p>
-                </div>
-              </div>
-              <div className="db-left">
-                <div className="db-imgbox">
-                  <div className="db-img">
-                    <img src="https://statics.zwsoft.com/static/style2020/images/3d_ov_2025/3d_ov2.png" alt="ZW3D design" />
-                  </div>
-                  <div className="db-gif">
-                    <video
-                      src="https://statics.zwsoft.com/static/style2020/mp4/3d_ov_2025/model.mp4"
-                      muted autoPlay loop playsInline
-                    />
-                  </div>
-                </div>
-              </div>
+        <div className="z3-what">
+          <div className="container z3-what__inner">
+            <div className="z3-what__imgbox">
+              <div className="z3-what__img"><img src={`${Z}/3d_ov2.png`} alt="ZW3D" /></div>
+              <div className="z3-what__gif"><video src={`${Z}/model.mp4`} muted autoPlay loop playsInline /></div>
+            </div>
+            <div className="z3-what__text">
+              <div className="z3-s-tag">What's ZW3D</div>
+              <h2 className="z3-s-title">
+                Agile <span className="z3-accent">3D CAD</span> built for professional engineers
+              </h2>
+              <p className="z3-s-desc">
+                With industry-standard 3D CAD capabilities, ZW3D offers an affordable solution with a <strong>perpetual license</strong> and <strong>flexible upgrade options.</strong> Its <strong>high compatibility</strong> ensures smooth data integration and seamless use of legacy files.
+              </p>
+              <p className="z3-s-desc">
+                Thanks to its intuitive user interface, <strong>transitioning is easy,</strong> and <strong>the learning curve is minimal.</strong> Additionally, ZW3D provides <strong>stable performance</strong> and <strong>fast operation,</strong> even on <strong>low-end workstations.</strong>
+              </p>
+              <Link className="z3-btn-ghost" to={routesName.TAI_VE}>Try it free →</Link>
             </div>
           </div>
         </div>
 
         {/* ── All-in-One CAx ── */}
-        <div className="dc-main">
-          <div className="dc-inner container">
-            <div className="dc-top">
-              <div className="dc-left">
-                <h2 className="dc-titles d-bold">
-                  <span className="dc-span">All-in-One CAx</span> Solution for the entire product lifecycle
-                </h2>
-                <div className="dc-intro">
-                  The integrated 3D CAD+CAE/CAM/Collaboration solution that takes you through the entire product development journey from conception to production.
+        <div className="z3-cax-new">
+          <div className="container z3-cax-new__inner">
+            <div className="z3-cax-new__left">
+              <h2 className="z3-cax-title">
+                <span className="z3-accent">All-in-One CAx</span> Solution for the entire product lifecycle
+              </h2>
+              <p className="z3-cax-intro">
+                The integrated 3D CAD+CAE/CAM/Collaboration solution that can take you through the entire product development journey from conception to production.
+              </p>
+            </div>
+            <div
+              className={`z3-cax-new__right dc-right${diagExploded ? " is-visible" : ""}${diagReturning && !diagExploded ? " mouseenter" : ""}`}
+              onMouseEnter={() => { setDiagExploded(true); setDiagReturning(false); }}
+              onMouseLeave={() => { setDiagExploded(false); setDiagReturning(true); }}
+            >
+              <div className="z3-cax-scale-box" ref={scaleBoxRef}>
+                <div className="z3-cax-scale" style={{ transform: `scale(${diagScale})` }}>
+
+                  <div className="dca-one dca-special">
+                    <div className="dca-img"><img src={`${Z}/drawing.png`} alt="" /></div>
+                    <div className="dca-text"><span>• 2D Drawing</span></div>
+                  </div>
+
+                  <div className="dca-one dca-one1">
+                    <div className="dca-img"><img src={`${Z}/bottom-gear.png`} alt="" /></div>
+                    <div className="dca-text"><span>• Part Design</span></div>
+                    <div className="dca-text dca-text2"><span>• Collaboration</span></div>
+                  </div>
+
+                  <div className="dca-one dca-one2">
+                    <div className="dca-img">
+                      <img src={`${Z}/base-plate-CAE.png`} alt="" />
+                      <img src={`${Z}/base-plate-CAE-color.png`} alt="" />
+                    </div>
+                    <div className="dca-text"><span>• Simulation (CAE)</span></div>
+                  </div>
+
+                  <div className="dca-one dca-one3"><div className="dca-img"><img src={`${Z}/red-cylinder.png`} alt="" /></div></div>
+                  <div className="dca-one dca-one4"><div className="dca-img"><img src={`${Z}/battery.png`} alt="" /></div></div>
+
+                  <div className="dca-one dca-one5">
+                    <div className="dca-img"><img src={`${Z}/middle-gear.png`} alt="" /></div>
+                    <div className="dca-text"><span>• Assembly Design</span></div>
+                  </div>
+
+                  <div className="dca-one dca-one6"><div className="dca-img"><img src={`${Z}/three-pillar.png`} alt="" /></div></div>
+
+                  <div className="dca-one dca-one7">
+                    <div className="dca-img">
+                      <img src={`${Z}/middle-panel-cam.png`} alt="" />
+                      <img src={`${Z}/middle-panel-cam.gif`} alt="" />
+                    </div>
+                    <div className="dca-text"><span>• Manufacturing (CAM)</span></div>
+                  </div>
+
+                  <div className="dca-one dca-one8"><div className="dca-img"><img src={`${Z}/blue-component.png`} alt="" /></div></div>
+                  <div className="dca-one dca-one9"><div className="dca-img"><img src={`${Z}/y-pillar.png`} alt="" /></div></div>
+                  <div className="dca-one dca-one10"><div className="dca-img"><img src={`${Z}/yg-screw.png`} alt="" /></div></div>
+                  <div className="dca-one dca-one11"><div className="dca-img"><img src={`${Z}/three-screw.png`} alt="" /></div></div>
+
+                  <div className="dcd-cont">
+                    <div className="dcd-item"><div className="dcd-icon"><img src={`${Z}/3d_ov47.png`} alt="" /></div><div className="dcd-name">Administrator</div></div>
+                    <div className="dcd-item"><div className="dcd-icon"><img src={`${Z}/3d_ov48.png`} alt="" /></div><div className="dcd-name">Design Manager</div></div>
+                    <div className="dcd-item"><div className="dcd-icon"><img src={`${Z}/3d_ov49.png`} alt="" /></div><div className="dcd-name">Mechanical Designer</div></div>
+                    <div className="dcd-item"><div className="dcd-icon"><img src={`${Z}/3d_ov50.png`} alt="" /></div><div className="dcd-name">Mechanical Designer</div></div>
+                  </div>
+
                 </div>
               </div>
-            </div>
-            <div className="dc-grid">
-              {capabilities.map((c) => (
-                <div key={c.label} className="dc-card">
-                  <div className="dc-icon">
-                    <img src={c.icon} alt={c.label} />
-                  </div>
-                  <div className="dc-label">{c.label}</div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
 
-        {/* ── Key Features ── */}
-        <div className="de-main z3-section">
+        {/* ── Feature Modules (6 tabs) ── */}
+        <div className="z3-feats">
           <div className="container">
-            <div className="de-top">
-              <div className="de-lt">
-                <h2 className="de-titles">
-                  Powerful and Fast <span className="de-span">3D CAD/CAE/CAM</span>
+            <div className="z3-feats__top">
+              <div className="z3-feats__tl">
+                <h2 className="z3-s-title">
+                  Powerful <span className="z3-accent">3D CAD / CAE / CAM</span>
                 </h2>
               </div>
-              <div className="de-rt">
-                <p className="de-intro">
-                  One platform covers the full product development workflow — from concept design and simulation to CNC machining — so your team stays connected at every stage.
+              <div className="z3-feats__tr">
+                <p className="z3-s-desc">
+                  One platform covers the full product development workflow — from concept design and simulation to CNC machining.
                 </p>
               </div>
             </div>
-
-            <div className="de-tabs">
-              {features.map((f, i) => (
+            <div className="z3-tabs">
+              {featureModules.map((feat, i) => (
                 <button
-                  key={f.tab}
-                  className={`de-tab${activeFeature === i ? " active" : ""}`}
+                  key={feat.tab}
+                  className={`z3-tab${activeFeature === i ? " active" : ""}`}
                   onClick={() => setActiveFeature(i)}
                 >
-                  {f.tab}
+                  {feat.tab}
                 </button>
               ))}
             </div>
-
-            <div className="dea-cont">
-              <div className="dea-pc-rt">
-                <div className="dea-imgbox">
-                  <video
-                    key={features[activeFeature].video}
-                    className="dea-video"
-                    src={features[activeFeature].video}
-                    muted autoPlay loop playsInline
-                  />
-                </div>
+            <div className="z3-feat-panel">
+              <div className="z3-feat-panel__img">
+                <img key={f.img} src={f.img} alt={f.title} />
               </div>
-              <div className="dea-pc-lt">
-                <h3 className="dea-name">{features[activeFeature].title}</h3>
-                <p className="dea-desc">{features[activeFeature].desc}</p>
+              <div className="z3-feat-panel__body">
+                <h3 className="z3-feat-panel__title">{f.title}</h3>
+                <p className="z3-feat-panel__desc">{f.desc}</p>
+                <Link className="z3-btn-ghost" to={routesName.TAI_VE}>Try it free →</Link>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ── Why ZW3D ── */}
-        <div className="z3-section z3-why">
+        {/* ── Why ZW3D (3 alternating blocks) ── */}
+        <div className="z3-why-big">
           <div className="container">
-            <h2 className="z3-titles z3-center">Why Choose ZW3D?</h2>
-            <div className="z3-why-grid">
-              {whyItems.map((w) => (
-                <div key={w.title} className="z3-why-card">
-                  <div className="z3-why-icon">{w.icon}</div>
-                  <h3 className="z3-why-title">{w.title}</h3>
-                  <p className="z3-why-desc">{w.desc}</p>
+            <h2 className="z3-s-title z3-center">Why ZW3D</h2>
+            <div className="z3-why-blocks">
+              {whyItems.map((w, i) => (
+                <div key={w.title} className={`z3-why-block${i % 2 !== 0 ? " z3-why-block--rev" : ""}`}>
+                  <div className="z3-why-block__img">
+                    <img src={w.img} alt={w.title} />
+                  </div>
+                  <div className="z3-why-block__body">
+                    <h3 className="z3-why-block__title">{w.title}</h3>
+                    <p className="z3-why-block__desc">{w.desc}</p>
+                    <ul className="z3-why-points">
+                      {w.points.map((p) => (
+                        <li key={p}>{p}</li>
+                      ))}
+                    </ul>
+                    <Link className="z3-btn-ghost" to={routesName.LIEN_HE}>See Pricing →</Link>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ── They Choose Us ── */}
-        <div className="z3-section z3-cases">
+        {/* ── Partner logos ── */}
+        <div className="z3-partners">
           <div className="container">
-            <h2 className="z3-titles z3-center">They Choose ZW3D</h2>
+            <p className="z3-partners__label">Trusted by leading companies worldwide</p>
+            <div className="z3-partners__logos">
+              {partnerLogos.map((lg) => (
+                <div key={lg} className="z3-partners__logo">
+                  <img src={`${Z}/${lg}`} alt={lg.replace("-lg", "")} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Case studies ── */}
+        <div className="z3-cases">
+          <div className="container">
+            <h2 className="z3-s-title z3-center">They Choose ZW3D</h2>
           </div>
           <div className="di-marquee">
             <div className="di-marquee-track">
               {[...caseStudies, ...caseStudies].map((s, i) => (
                 <div key={i} className="dib-item">
-                  <div className="dib-img">
-                    <img src={s.img} alt={s.name} />
-                  </div>
+                  <div className="dib-img"><img src={s.img} alt={s.name} /></div>
                   <div className="dib-body">
                     <div className="dib-quot">"</div>
                     <div className="dib-intro">{s.quote}</div>
@@ -291,62 +357,48 @@ export default function ZW3DPage() {
           </div>
         </div>
 
-        {/* ── Awards ── */}
+        {/* ── Awards & Reviews ── */}
         <AwardSection />
-
-        {/* ── Reviews ── */}
         <ReviewSection />
 
-        {/* ── Discover More ── */}
-        <section className="z3-section">
-          <div className="container">
-            <div className="dl-inner">
-              <h2 className="dl-titles d-bold">Discover More Products</h2>
-              <div className="dl-cont">
-                <a href="/san-pham/zwcad" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZWCAD</h3>
-                    <div className="dl-intro">DWG-Compatible CAD for Better Productivity</div>
-                  </div>
-                </a>
-                <a href="/san-pham/zwcad-mfg" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD MFG" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZWCAD MFG</h3>
-                    <div className="dl-intro">Advanced 2D CAD for Manufacturing</div>
-                  </div>
-                </a>
-                <a href="#" className="dl-item">
-                  <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD Mobile" /></div>
-                  <div className="dl-text">
-                    <h3 className="dl-name d-bold">ZWCAD Mobile</h3>
-                    <div className="dl-intro">Fast, Accurate, Easy-to-Use CAD App</div>
-                  </div>
-                </a>
-              </div>
-              <div className="dl-textbox">
-                <p>1. Price may vary by country or region.</p>
-                <p>2. All trademarks, logos, and brand names are the property of their respective owners.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ── CTA ── */}
-        <section className="zw-bottom-cta">
-          <div className="container">
-            <h2>Get started with ZW3D now</h2>
-            <p>Start sparking creativity and boosting efficiency right away.</p>
-            <div className="zw-cta-btns">
-              <a href="/tai-ve">Free Trial</a>
-              <a href="/lien-he">See Pricing</a>
-              <a href="/lien-he" className="outline">Contact Sales</a>
+        <div className="z3-cta">
+          <div className="z3-cta__overlay" />
+          <div className="container z3-cta__inner">
+            <div>
+              <h2 className="z3-cta__title">Get started with ZW3D 2026 now</h2>
+              <p className="z3-cta__sub">Start sparking creativity and boosting efficiency right away.</p>
+            </div>
+            <div className="z3-cta__btns">
+              <Link className="z3-btn-fill" to={routesName.TAI_VE}>Free Trial</Link>
+              <Link className="z3-btn-line" to={routesName.LIEN_HE}>See Pricing</Link>
+              <Link className="z3-btn-line" to={routesName.LIEN_HE}>Contact Sales</Link>
             </div>
           </div>
-        </section>
+        </div>
 
-      </main>
+        {/* ── Explore more ── */}
+        <div className="z3-more">
+          <div className="container">
+            <h2 className="z3-s-title z3-center">Explore More Products</h2>
+            <div className="z3-more__grid">
+              <Link to={routesName.SAN_PHAM_ZWCAD} className="z3-more__card">
+                <div className="z3-more__logo"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD" /></div>
+                <h3 className="z3-more__name">ZWCAD</h3>
+                <p className="z3-more__sub">DWG-Compatible CAD for Better Productivity</p>
+                <span className="z3-btn-ghost">Learn more →</span>
+              </Link>
+              <Link to={routesName.SAN_PHAM_ZWCAD_MFG} className="z3-more__card">
+                <div className="z3-more__logo"><img src="/image-zwcad/logo/zwcadmfg" alt="ZWCAD MFG" /></div>
+                <h3 className="z3-more__name">ZWCAD MFG</h3>
+                <p className="z3-more__sub">Advanced 2D CAD for Manufacturing</p>
+                <span className="z3-btn-ghost">Learn more →</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </>
   );
 }
