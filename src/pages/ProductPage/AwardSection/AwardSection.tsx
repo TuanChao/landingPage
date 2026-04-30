@@ -1,11 +1,12 @@
 import "./AwardSection.css";
 
 const IMG = "/image-zwcad";
+const ZW3D = "/zw3d";
 
 const badges = [
-  { src: `${IMG}/lpyeah2025/top50-cad-plm`, alt: "G2 Top 50 CAD PLM Products 2026" },
-  { src: `${IMG}/lpyeah2025/top50-apac`,    alt: "G2 Top 50 APAC 2026" },
-  { src: `${IMG}/lpyeah2025/easiest`,       alt: "G2 Easiest To Use Winter 2026" },
+  { src: `${ZW3D}/gridleader.png`,          alt: "G2 Grid Leader Spring 2025" },
+  { src: `${ZW3D}/gridleadersummer.png`,    alt: "G2 Grid Leader Summer 2025" },
+  { src: `${IMG}/lpyeah2025/easiest`,       alt: "G2 Easiest To Use" },
 ];
 
 export default function AwardSection() {
@@ -14,10 +15,9 @@ export default function AwardSection() {
       <div className="container">
         <div className="aw-card">
           <div className="aw-left">
-            <h2 className="aw-title">Lead with top recognition</h2>
+            <h2 className="aw-title">Recognized for excellence and innovation</h2>
             <p className="aw-desc">
-              Named to G2's 2025 Best Software Awards, and ranks #1 in G2's Easiest to Use
-              General-Purpose CAD.
+              Named to G2's 2025 Best Software Awards, ranking among the top 50 in CAD &amp; PLM Products.
             </p>
           </div>
           <div className="aw-badges">
