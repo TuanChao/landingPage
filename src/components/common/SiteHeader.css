@@ -122,6 +122,7 @@
   display: flex;
   gap: 28px;
   font-size: 14px;
+  margin-left: auto;
 }
 
 .head_nav-one {

@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { ReactNode } from "react";
 import SiteHeader from "../components/common/SiteHeader";
 import SiteFooter from "../components/common/SiteFooter";
 
-export default function MainLayout() {
+export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div className="app-shell">
       <SiteHeader />
       <main>
-        <Outlet />
+        {children}
       </main>
       <SiteFooter />
     </div>

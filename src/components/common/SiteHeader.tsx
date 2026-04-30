@@ -1,26 +1,27 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import LanguageDropdown from "../ui/LanguageDropdown";
 import { useSiteContent } from "../../hooks/useSiteContent";
+import routesName from "~routes/enum.routes";
 import "./SiteHeader.css";
 
 const PRODUCT_NAV: Record<string, { name: string; logo: string; href: string }> = {
-  "/san-pham/zwcad": {
+  [routesName.SAN_PHAM_ZWCAD]: {
     name: "ZWCAD",
     logo: "/image-zwcad/logo/zwcadmb",
-    href: "/san-pham/zwcad",
+    href: routesName.SAN_PHAM_ZWCAD,
   },
-  "/san-pham/zw3d": {
+  [routesName.SAN_PHAM_ZW3D]: {
     name: "ZW3D",
     logo: "/image-zwcad/logo/zwc3d",
-    href: "/san-pham/zw3d",
+    href: routesName.SAN_PHAM_ZW3D,
   },
-  "/san-pham/zwcad-mfg": {
+  [routesName.SAN_PHAM_ZWCAD_MFG]: {
     name: "ZWCAD MFG",
     logo: "/image-zwcad/logo/zwcadmfg",
-    href: "/san-pham/zwcad-mfg",
+    href: routesName.SAN_PHAM_ZWCAD_MFG,
   },
 };
 
@@ -42,9 +43,9 @@ export default function SiteHeader() {
       <div className="head_h-main">
         <div className="container head_h-inner">
           <div className="head_h-left">
-            <a className="head_h-logo" href="/">
+            <Link className="head_h-logo" to={routesName.ROOT}>
               <img src="/logoweb" alt="ZWCAD Vietnam" />
-            </a>
+            </Link>
           </div>
           <div className="head_h-right">
             <div className="head_h-area">
@@ -61,12 +62,12 @@ export default function SiteHeader() {
         <div className="container head_nav-inner">
           <div className="head_nav-cont">
             {currentProduct && (
-              <a href={currentProduct.href} className="head_nav-product">
+              <Link to={currentProduct.href} className="head_nav-product">
                 <div className="head_nav-logo">
                   <img src={currentProduct.logo} alt={currentProduct.name} />
                 </div>
                 <span className="head_nav-text">{currentProduct.name}</span>
-              </a>
+              </Link>
             )}
             <div className="head_nav-navbox">
               {content.nav.map((item) =>
@@ -79,7 +80,7 @@ export default function SiteHeader() {
                       <DropdownMenu.Content className="navdd__content" sideOffset={6}>
                         {item.children.map((child) => (
                           <DropdownMenu.Item key={child.path + child.label} className="navdd__item" asChild>
-                            <a href={child.path}>{child.label}</a>
+                            <Link to={child.path}>{child.label}</Link>
                           </DropdownMenu.Item>
                         ))}
                       </DropdownMenu.Content>
