@@ -1,20 +1,115 @@
 .faq-page {
-  padding: 40px 0;
+  background: #f4f6f9;
+  min-height: 60vh;
 }
 
-.faq-page__item {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 18px;
+/* Hero */
+.faq-hero {
   background: #fff;
-  margin-bottom: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 60px 0 52px;
+  text-align: center;
 }
 
-.faq-page__item h3 {
+.faq-hero__title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #1a2232;
+  margin: 0 0 12px;
+}
+
+.faq-hero__sub {
+  font-size: 1.05rem;
+  color: #5a6476;
   margin: 0;
 }
 
-.faq-page__item p {
-  margin: 10px 0 0;
-  color: var(--muted);
+/* Body */
+.faq-body {
+  padding: 60px 0 90px;
+}
+
+.faq-list {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Item */
+.faq-item {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.faq-item--open {
+  border-color: #1762e7;
+  box-shadow: 0 4px 20px rgba(23, 98, 231, 0.08);
+}
+
+.faq-item__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a2232;
+  line-height: 1.5;
+}
+
+.faq-item__q:hover {
+  color: #1762e7;
+}
+
+.faq-item--open .faq-item__q {
+  color: #1762e7;
+}
+
+.faq-item__icon {
+  flex-shrink: 0;
+  color: currentColor;
+  transition: transform 0.25s;
+}
+
+.faq-item--open .faq-item__icon {
+  transform: rotate(180deg);
+}
+
+.faq-item__a {
+  padding: 0 24px 22px;
+  border-top: 1px solid #eef1f6;
+}
+
+.faq-item__a p {
+  margin: 16px 0 0;
+  font-size: 0.95rem;
+  color: #5a6476;
+  line-height: 1.75;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .faq-hero__title {
+    font-size: 28px;
+  }
+
+  .faq-item__q {
+    padding: 16px 18px;
+    font-size: 0.95rem;
+  }
+
+  .faq-item__a {
+    padding: 0 18px 18px;
+  }
 }

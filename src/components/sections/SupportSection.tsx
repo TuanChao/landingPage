@@ -1,3 +1,4 @@
+import Section from "../ui/Section";
 import SectionTitle from "../ui/SectionTitle";
 import { useSiteContent } from "../../hooks/useSiteContent";
 import { Link } from "react-router-dom";
@@ -9,10 +10,9 @@ export default function SupportSection() {
   const [openSlug, setOpenSlug] = useState<string | null>(content.faq[0]?.slug ?? null);
 
   return (
-    <section className="support-section">
-      <div className="container">
-        <div className="support-section__head">
-          <SectionTitle>Câu h?i thý?ng g?p</SectionTitle>
+    <Section className="support-section">
+      <div className="support-section__head">
+          <SectionTitle>Cï¿½u h?i thï¿½?ng g?p</SectionTitle>
           <Link to="/cau-hoi-thuong-gap" className="support-section__more">Xem t?t c? ?</Link>
         </div>
         <div className="support-section__faq">
@@ -34,7 +34,6 @@ export default function SupportSection() {
             );
           })}
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

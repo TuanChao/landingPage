@@ -1,3 +1,4 @@
+import Section from "../ui/Section";
 import SectionTitle from "../ui/SectionTitle";
 import { useSiteContent } from "../../hooks/useSiteContent";
 import "./ContactSection.css";
@@ -7,7 +8,7 @@ export default function ContactSection() {
   const { placeholders, submit } = content.contact.form;
 
   return (
-    <section id="contact" className="contact-section container">
+    <Section id="contact" className="contact-section">
       <SectionTitle>{content.contact.title}</SectionTitle>
       <div className="contact-section__wrap">
         <div className="contact-section__info">
@@ -27,6 +28,6 @@ export default function ContactSection() {
           </button>
         </form>
       </div>
-    </section>
+    </Section>
   );
 }

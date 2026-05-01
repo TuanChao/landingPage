@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useSiteContent } from "../../hooks/useSiteContent";
+import Section from "../ui/Section";
 import "./NewsSection.css";
 
 function formatDate(dateStr?: string) {
@@ -14,7 +15,7 @@ export default function NewsSection() {
   const items = content.news;
 
   return (
-    <section className="ns-section">
+    <Section className="ns-section" fullBleed>
       <div className="container ns-head">
         <h2 className="ns-title">Tin tức</h2>
         <Link to="/tin-tuc" className="ns-more">Xem tất cả →</Link>
@@ -41,6 +42,6 @@ export default function NewsSection() {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

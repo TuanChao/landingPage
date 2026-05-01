@@ -1,3 +1,4 @@
+import Section from "../ui/Section";
 import SectionTitle from "../ui/SectionTitle";
 import { useSiteContent } from "../../hooks/useSiteContent";
 import { Link } from "react-router-dom";
@@ -14,7 +15,7 @@ export default function FeatureSection() {
   const content = useSiteContent();
 
   return (
-    <section id="features" className="feature-section container">
+    <Section id="features" className="feature-section">
       <SectionTitle>Danh mục sản phẩm nổi bật</SectionTitle>
 
       <div className="feature-grid">
@@ -30,6 +31,6 @@ export default function FeatureSection() {
           </Link>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }

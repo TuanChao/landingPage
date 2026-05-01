@@ -6,24 +6,7 @@ import LanguageDropdown from "../ui/LanguageDropdown";
 import { useSiteContent } from "../../hooks/useSiteContent";
 import routesName from "~routes/enum.routes";
 import "./SiteHeader.css";
-
-const PRODUCT_NAV: Record<string, { name: string; logo: string; href: string }> = {
-  [routesName.SAN_PHAM_ZWCAD]: {
-    name: "ZWCAD",
-    logo: "/image-zwcad/logo/zwcadmb",
-    href: routesName.SAN_PHAM_ZWCAD,
-  },
-  [routesName.SAN_PHAM_ZW3D]: {
-    name: "ZW3D",
-    logo: "/image-zwcad/logo/zwc3d",
-    href: routesName.SAN_PHAM_ZW3D,
-  },
-  [routesName.SAN_PHAM_ZWCAD_MFG]: {
-    name: "ZWCAD MFG",
-    logo: "/image-zwcad/logo/zwcadmfg",
-    href: routesName.SAN_PHAM_ZWCAD_MFG,
-  },
-};
+import { PRODUCT_NAV } from "../../data/products";
 
 export default function SiteHeader() {
   const content = useSiteContent();
