@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../../seo/Seo";
 import routesName from "~routes/enum.routes";
@@ -59,6 +59,30 @@ const relatedProducts = [
 
 export default function ZWCADMFGPage() {
   const [videoOpen, setVideoOpen] = useState(false);
+
+  // Testimonials slider
+  const [diSlide, setDiSlide] = useState(0);
+  const [diContW, setDiContW] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const DI_GAP = 20;
+  const diSlideW = diContW * 0.65;
+  const diOffset = diContW > 0
+    ? -(diSlide * (diSlideW + DI_GAP)) + (diContW - diSlideW) / 2
+    : 0;
+
+  useEffect(() => {
+    const update = () => {
+      if (sliderRef.current) setDiContW(sliderRef.current.offsetWidth);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  useEffect(() => {
+    const t = setInterval(() => setDiSlide((p) => (p + 1) % testimonials.length), 5000);
+    return () => clearInterval(t);
+  }, []);
 
   return (
     <>
@@ -308,38 +332,60 @@ export default function ZWCADMFGPage() {
             ))}
           </div>
         </div>
-        <div className="di-marquee">
-          <div className="di-track">
-            {[...testimonials, ...testimonials].map((s, i) => (
-              <div key={i} className="dib-item">
-                <div className="dib-link">
+        <div className="di-inner">
+          <div className="di-slider-outer" ref={sliderRef}>
+            <div
+              className="di-track"
+              style={{ transform: `translateX(${diOffset}px)`, gap: DI_GAP }}
+            >
+              {testimonials.map((s, i) => (
+                <div
+                  key={s.name}
+                  className={`di-slide${diSlide === i ? " active" : ""}`}
+                  style={{ width: diSlideW || "65%" }}
+                  onClick={() => setDiSlide(i)}
+                >
+                  <div className="dib-left">
+                    <img src={s.img} alt={s.name} />
+                  </div>
                   <div className="dib-right">
-                    <div className="dib-top">
-                      <div className="dib-quot">
-                        <img src="https://zwcdn.zwsoft.com/web/images/zwcad_ov/da13.png" alt="" />
-                      </div>
-                      <div className="dib-intro">{s.quote}</div>
-                    </div>
-                    <div className="dib-bottom">
-                      <div className="dib-lt">
-                        <div className="dib-name d-bold">{s.name}</div>
+                    <div className="dib-quot">"</div>
+                    <p className="dib-intro">{s.quote}</p>
+                    <div className="dib-footer">
+                      <div>
+                        <div className="dib-name">{s.name}</div>
                         <div className="dib-post">{s.post}</div>
                       </div>
-                      <div className="dib-rt">
-                        <div className="dib-logo">
-                          <img src={s.logo} alt={s.name} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dib-left">
-                    <div className="dib-img">
-                      <img src={s.img} alt={s.name} />
+                      <img className="dib-logo-img" src={s.logo} alt={s.name} />
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className="di-nav">
+            <div className="di-nav-arrows">
+              <button
+                className="di-nav-btn"
+                onClick={() => setDiSlide((p) => (p - 1 + testimonials.length) % testimonials.length)}
+                aria-label="Previous"
+              >←</button>
+              <button
+                className="di-nav-btn"
+                onClick={() => setDiSlide((p) => (p + 1) % testimonials.length)}
+                aria-label="Next"
+              >→</button>
+            </div>
+            <div className="di-nav-dots">
+              {testimonials.map((_, i) => (
+                <button
+                  key={i}
+                  className={`di-nav-dot${diSlide === i ? " active" : ""}`}
+                  onClick={() => setDiSlide(i)}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

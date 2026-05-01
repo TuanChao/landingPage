@@ -86,11 +86,21 @@ export default function SiteHeader() {
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Portal>
                       <DropdownMenu.Content className="navdd__content" sideOffset={6}>
-                        {item.children.map((child) => (
-                          <DropdownMenu.Item key={child.path + child.label} className="navdd__item" asChild>
-                            <Link to={child.path}>{child.label}</Link>
-                          </DropdownMenu.Item>
-                        ))}
+                        {item.children.map((child) => {
+                          const childLogo = PRODUCT_NAV[child.path]?.logo;
+                          return (
+                            <DropdownMenu.Item key={child.path + child.label} className="navdd__item" asChild>
+                              <Link to={child.path}>
+                                {childLogo && (
+                                  <span className="navdd__logo">
+                                    <img src={childLogo} alt="" />
+                                  </span>
+                                )}
+                                <span className="navdd__label">{child.label}</span>
+                              </Link>
+                            </DropdownMenu.Item>
+                          );
+                        })}
                       </DropdownMenu.Content>
                     </DropdownMenu.Portal>
                   </DropdownMenu.Root>

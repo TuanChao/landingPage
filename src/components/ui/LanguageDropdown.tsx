@@ -5,9 +5,9 @@ import type { Language } from "../../types/site";
 import "./LanguageDropdown.css";
 
 const languageMap: Record<Language, { label: string; flag: string }> = {
-  vi: { label: "Ti?ng Vi?t", flag: "https://flagcdn.com/w20/vn.png" },
+  vi: { label: "Tiếng Việt", flag: "https://flagcdn.com/w20/vn.png" },
   en: { label: "English", flag: "https://flagcdn.com/w20/us.png" },
-  zh: { label: "??", flag: "https://flagcdn.com/w20/cn.png" }
+  zh: { label: "中文", flag: "https://flagcdn.com/w20/cn.png" }
 };
 
 export default function LanguageDropdown() {
@@ -15,7 +15,7 @@ export default function LanguageDropdown() {
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="langdd__trigger" aria-label="Ng�n ng?">
+      <DropdownMenu.Trigger className="langdd__trigger" aria-label="Ngôn ngữ">
         <span className="langdd__flag" aria-hidden="true">
           <img src={languageMap[language].flag} alt="" />
         </span>

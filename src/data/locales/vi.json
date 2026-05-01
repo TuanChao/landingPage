@@ -37,7 +37,7 @@
     },
     {
       "label": "Liên hệ",
-      "path": "/lien-he"
+      "path": "/#contact"
     }
   ],
   "hero": {
@@ -224,12 +224,12 @@
     ],
     "form": {
       "placeholders": [
-        "H? v? t?n",
-        "S? ?i?n tho?i",
+        "Họ và tên",
+        "Số điện thoại",
         "Email",
-        "Nhu c?u c?a b?n"
+        "Nhu cầu của bạn"
       ],
-      "submit": "G?i th?ng tin"
+      "submit": "Gửi thông tin"
     }
   }
 }

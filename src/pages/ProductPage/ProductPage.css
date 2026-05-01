@@ -208,6 +208,8 @@
 .db-cont {
   width: 100%;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: 42px;
@@ -215,8 +217,9 @@
 
 .db-left,
 .db-right {
-  width: 50%;
+  flex: 1 1 0;
   min-width: 0;
+  width: auto;
 }
 
 .db-titles {
@@ -1274,16 +1277,6 @@
     flex: 1 1 100%;
   }
 
-  .db-cont {
-    flex-direction: column-reverse;
-    gap: 28px;
-  }
-
-  .db-left,
-  .db-right {
-    width: 100%;
-  }
-
   .zw-feature-panel {
     grid-template-columns: 1fr;
   }
@@ -1316,6 +1309,19 @@
   .dg-cont {
     padding: 40px 28px;
     gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .db-cont {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .db-left,
+  .db-right {
+    flex: 1 1 100%;
+    width: 100%;
   }
 }
 
