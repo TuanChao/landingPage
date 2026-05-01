@@ -308,4 +308,41 @@
   .hero-deco-dots {
     display: none;
   }
+
+  .hero-deco-ring-1,
+  .hero-deco-ring-2 {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-banner {
+    height: auto;
+    min-height: 480px;
+    padding: 60px 0 80px;
+  }
+
+  .hero-actions {
+    margin-top: 24px;
+  }
+
+  .btn-hero-cta,
+  .btn-hero-ghost {
+    flex: 1;
+    text-align: center;
+    padding: 12px 20px;
+    min-width: 140px;
+  }
+
+  .hero-controls {
+    bottom: 16px;
+  }
+
+  .dot {
+    width: 22px;
+  }
+
+  .dot.active {
+    width: 32px;
+  }
 }

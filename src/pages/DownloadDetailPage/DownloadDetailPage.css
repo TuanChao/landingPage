@@ -1,3 +1,41 @@
 .download-detail-page {
-  padding: 40px 0;
+  padding: 50px 0 70px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.download-detail-page h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 8px;
+  color: #1a2232;
+}
+
+.download-detail-page h2 {
+  font-size: 1.1rem;
+  color: #1762e7;
+  font-weight: 600;
+  margin: 0 0 24px;
+}
+
+.download-detail-page h3 {
+  font-size: 1.15rem;
+  margin: 28px 0 10px;
+  color: #1a2232;
+}
+
+.download-detail-page p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #5a6476;
+  margin: 0 0 14px;
+}
+
+@media (max-width: 640px) {
+  .download-detail-page {
+    padding: 30px 0 50px;
+  }
+
+  .download-detail-page h3 {
+    font-size: 1.05rem;
+  }
 }

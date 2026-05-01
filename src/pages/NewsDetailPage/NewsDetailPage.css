@@ -519,4 +519,26 @@
   .ndp-share__btn span {
     display: none;
   }
+
+  .ndp-banner,
+  .ndp-banner__img {
+    max-height: 140px;
+  }
+
+  .ndp-wrap {
+    padding-bottom: 48px;
+  }
+
+  .ndp-bc-current {
+    max-width: 180px;
+  }
+
+  .ndp-body {
+    font-size: 14px;
+  }
+
+  .ndp-body blockquote {
+    padding: 16px 18px;
+    margin: 20px 0;
+  }
 }

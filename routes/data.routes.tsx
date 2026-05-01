@@ -3,6 +3,7 @@ import LandingPage from "@/pages/LandingPage";
 import ProductPage from "@/pages/ProductPage";
 import ZW3DPage from "@/pages/ZW3DPage/ZW3DPage";
 import ZWCADMFGPage from "@/pages/ZWCADMFGPage/ZWCADMFGPage";
+import ZWCADPage from "@/pages/ZWCADPage/ZWCADPage";
 import NewsPage from "@/pages/NewsPage";
 import NewsDetailPage from "@/pages/NewsDetailPage";
 import DownloadPage from "@/pages/DownloadPage";
@@ -31,6 +32,11 @@ export const routesData: IRouterData[] = [
     path: routesName.SAN_PHAM_ZW3D,
     layout: MainLayout,
     component: ZW3DPage,
+  },
+  {
+    path: routesName.SAN_PHAM_ZWCAD,
+    layout: MainLayout,
+    component: ZWCADPage,
   },
   {
     path: routesName.SAN_PHAM_ZWCAD_MFG,

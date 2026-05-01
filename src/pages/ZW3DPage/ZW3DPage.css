@@ -2317,11 +2317,19 @@
   }
 
   .z3-cax__grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .z3-why__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .z3-compare-head,
+  .z3-compare-row {
+    grid-template-columns: 1fr 70px 80px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: .82rem;
   }
 
   .z3-feat-panel {

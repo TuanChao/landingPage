@@ -143,3 +143,31 @@
   color: #9aa3b2;
   margin-top: auto;
 }
+
+@media (max-width: 768px) {
+  .ns-title {
+    font-size: 28px;
+  }
+
+  .ns-head {
+    margin-bottom: 24px;
+  }
+
+  .ns-card {
+    width: 240px;
+  }
+
+  .ns-card__thumb {
+    height: 130px;
+  }
+
+  .ns-track {
+    animation-duration: 30s;
+  }
+}
+
+@media (max-width: 480px) {
+  .ns-card {
+    width: 220px;
+  }
+}

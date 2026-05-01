@@ -1,7 +1,27 @@
 .not-found {
-  min-height: 100vh;
+  min-height: 70vh;
   display: grid;
   place-content: center;
   text-align: center;
-  gap: 8px;
+  gap: 14px;
+  padding: 40px 20px;
+}
+
+.not-found h1 {
+  font-size: clamp(4rem, 12vw, 7rem);
+  margin: 0;
+  font-weight: 800;
+  color: #1762e7;
+  line-height: 1;
+}
+
+.not-found p {
+  margin: 0;
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  color: #5a6476;
+}
+
+.not-found .btn {
+  margin-top: 8px;
+  justify-self: center;
 }
