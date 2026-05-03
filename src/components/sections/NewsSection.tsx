@@ -15,13 +15,12 @@ export default function NewsSection() {
   const items = content.news;
 
   return (
-    <Section className="ns-section" fullBleed>
-      <div className="container ns-head">
+    <Section className="ns-section">
+      <div className="ns-head">
         <h2 className="ns-title">Tin tức</h2>
         <Link to="/tin-tuc" className="ns-more">Xem tất cả →</Link>
       </div>
 
-      {/* Marquee track */}
       <div className="ns-marquee">
         <div className="ns-track">
           {[...items, ...items].map((item, i) => (

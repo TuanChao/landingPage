@@ -587,7 +587,7 @@ export default function ProductPage() {
                 </div>
               </a>
               <a href="#" className="dl-item">
-                <div className="dl-img"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD Mobile" /></div>
+                <div className="dl-img"><img src="/zwcad-mfg/zwcad.png" alt="ZWCAD Mobile" /></div>
                 <div className="dl-text">
                   <h3 className="dl-name d-bold">ZWCAD Mobile</h3>
                   <div className="dl-intro">Fast, Accurate, Easy-to-Use CAD App</div>

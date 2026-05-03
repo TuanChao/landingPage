@@ -12,7 +12,7 @@ export interface ProductMeta {
 export const PRODUCTS: ProductMeta[] = [
   {
     name: "ZWCAD",
-    logo: "/image-zwcad/logo/zwcadmb",
+    logo: "/zwcad-mfg/zwcad.png",
     href: routesName.SAN_PHAM_ZWCAD,
     desc: "Phần mềm CAD 2D/3D tương thích DWG, hiệu năng cao với chi phí tối ưu.",
     version: "2025",

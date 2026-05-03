@@ -717,7 +717,7 @@ export default function ZW3DPage() {
             <h2 className="z3-s-title z3-center">Explore More Products</h2>
             <div className="z3-more__grid">
               <Link to={routesName.SAN_PHAM_ZWCAD} className="z3-more__card">
-                <div className="z3-more__logo"><img src="/image-zwcad/logo/zwcadmb" alt="ZWCAD" /></div>
+                <div className="z3-more__logo"><img src="/zwcad-mfg/zwcad.png" alt="ZWCAD" /></div>
                 <h3 className="z3-more__name">ZWCAD</h3>
                 <p className="z3-more__sub">DWG-Compatible CAD for Better Productivity</p>
                 <span className="z3-btn-ghost">Learn more →</span>
