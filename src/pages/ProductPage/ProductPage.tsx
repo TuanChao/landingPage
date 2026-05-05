@@ -1,8 +1,8 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Seo from "../../seo/Seo";
-import AwardSection from "./AwardSection/AwardSection";
-import ReviewSection from "./ReviewSection/ReviewSection";
+import AwardSection from "../../components/sections/AwardSection/AwardSection";
+import ReviewSection from "../../components/sections/ReviewSection/ReviewSection";
 import "./ProductPage.css";
 
 type ProductKey = "zwcad" | "zw3d" | "zwcad-mfg";

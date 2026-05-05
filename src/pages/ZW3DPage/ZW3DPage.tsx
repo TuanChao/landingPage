@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../../seo/Seo";
-import AwardSection from "../ProductPage/AwardSection/AwardSection";
-import ReviewSection from "../ProductPage/ReviewSection/ReviewSection";
+import AwardSection from "../../components/sections/AwardSection/AwardSection";
+import ReviewSection from "../../components/sections/ReviewSection/ReviewSection";
 import routesName from "~routes/enum.routes";
 import "./ZW3DPage.css";
 
