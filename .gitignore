@@ -1,21 +1,44 @@
-# dependencies
+# Dependencies
 node_modules/
+*/node_modules/
 
-# build output
+# Build outputs
 dist/
+build/
+*/dist/
+*/build/
 
-# logs
+# Vite
+.vite/
+*/.vite/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*/bin/
+*/obj/
+
+# Database & uploads (.NET runtime)
+*.db
+*.db-shm
+*.db-wal
+Backend/**/uploads/
+Backend/**/appsettings.Local.json
+
+# Logs
+*.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-# env files
-.env
-.env.*
-
-# editor/system files
+# Editor
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
+
+# Env
+.env
+.env.local
+.env.*.local

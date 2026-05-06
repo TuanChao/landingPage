@@ -1,0 +1,27 @@
+.adm-contacts-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--adm-border);
+}
+.adm-contacts-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--adm-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: inherit;
+  transition: color 0.12s, border-color 0.12s;
+}
+.adm-contacts-tab:hover { color: var(--adm-fg); }
+.adm-contacts-tab.is-active {
+  color: var(--adm-fg);
+  border-bottom-color: var(--adm-fg);
+}

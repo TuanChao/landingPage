@@ -1,0 +1,11 @@
+.adm-products-form { margin-bottom: 24px; }
+
+.adm-products-logo-preview {
+  display: block;
+  margin-top: 8px;
+  max-height: 60px;
+  padding: 8px;
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius-sm);
+  background: var(--adm-muted-bg);
+}

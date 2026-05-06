@@ -1,0 +1,24 @@
+.adm-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.adm-recent { display: flex; flex-direction: column; gap: 12px; }
+.adm-recent__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+.adm-recent__body { flex: 1; min-width: 0; }
+.adm-recent__name { font-size: 13px; font-weight: 500; color: var(--adm-fg); }
+.adm-recent__body .adm-muted {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1024px) {
+  .adm-dashboard-grid { grid-template-columns: 1fr; }
+}

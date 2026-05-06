@@ -1,0 +1,17 @@
+.adm-banners-form { margin-bottom: 24px; }
+
+.adm-banners-preview {
+  margin-top: 12px;
+  padding: 8px;
+  border: 1px dashed var(--adm-border);
+  border-radius: var(--adm-radius);
+  background: var(--adm-muted-bg);
+  display: flex;
+  justify-content: center;
+}
+.adm-banners-preview img {
+  max-height: 140px;
+  max-width: 100%;
+  border-radius: var(--adm-radius-sm);
+  object-fit: contain;
+}

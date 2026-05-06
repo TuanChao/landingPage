@@ -1,4 +1,5 @@
 import MainLayout from "@/layouts/MainLayout";
+import AdminLayout from "@/layouts/AdminLayout";
 import LandingPage from "@/pages/LandingPage";
 import ProductPage from "@/pages/ProductPage";
 import ZW3DPage from "@/pages/ZW3DPage/ZW3DPage";
@@ -11,6 +12,15 @@ import DownloadDetailPage from "@/pages/DownloadDetailPage";
 import FaqPage from "@/pages/FaqPage";
 import FaqDetailPage from "@/pages/FaqDetailPage";
 import ContactPage from "@/pages/ContactPage";
+import AdminLoginPage from "@/pages/admin/AdminLoginPage";
+import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
+import AdminBannersPage from "@/pages/admin/AdminBannersPage";
+import AdminNewsPage from "@/pages/admin/AdminNewsPage";
+import AdminFaqPage from "@/pages/admin/AdminFaqPage";
+import AdminProductsPage from "@/pages/admin/AdminProductsPage";
+import AdminDownloadsPage from "@/pages/admin/AdminDownloadsPage";
+import AdminContactsPage from "@/pages/admin/AdminContactsPage";
+// Folder-based pages (mỗi page có index.ts re-export default)
 import routesName from "./enum.routes";
 import { IRouterData } from "./type.routes";
 
@@ -82,5 +92,44 @@ export const routesData: IRouterData[] = [
     path: routesName.LIEN_HE,
     layout: MainLayout,
     component: ContactPage,
+  },
+  {
+    path: routesName.ADMIN_LOGIN,
+    component: AdminLoginPage,
+  },
+  {
+    path: routesName.ADMIN_DASHBOARD,
+    layout: AdminLayout,
+    component: AdminDashboardPage,
+  },
+  {
+    path: routesName.ADMIN_BANNERS,
+    layout: AdminLayout,
+    component: AdminBannersPage,
+  },
+  {
+    path: routesName.ADMIN_NEWS,
+    layout: AdminLayout,
+    component: AdminNewsPage,
+  },
+  {
+    path: routesName.ADMIN_FAQ,
+    layout: AdminLayout,
+    component: AdminFaqPage,
+  },
+  {
+    path: routesName.ADMIN_PRODUCTS,
+    layout: AdminLayout,
+    component: AdminProductsPage,
+  },
+  {
+    path: routesName.ADMIN_DOWNLOADS,
+    layout: AdminLayout,
+    component: AdminDownloadsPage,
+  },
+  {
+    path: routesName.ADMIN_CONTACTS,
+    layout: AdminLayout,
+    component: AdminContactsPage,
   },
 ];

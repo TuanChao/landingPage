@@ -13,6 +13,14 @@ const routesName = {
   FAQ: "/cau-hoi-thuong-gap",
   FAQ_DETAIL: "/cau-hoi-thuong-gap/:slug",
   LIEN_HE: "/lien-he",
+  ADMIN_LOGIN: "/admin/login",
+  ADMIN_DASHBOARD: "/admin",
+  ADMIN_BANNERS: "/admin/banners",
+  ADMIN_NEWS: "/admin/news",
+  ADMIN_FAQ: "/admin/faq",
+  ADMIN_PRODUCTS: "/admin/products",
+  ADMIN_DOWNLOADS: "/admin/downloads",
+  ADMIN_CONTACTS: "/admin/contacts",
 } as const;
 
 export default routesName;
