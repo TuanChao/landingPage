@@ -1,4 +1,4 @@
-import HeroSection from "../../components/sections/HeroSection";
+import HeroProductsSlider from "../../components/sections/HeroProductsSlider";
 import FeatureSection from "../../components/sections/FeatureSection";
 import NewsSection from "../../components/sections/NewsSection";
 import SupportSection from "../../components/sections/SupportSection";
@@ -13,7 +13,7 @@ export default function LandingPage() {
         description="Phan phoi phan mem ZWCAD tai Viet Nam, giai phap CAD cho doanh nghiep."
         keywords="zwcad vietnam, phan mem cad, focustech"
       />
-      <HeroSection />
+      <HeroProductsSlider />
       <FeatureSection />
       <NewsSection />
       <SupportSection />

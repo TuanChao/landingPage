@@ -1,7 +1,8 @@
-import { ReactNode, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import Icon from "../admin/Icon";
-import "../admin/styles.css";
+import { ReactNode, useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Icon } from "@/admin/components";
+import { isAuthed, logout as apiLogout } from "@/admin/api";
+import "@/admin/styles.css";
 import "./AdminLayout.css";
 
 const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: string; end?: boolean }[] }[] = [
@@ -20,9 +21,8 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: str
     ],
   },
   {
-    label: "Sản phẩm & Tải về",
+    label: "Tải về",
     items: [
-      { to: "/admin/products", label: "Sản phẩm", icon: "product" },
       { to: "/admin/downloads", label: "Tải về", icon: "download" },
     ],
   },
@@ -36,31 +36,52 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: str
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem("admin_logged_in") === "1";
+  const location = useLocation();
+  const isLoggedIn = isAuthed();
   const email = localStorage.getItem("admin_email") ?? "admin";
   const initial = email.charAt(0).toUpperCase();
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/admin/login", { replace: true });
   }, [isLoggedIn, navigate]);
 
+  // Đóng drawer khi đổi route
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [location.pathname]);
+
+  // Khoá scroll body khi drawer mở
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [drawerOpen]);
+
   if (!isLoggedIn) return null;
 
   function logout() {
-    localStorage.removeItem("admin_logged_in");
-    localStorage.removeItem("admin_email");
+    apiLogout();
     navigate("/admin/login");
   }
 
   return (
-    <div className="adm-root adm-shell">
-      <aside className="adm-sidebar">
+    <div className={`adm-root adm-shell${drawerOpen ? " adm-shell--drawer-open" : ""}`}>
+      <aside className="adm-sidebar" aria-hidden={!drawerOpen && undefined}>
         <div className="adm-sidebar__brand">
           <div className="adm-sidebar__logo">Z</div>
           <div>
             <div className="adm-sidebar__brand-name">ZWCAD Admin</div>
             <div className="adm-sidebar__brand-sub">Vietnam</div>
           </div>
+          <button
+            type="button"
+            className="adm-sidebar__close"
+            aria-label="Đóng menu"
+            onClick={() => setDrawerOpen(false)}
+          >
+            <Icon name="close" size={18} />
+          </button>
         </div>
 
         <nav className="adm-sidebar__nav">
@@ -90,12 +111,29 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
+      <div
+        className="adm-sidebar__overlay"
+        onClick={() => setDrawerOpen(false)}
+        aria-hidden={!drawerOpen}
+      />
+
       <div className="adm-main">
         <header className="adm-topbar">
+          <button
+            type="button"
+            className="adm-btn adm-btn--ghost adm-btn--icon adm-topbar__burger"
+            aria-label="Mở menu"
+            aria-expanded={drawerOpen}
+            onClick={() => setDrawerOpen((v) => !v)}
+          >
+            <Icon name="menu" size={18} />
+          </button>
+
           <div className="adm-topbar__search">
             <Icon name="search" size={16} />
             <input className="adm-topbar__search-input" placeholder="Tìm kiếm..." />
           </div>
+
           <div className="adm-topbar__right">
             <button className="adm-btn adm-btn--ghost adm-btn--icon" aria-label="Notifications">
               <Icon name="bell" size={18} />

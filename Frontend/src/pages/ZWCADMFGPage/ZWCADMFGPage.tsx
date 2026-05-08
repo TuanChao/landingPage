@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { TrendingUp } from "lucide-react";
 import Seo from "../../seo/Seo";
 import routesName from "~routes/enum.routes";
 import "./ZWCADMFGPage.css";
@@ -9,10 +10,10 @@ const IMG = "/image-zwcad";
 const STATICS = "https://statics.zwsoft.com/upload/admin/20240527";
 
 const timingRows = [
-  { task: "Part 1: Set up frame",           mfg: "00:34", zwcad: "01:44" },
-  { task: "Part 2: Modify design",           mfg: "02:22", zwcad: "03:18" },
-  { task: "Part 3: Create part drawing",     mfg: "03:25", zwcad: "05:44" },
-  { task: "Part 4: Create assembly drawing", mfg: "01:50", zwcad: "05:58" },
+  { task: "Part 1: Set up frame",           mfg: "00:34", zwcad: "01:44", preview: "/zwcad-mfg/da32.png" },
+  { task: "Part 2: Modify design",           mfg: "02:22", zwcad: "03:18", preview: "/zwcad-mfg/da33.png" },
+  { task: "Part 3: Create part drawing",     mfg: "03:25", zwcad: "05:44", preview: "/zwcad-mfg/da34.png" },
+  { task: "Part 4: Create assembly drawing", mfg: "01:50", zwcad: "05:58", preview: "/zwcad-mfg/da35.png" },
 ];
 
 const companyLogos = [
@@ -282,36 +283,60 @@ export default function ZWCADMFGPage() {
               <div className="df-table">
                 <div className="df-box">
                   <div className="df-tr">
-                    <span className="df-th d-bold">Project tasks</span>
-                    <span className="df-th d-bold">ZWCAD MFG</span>
-                    <span className="df-th d-bold">ZWCAD</span>
+                    <div className="df-th d-bold">Project tasks</div>
+                    <div className="df-th d-bold">ZWCAD MFG</div>
+                    <div className="df-th d-bold">ZWCAD</div>
                   </div>
                   <div className="df-list">
                     {timingRows.map((r) => (
                       <div key={r.task} className="df-item">
                         <div className="df-td">
                           <div className="df-lt">
-                            <span className="df-name">{r.task}</span>
+                            <div className="df-imgbox">
+                              <div className="df-icon"><img src="/zwcad-mfg/da30.png" alt="" /></div>
+                              <div className="df-sub">
+                                <div className="df-img"><img src={r.preview} alt={r.task} loading="lazy" /></div>
+                              </div>
+                            </div>
+                            <div className="df-name">{r.task}</div>
                           </div>
                         </div>
-                        <div className="df-td">
-                          <div className="df-time">{r.mfg}</div>
-                        </div>
-                        <div className="df-td">
-                          <div className="df-time">{r.zwcad}</div>
-                        </div>
+                        <div className="df-td"><div className="df-time">{r.mfg}</div></div>
+                        <div className="df-td"><div className="df-time">{r.zwcad}</div></div>
                       </div>
                     ))}
+
+                    <div className="df-item df-item--total">
+                      <div className="df-td">
+                        <div className="df-lt">
+                          <div className="df-imgbox">
+                            <div className="df-icon"><img src="/zwcad-mfg/da31.png" alt="" /></div>
+                          </div>
+                          <div className="df-name d-bold">Total Time</div>
+                        </div>
+                      </div>
+                      <div className="df-td"><div className="df-time d-bold">08:11</div></div>
+                      <div className="df-td"><div className="df-time d-bold">16:44</div></div>
+                    </div>
+
+                    <div className="df-item df-item--score">
+                      <div className="df-td">
+                        <div className="df-lt">
+                          <div className="df-improvement d-bold">Efficiency Improvement</div>
+                        </div>
+                      </div>
+                      <div className="df-td">
+                        <div className="df-score d-bold">
+                          <TrendingUp size={20} />
+                          <span>51%</span>
+                        </div>
+                      </div>
+                      <div className="df-td" />
+                    </div>
                   </div>
-                  <div className="df-tr" style={{ borderTop: "1px solid rgba(228,230,240,.5)", marginTop: 0 }}>
-                    <span className="df-th d-bold">Total Time</span>
-                    <span className="df-th d-bold">08:11</span>
-                    <span className="df-th d-bold" style={{ color: "#000" }}>16:44</span>
-                  </div>
-                  <div className="df-score d-bold">51% productivity boost 🚀</div>
-                  <div className="df-hint">* Based on internal testing with hand pump design tasks</div>
                 </div>
               </div>
+              <div className="df-hint">(Figures shown in minutes and seconds)</div>
             </div>
           </div>
         </div>

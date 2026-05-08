@@ -1,18 +1,28 @@
 import { FormEvent, useState } from "react";
-import { useMockStore, newId, nowIso } from "../../../admin/mockStore";
-import { seedNews } from "../../../admin/seeds";
-import type { NewsItem } from "../../../admin/types";
-import Icon from "../../../admin/Icon";
+import type { NewsItem } from "@/admin/types";
+import { Icon, FileUpload, RichTextEditor } from "@/admin/components";
+import { useApiResource } from "@/admin/api";
 import "./AdminNewsPage.css";
 
 type Draft = Omit<NewsItem, "id" | "createdAt" | "updatedAt">;
 const EMPTY: Draft = { slug: "", title: "", category: "", excerpt: "", content: "", image: "", date: "" };
 
+// Backend dùng publishedAt (DateTime), FE dùng date (yyyy-mm-dd) cho input[type=date].
+const mapIn = (raw: any): NewsItem => ({
+  ...raw,
+  date: raw.publishedAt ? String(raw.publishedAt).slice(0, 10) : "",
+});
+const mapOut = (d: Partial<NewsItem>): any => {
+  const { date, ...rest } = d as any;
+  return { ...rest, publishedAt: date ? new Date(date).toISOString() : null };
+};
+
 export default function AdminNewsPage() {
-  const [items, setItems] = useMockStore<NewsItem[]>("admin.news", seedNews);
+  const { items, loading, error, create, update, remove } = useApiResource<NewsItem>("news", { mapIn, mapOut });
   const [editing, setEditing] = useState<NewsItem | null>(null);
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   function startCreate() { setEditing(null); setDraft(EMPTY); setShowForm(true); }
   function startEdit(n: NewsItem) {
@@ -25,18 +35,19 @@ export default function AdminNewsPage() {
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
-  function save(e: FormEvent) {
+  async function save(e: FormEvent) {
     e.preventDefault();
-    if (editing) {
-      setItems(items.map((x) => (x.id === editing.id ? { ...x, ...draft, updatedAt: nowIso() } : x)));
-    } else {
-      setItems([...items, { ...draft, id: newId(), createdAt: nowIso(), updatedAt: nowIso() }]);
-    }
-    cancel();
+    setSaving(true);
+    try {
+      if (editing) await update(editing.id, draft);
+      else await create(draft);
+      cancel();
+    } catch (ex: any) { alert(ex?.message || "Lưu thất bại"); }
+    finally { setSaving(false); }
   }
-  function remove(n: NewsItem) {
+  async function handleRemove(n: NewsItem) {
     if (!confirm(`Xóa bài "${n.title}"?`)) return;
-    setItems(items.filter((x) => x.id !== n.id));
+    try { await remove(n.id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
 
   return (
@@ -83,16 +94,35 @@ export default function AdminNewsPage() {
             </div>
             <div className="adm-field">
               <label className="adm-label">Nội dung</label>
-              <textarea className="adm-textarea" rows={8} value={draft.content} onChange={(e) => setDraft({ ...draft, content: e.target.value })} />
+              <RichTextEditor
+                value={draft.content || ""}
+                onChange={(html) => setDraft((d) => ({ ...d, content: html }))}
+                placeholder="Nhập nội dung bài viết. Có thể dán hoặc kéo-thả ảnh trực tiếp vào đây."
+              />
             </div>
             <div className="adm-field">
-              <label className="adm-label">URL ảnh</label>
-              <input className="adm-input" value={draft.image} onChange={(e) => setDraft({ ...draft, image: e.target.value })} />
+              <label className="adm-label">Ảnh đại diện</label>
+              <input
+                className="adm-input"
+                value={draft.image}
+                onChange={(e) => setDraft({ ...draft, image: e.target.value })}
+                placeholder="Dán URL hoặc tải lên bên dưới"
+              />
+              <div style={{ marginTop: 8 }}>
+                <FileUpload
+                  category="image"
+                  value={draft.image}
+                  onChange={(r) => setDraft((d) => ({ ...d, image: r.url }))}
+                  hint="JPG/PNG · tỷ lệ 16:9"
+                />
+              </div>
             </div>
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel}>Hủy</button>
-            <button className="adm-btn" type="submit">{editing ? "Lưu" : "Đăng bài"}</button>
+            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel} disabled={saving}>Hủy</button>
+            <button className="adm-btn" type="submit" disabled={saving}>
+              {saving ? "Đang lưu…" : editing ? "Lưu" : "Đăng bài"}
+            </button>
           </div>
         </form>
       )}
@@ -108,7 +138,9 @@ export default function AdminNewsPage() {
             </tr>
           </thead>
           <tbody>
-            {items.map((n) => (
+            {loading && <tr><td colSpan={4} className="adm-table-empty">Đang tải…</td></tr>}
+            {error && !loading && <tr><td colSpan={4} className="adm-table-empty" style={{ color: "var(--adm-destructive)" }}>{error}</td></tr>}
+            {!loading && !error && items.map((n) => (
               <tr key={n.id}>
                 <td>
                   <div style={{ fontWeight: 500 }}>{n.title}</div>
@@ -119,12 +151,12 @@ export default function AdminNewsPage() {
                 <td>
                   <div className="adm-table-actions">
                     <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => startEdit(n)}><Icon name="edit" size={14} /></button>
-                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => remove(n)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
+                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => handleRemove(n)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
                   </div>
                 </td>
               </tr>
             ))}
-            {items.length === 0 && <tr><td colSpan={4} className="adm-table-empty">Chưa có bài viết nào</td></tr>}
+            {!loading && !error && items.length === 0 && <tr><td colSpan={4} className="adm-table-empty">Chưa có bài viết nào</td></tr>}
           </tbody>
         </table>
       </div>

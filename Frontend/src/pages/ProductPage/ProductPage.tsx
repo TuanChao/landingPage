@@ -259,7 +259,10 @@ export default function ProductPage() {
         <img className="pp-hero__bg" src={`${IMG}/zwcad/bg-section.png`} alt="" />
         <div className="container">
           <div className="pp-hero__body">
-            <span className="pp-hero__eyebrow">ZWCAD</span>
+            <span className="pp-hero__eyebrow">
+              <img src="/zwcad-mfg/zwcad.png" alt="" className="pp-hero__eyebrow-logo" />
+              ZWCAD
+            </span>
             <h1 className="pp-hero__title">Create Amazing Things</h1>
             <div className="pp-hero__pricing">
               <p>

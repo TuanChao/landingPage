@@ -1,24 +1,32 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../admin/styles.css";
+import { login } from "@/admin/api";
+import "@/admin/styles.css";
 import "./AdminLoginPage.css";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("admin@zwcadvietnam.com");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErr(null);
     if (!password) {
       setErr("Vui lòng nhập mật khẩu");
       return;
     }
-    localStorage.setItem("admin_logged_in", "1");
-    localStorage.setItem("admin_email", email);
-    navigate("/admin");
+    setLoading(true);
+    try {
+      await login(email, password);
+      navigate("/admin");
+    } catch (ex: any) {
+      setErr(ex?.message || "Đăng nhập thất bại");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -68,14 +76,10 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          <button className="adm-btn" type="submit" style={{ width: "100%", height: 40 }}>
-            Đăng nhập
+          <button className="adm-btn" type="submit" disabled={loading} style={{ width: "100%", height: 40 }}>
+            {loading ? "Đang đăng nhập…" : "Đăng nhập"}
           </button>
           {err && <div className="adm-error">{err}</div>}
-
-          <div className="adm-login__demo">
-            Phiên bản demo · Nhập bất kỳ mật khẩu nào để vào
-          </div>
         </form>
       </div>
     </div>

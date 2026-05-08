@@ -298,7 +298,10 @@ export default function ZW3DPage() {
         <div className="z3-hero">
           <div className="container z3-hero__inner">
             <div className="z3-hero__left">
-              <div className="z3-hero__tag">ZW3D 2026</div>
+              <div className="z3-hero__tag">
+                <img src="/image-zwcad/logo/zwc3d" alt="" className="z3-hero__tag-logo" />
+                ZW3D 2026
+              </div>
               <h1 className="z3-hero__title">
                 Unify Design, Simulation,<br />and Manufacturing
               </h1>

@@ -1,17 +1,40 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useMockStore } from "../../../admin/mockStore";
-import { seedBanners, seedNews, seedFaq, seedProducts, seedDownloads, seedContacts } from "../../../admin/seeds";
-import type { Banner, NewsItem, FaqItem, Product, DownloadItem, ContactSubmission } from "../../../admin/types";
-import Icon from "../../../admin/Icon";
+import type { Banner, NewsItem, FaqItem, DownloadItem, ContactSubmission } from "@/admin/types";
+import { Icon } from "@/admin/components";
+import { resolveAssetUrl, resource, listContacts } from "@/admin/api";
 import "./AdminDashboardPage.css";
 
 export default function AdminDashboardPage() {
-  const [banners] = useMockStore<Banner[]>("admin.banners", seedBanners);
-  const [news] = useMockStore<NewsItem[]>("admin.news", seedNews);
-  const [faq] = useMockStore<FaqItem[]>("admin.faq", seedFaq);
-  const [products] = useMockStore<Product[]>("admin.products", seedProducts);
-  const [downloads] = useMockStore<DownloadItem[]>("admin.downloads", seedDownloads);
-  const [contacts] = useMockStore<ContactSubmission[]>("admin.contacts", seedContacts);
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [faq, setFaq] = useState<FaqItem[]>([]);
+  const [downloads, setDownloads] = useState<DownloadItem[]>([]);
+  const [contacts, setContacts] = useState<ContactSubmission[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      try {
+        const [b, n, f, d, c] = await Promise.all([
+          resource<Banner>("banners").list(),
+          resource<NewsItem>("news").list(),
+          resource<FaqItem>("faq").list(),
+          resource<DownloadItem>("downloads").list(),
+          listContacts(),
+        ]);
+        if (cancelled) return;
+        setBanners(b); setNews(n); setFaq(f); setDownloads(d); setContacts(c);
+      } catch {
+        // hiển thị trang dashboard với số 0 nếu fail
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const newContacts = contacts.filter((c) => c.status === "new").length;
   const activeBanners = banners.filter((b) => b.active).length;
@@ -20,7 +43,6 @@ export default function AdminDashboardPage() {
     { label: "Banner đang hiển thị", value: activeBanners, hint: `Tổng cộng ${banners.length} banner`, href: "/admin/banners", icon: "banner" },
     { label: "Bài viết tin tức", value: news.length, hint: "Đã xuất bản", href: "/admin/news", icon: "news" },
     { label: "Câu hỏi thường gặp", value: faq.length, hint: "Đang công khai", href: "/admin/faq", icon: "faq" },
-    { label: "Sản phẩm", value: products.length, hint: "Trong danh mục", href: "/admin/products", icon: "product" },
     { label: "File tải về", value: downloads.length, hint: "Trial & docs", href: "/admin/downloads", icon: "download" },
     { label: "Liên hệ chưa đọc", value: newContacts, hint: `${contacts.length} tổng`, href: "/admin/contacts", icon: "contact" },
   ];
@@ -32,7 +54,7 @@ export default function AdminDashboardPage() {
       <div className="adm-page-header">
         <div className="adm-page-header__title">
           <h1 className="adm-h1">Tổng quan</h1>
-          <p className="adm-muted">Xin chào lại — đây là tóm tắt nội dung đang quản lý.</p>
+          <p className="adm-muted">{loading ? "Đang tải dữ liệu…" : "Xin chào lại — đây là tóm tắt nội dung đang quản lý."}</p>
         </div>
       </div>
 
@@ -90,7 +112,7 @@ export default function AdminDashboardPage() {
                 {banners.filter((b) => b.active).sort((a, b) => a.order - b.order).map((b) => (
                   <div key={b.id} className="adm-recent__row">
                     {b.image
-                      ? <img src={b.image} alt="" className="adm-thumb" />
+                      ? <img src={resolveAssetUrl(b.image)} alt="" className="adm-thumb" />
                       : <div className="adm-thumb" style={{ background: "var(--adm-muted-bg)" }} />}
                     <div className="adm-recent__body">
                       <div className="adm-recent__name">{b.title}</div>

@@ -18,7 +18,6 @@ const routesName = {
   ADMIN_BANNERS: "/admin/banners",
   ADMIN_NEWS: "/admin/news",
   ADMIN_FAQ: "/admin/faq",
-  ADMIN_PRODUCTS: "/admin/products",
   ADMIN_DOWNLOADS: "/admin/downloads",
   ADMIN_CONTACTS: "/admin/contacts",
 } as const;

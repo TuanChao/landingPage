@@ -1,18 +1,18 @@
 import { FormEvent, useState } from "react";
-import { useMockStore, newId, nowIso } from "../../../admin/mockStore";
-import { seedDownloads } from "../../../admin/seeds";
-import type { DownloadItem } from "../../../admin/types";
-import Icon from "../../../admin/Icon";
+import type { DownloadItem } from "@/admin/types";
+import { Icon, FileUpload } from "@/admin/components";
+import { formatBytes, useApiResource } from "@/admin/api";
 import "./AdminDownloadsPage.css";
 
 type Draft = Omit<DownloadItem, "id" | "createdAt" | "updatedAt">;
 const EMPTY: Draft = { slug: "", title: "", productSlug: "", version: "", fileUrl: "", fileSize: "" };
 
 export default function AdminDownloadsPage() {
-  const [items, setItems] = useMockStore<DownloadItem[]>("admin.downloads", seedDownloads);
+  const { items, loading, error, create, update, remove } = useApiResource<DownloadItem>("downloads");
   const [editing, setEditing] = useState<DownloadItem | null>(null);
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   function startCreate() { setEditing(null); setDraft(EMPTY); setShowForm(true); }
   function startEdit(d: DownloadItem) {
@@ -24,18 +24,19 @@ export default function AdminDownloadsPage() {
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
-  function save(e: FormEvent) {
+  async function save(e: FormEvent) {
     e.preventDefault();
-    if (editing) {
-      setItems(items.map((x) => (x.id === editing.id ? { ...x, ...draft, updatedAt: nowIso() } : x)));
-    } else {
-      setItems([...items, { ...draft, id: newId(), createdAt: nowIso(), updatedAt: nowIso() }]);
-    }
-    cancel();
+    setSaving(true);
+    try {
+      if (editing) await update(editing.id, draft);
+      else await create(draft);
+      cancel();
+    } catch (ex: any) { alert(ex?.message || "Lưu thất bại"); }
+    finally { setSaving(false); }
   }
-  function remove(d: DownloadItem) {
+  async function handleRemove(d: DownloadItem) {
     if (!confirm(`Xóa "${d.title}"?`)) return;
-    setItems(items.filter((x) => x.id !== d.id));
+    try { await remove(d.id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
 
   return (
@@ -67,8 +68,43 @@ export default function AdminDownloadsPage() {
               </div>
             </div>
             <div className="adm-field">
-              <label className="adm-label">URL file</label>
-              <input className="adm-input" value={draft.fileUrl} onChange={(e) => setDraft({ ...draft, fileUrl: e.target.value })} required />
+              <label className="adm-label">File</label>
+              <input
+                className="adm-input"
+                value={draft.fileUrl}
+                onChange={(e) => setDraft({ ...draft, fileUrl: e.target.value })}
+                placeholder="Dán URL hoặc tải lên bên dưới"
+                required
+              />
+              <div style={{ marginTop: 8 }}>
+                <FileUpload
+                  category="installer"
+                  value={draft.fileUrl}
+                  onChange={(r) =>
+                    setDraft((d) => ({
+                      ...d,
+                      fileUrl: r.url,
+                      fileSize: d.fileSize || formatBytes(r.size),
+                    }))
+                  }
+                  hint="ZIP / EXE / MSI / RAR / 7Z · tối đa 2 GB"
+                />
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <FileUpload
+                  category="doc"
+                  value=""
+                  onChange={(r) =>
+                    setDraft((d) => ({
+                      ...d,
+                      fileUrl: r.url,
+                      fileSize: d.fileSize || formatBytes(r.size),
+                    }))
+                  }
+                  label="Hoặc tải lên tài liệu"
+                  hint="PDF / DOC / DOCX / XLSX / PPTX"
+                />
+              </div>
             </div>
             <div className="adm-row-3">
               <div className="adm-field">
@@ -86,8 +122,10 @@ export default function AdminDownloadsPage() {
             </div>
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel}>Hủy</button>
-            <button className="adm-btn" type="submit">{editing ? "Lưu" : "Tạo"}</button>
+            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel} disabled={saving}>Hủy</button>
+            <button className="adm-btn" type="submit" disabled={saving}>
+              {saving ? "Đang lưu…" : editing ? "Lưu" : "Tạo"}
+            </button>
           </div>
         </form>
       )}
@@ -104,7 +142,9 @@ export default function AdminDownloadsPage() {
             </tr>
           </thead>
           <tbody>
-            {items.map((d) => (
+            {loading && <tr><td colSpan={5} className="adm-table-empty">Đang tải…</td></tr>}
+            {error && !loading && <tr><td colSpan={5} className="adm-table-empty" style={{ color: "var(--adm-destructive)" }}>{error}</td></tr>}
+            {!loading && !error && items.map((d) => (
               <tr key={d.id}>
                 <td>
                   <div style={{ fontWeight: 500 }}>{d.title}</div>
@@ -116,12 +156,12 @@ export default function AdminDownloadsPage() {
                 <td>
                   <div className="adm-table-actions">
                     <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => startEdit(d)}><Icon name="edit" size={14} /></button>
-                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => remove(d)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
+                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => handleRemove(d)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
                   </div>
                 </td>
               </tr>
             ))}
-            {items.length === 0 && <tr><td colSpan={5} className="adm-table-empty">Chưa có file nào</td></tr>}
+            {!loading && !error && items.length === 0 && <tr><td colSpan={5} className="adm-table-empty">Chưa có file nào</td></tr>}
           </tbody>
         </table>
       </div>

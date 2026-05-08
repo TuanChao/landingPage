@@ -2,9 +2,10 @@
   display: flex;
   min-height: 100vh;
   background: var(--adm-bg);
+  position: relative;
 }
 
-/* Sidebar */
+/* ===== Sidebar (desktop default) ===== */
 .adm-sidebar {
   width: 256px;
   background: var(--adm-sidebar-bg);
@@ -16,6 +17,7 @@
   height: 100vh;
   flex-shrink: 0;
   border-right: 1px solid var(--adm-sidebar-border);
+  z-index: 30;
 }
 
 .adm-sidebar__brand {
@@ -24,6 +26,7 @@
   gap: 10px;
   padding: 18px 20px;
   border-bottom: 1px solid var(--adm-sidebar-border);
+  position: relative;
 }
 .adm-sidebar__logo {
   width: 32px;
@@ -40,6 +43,22 @@
 }
 .adm-sidebar__brand-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
 .adm-sidebar__brand-sub { font-size: 11px; color: var(--adm-sidebar-muted); margin-top: 2px; }
+
+/* Nút đóng drawer — chỉ hiện trên mobile */
+.adm-sidebar__close {
+  display: none;
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--adm-sidebar-muted);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.adm-sidebar__close:hover { color: var(--adm-sidebar-fg); background: var(--adm-sidebar-accent); }
 
 .adm-sidebar__nav {
   flex: 1;
@@ -89,7 +108,18 @@
   border-top: 1px solid var(--adm-sidebar-border);
 }
 
-/* Main */
+/* Overlay khi drawer mở (mobile) */
+.adm-sidebar__overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 25;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* ===== Main ===== */
 .adm-main {
   flex: 1;
   display: flex;
@@ -101,7 +131,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   padding: 12px 24px;
   border-bottom: 1px solid var(--adm-border);
   background: var(--adm-bg);
@@ -109,6 +139,10 @@
   position: sticky;
   top: 0;
   z-index: 10;
+}
+.adm-topbar__burger {
+  display: none;
+  flex-shrink: 0;
 }
 .adm-topbar__search {
   display: flex;
@@ -119,20 +153,28 @@
   padding: 0 12px;
   height: 36px;
   width: 320px;
+  max-width: 100%;
   color: var(--adm-muted);
+  flex: 0 1 320px;
 }
 .adm-topbar__search-input {
   border: 0;
   background: transparent;
   outline: none;
   flex: 1;
+  min-width: 0;
   font-size: 13px;
   color: var(--adm-fg);
   font-family: inherit;
 }
 .adm-topbar__search-input::placeholder { color: var(--adm-muted); }
 
-.adm-topbar__right { display: flex; align-items: center; gap: 12px; }
+.adm-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
 .adm-topbar__user {
   display: flex;
   align-items: center;
@@ -141,7 +183,15 @@
   border-left: 1px solid var(--adm-border);
 }
 .adm-topbar__user-info { display: flex; flex-direction: column; }
-.adm-topbar__user-name { font-size: 13px; font-weight: 500; line-height: 1.2; }
+.adm-topbar__user-name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .adm-topbar__user-role { font-size: 11px; color: var(--adm-muted); }
 
 .adm-content {
@@ -150,17 +200,59 @@
   background: var(--adm-bg);
 }
 
+/* ===== Tablet (≤1024px): sidebar thu gọn icon-only nhưng ở lại ===== */
 @media (max-width: 1024px) {
   .adm-sidebar { width: 64px; }
+  .adm-sidebar__brand { padding: 18px 12px; justify-content: center; }
   .adm-sidebar__brand-name,
   .adm-sidebar__brand-sub,
   .adm-sidebar__group-label,
   .adm-sidebar__link span { display: none; }
   .adm-sidebar__link { justify-content: center; padding: 10px; }
-  .adm-topbar__search { width: 200px; }
+  .adm-topbar__search { width: 220px; flex-basis: 220px; }
+  .adm-content { padding: 20px 20px 32px; }
 }
-@media (max-width: 640px) {
+
+/* ===== Mobile (≤768px): sidebar trở thành drawer slide-in ===== */
+@media (max-width: 768px) {
+  .adm-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+  .adm-shell--drawer-open .adm-sidebar { transform: translateX(0); }
+
+  /* Khi drawer mở, hiện lại full content của sidebar */
+  .adm-sidebar__brand { padding: 18px 20px; justify-content: flex-start; }
+  .adm-sidebar__brand-name,
+  .adm-sidebar__brand-sub,
+  .adm-sidebar__group-label,
+  .adm-sidebar__link span { display: revert; }
+  .adm-sidebar__link { justify-content: flex-start; padding: 8px 12px; }
+  .adm-sidebar__close { display: inline-flex; }
+
+  .adm-sidebar__overlay { display: block; pointer-events: none; }
+  .adm-shell--drawer-open .adm-sidebar__overlay {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .adm-topbar { padding: 10px 16px; gap: 8px; }
+  .adm-topbar__burger { display: inline-flex; }
+  .adm-topbar__search { display: none; }
+  .adm-topbar__user { padding-left: 8px; }
   .adm-topbar__user-info { display: none; }
-  .adm-topbar__search { width: 140px; }
-  .adm-content { padding: 16px; }
+
+  .adm-content { padding: 16px 16px 32px; }
+}
+
+/* ===== Mobile nhỏ (≤480px): tối giản thêm ===== */
+@media (max-width: 480px) {
+  .adm-topbar { padding: 8px 12px; }
+  .adm-content { padding: 12px 12px 28px; }
 }

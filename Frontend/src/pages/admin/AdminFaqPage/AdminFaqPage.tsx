@@ -1,40 +1,41 @@
 import { FormEvent, useState } from "react";
-import { useMockStore, newId, nowIso } from "../../../admin/mockStore";
-import { seedFaq } from "../../../admin/seeds";
-import type { FaqItem } from "../../../admin/types";
-import Icon from "../../../admin/Icon";
+import type { FaqItem } from "@/admin/types";
+import { Icon } from "@/admin/components";
+import { useApiResource } from "@/admin/api";
 import "./AdminFaqPage.css";
 
 type Draft = Omit<FaqItem, "id" | "createdAt" | "updatedAt">;
 const EMPTY: Draft = { slug: "", question: "", answer: "", order: 0 };
 
 export default function AdminFaqPage() {
-  const [items, setItems] = useMockStore<FaqItem[]>("admin.faq", seedFaq);
+  const { items, loading, error, create, update, remove } = useApiResource<FaqItem>("faq");
   const [editing, setEditing] = useState<FaqItem | null>(null);
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const sorted = [...items].sort((a, b) => a.order - b.order);
 
-  function startCreate() { setEditing(null); setDraft({ ...EMPTY, order: (sorted.at(-1)?.order ?? 0) + 1 }); setShowForm(true); }
+  function startCreate() { setEditing(null); setDraft({ ...EMPTY, order: (sorted[sorted.length - 1]?.order ?? 0) + 1 }); setShowForm(true); }
   function startEdit(f: FaqItem) {
     setEditing(f);
     setDraft({ slug: f.slug, question: f.question, answer: f.answer, order: f.order });
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
-  function save(e: FormEvent) {
+  async function save(e: FormEvent) {
     e.preventDefault();
-    if (editing) {
-      setItems(items.map((x) => (x.id === editing.id ? { ...x, ...draft, updatedAt: nowIso() } : x)));
-    } else {
-      setItems([...items, { ...draft, id: newId(), createdAt: nowIso(), updatedAt: nowIso() }]);
-    }
-    cancel();
+    setSaving(true);
+    try {
+      if (editing) await update(editing.id, draft);
+      else await create(draft);
+      cancel();
+    } catch (ex: any) { alert(ex?.message || "Lưu thất bại"); }
+    finally { setSaving(false); }
   }
-  function remove(f: FaqItem) {
+  async function handleRemove(f: FaqItem) {
     if (!confirm(`Xóa câu hỏi này?`)) return;
-    setItems(items.filter((x) => x.id !== f.id));
+    try { await remove(f.id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
 
   return (
@@ -75,8 +76,10 @@ export default function AdminFaqPage() {
             </div>
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel}>Hủy</button>
-            <button className="adm-btn" type="submit">{editing ? "Lưu" : "Tạo câu hỏi"}</button>
+            <button className="adm-btn adm-btn--outline" type="button" onClick={cancel} disabled={saving}>Hủy</button>
+            <button className="adm-btn" type="submit" disabled={saving}>
+              {saving ? "Đang lưu…" : editing ? "Lưu" : "Tạo câu hỏi"}
+            </button>
           </div>
         </form>
       )}
@@ -92,7 +95,9 @@ export default function AdminFaqPage() {
             </tr>
           </thead>
           <tbody>
-            {sorted.map((f) => (
+            {loading && <tr><td colSpan={4} className="adm-table-empty">Đang tải…</td></tr>}
+            {error && !loading && <tr><td colSpan={4} className="adm-table-empty" style={{ color: "var(--adm-destructive)" }}>{error}</td></tr>}
+            {!loading && !error && sorted.map((f) => (
               <tr key={f.id}>
                 <td className="adm-mono">{f.order}</td>
                 <td>
@@ -105,12 +110,12 @@ export default function AdminFaqPage() {
                 <td>
                   <div className="adm-table-actions">
                     <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => startEdit(f)}><Icon name="edit" size={14} /></button>
-                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => remove(f)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
+                    <button className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm" onClick={() => handleRemove(f)} style={{ color: "var(--adm-destructive)" }}><Icon name="trash" size={14} /></button>
                   </div>
                 </td>
               </tr>
             ))}
-            {sorted.length === 0 && <tr><td colSpan={4} className="adm-table-empty">Chưa có câu hỏi nào</td></tr>}
+            {!loading && !error && sorted.length === 0 && <tr><td colSpan={4} className="adm-table-empty">Chưa có câu hỏi nào</td></tr>}
           </tbody>
         </table>
       </div>

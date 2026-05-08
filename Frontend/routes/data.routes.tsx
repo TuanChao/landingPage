@@ -17,7 +17,6 @@ import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
 import AdminBannersPage from "@/pages/admin/AdminBannersPage";
 import AdminNewsPage from "@/pages/admin/AdminNewsPage";
 import AdminFaqPage from "@/pages/admin/AdminFaqPage";
-import AdminProductsPage from "@/pages/admin/AdminProductsPage";
 import AdminDownloadsPage from "@/pages/admin/AdminDownloadsPage";
 import AdminContactsPage from "@/pages/admin/AdminContactsPage";
 // Folder-based pages (mỗi page có index.ts re-export default)
@@ -116,11 +115,6 @@ export const routesData: IRouterData[] = [
     path: routesName.ADMIN_FAQ,
     layout: AdminLayout,
     component: AdminFaqPage,
-  },
-  {
-    path: routesName.ADMIN_PRODUCTS,
-    layout: AdminLayout,
-    component: AdminProductsPage,
   },
   {
     path: routesName.ADMIN_DOWNLOADS,

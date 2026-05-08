@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useMockStore, nowIso } from "../../../admin/mockStore";
-import { seedContacts } from "../../../admin/seeds";
-import type { ContactSubmission } from "../../../admin/types";
-import Icon from "../../../admin/Icon";
+import type { ContactSubmission } from "@/admin/types";
+import { Icon } from "@/admin/components";
+import { useContacts } from "@/admin/api";
 import "./AdminContactsPage.css";
 
 const STATUS_LABEL: Record<ContactSubmission["status"], string> = {
@@ -12,18 +11,18 @@ const STATUS_LABEL: Record<ContactSubmission["status"], string> = {
 };
 
 export default function AdminContactsPage() {
-  const [items, setItems] = useMockStore<ContactSubmission[]>("admin.contacts", seedContacts);
+  const { items, loading, error, setStatus, remove } = useContacts();
   const [filter, setFilter] = useState<"all" | ContactSubmission["status"]>("all");
 
   const sorted = [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const filtered = filter === "all" ? sorted : sorted.filter((c) => c.status === filter);
 
-  function setStatus(id: string, status: ContactSubmission["status"]) {
-    setItems(items.map((x) => (x.id === id ? { ...x, status, updatedAt: nowIso() } : x)));
+  async function handleStatus(id: string, status: ContactSubmission["status"]) {
+    try { await setStatus(id, status); } catch (ex: any) { alert(ex?.message || "Cập nhật thất bại"); }
   }
-  function remove(id: string) {
+  async function handleRemove(id: string) {
     if (!confirm("Xóa liên hệ này?")) return;
-    setItems(items.filter((x) => x.id !== id));
+    try { await remove(id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
 
   const counts = {
@@ -68,7 +67,9 @@ export default function AdminContactsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((c) => (
+            {loading && <tr><td colSpan={6} className="adm-table-empty">Đang tải…</td></tr>}
+            {error && !loading && <tr><td colSpan={6} className="adm-table-empty" style={{ color: "var(--adm-destructive)" }}>{error}</td></tr>}
+            {!loading && !error && filtered.map((c) => (
               <tr key={c.id}>
                 <td className="adm-mono adm-muted">{new Date(c.createdAt).toLocaleString("vi-VN")}</td>
                 <td>
@@ -89,7 +90,7 @@ export default function AdminContactsPage() {
                   <select
                     className="adm-select"
                     value={c.status}
-                    onChange={(e) => setStatus(c.id, e.target.value as ContactSubmission["status"])}
+                    onChange={(e) => handleStatus(c.id, e.target.value as ContactSubmission["status"])}
                     style={{ height: 30, fontSize: 12, padding: "0 8px" }}
                   >
                     <option value="new">Mới</option>
@@ -100,7 +101,7 @@ export default function AdminContactsPage() {
                 <td>
                   <button
                     className="adm-btn adm-btn--ghost adm-btn--icon adm-btn--sm"
-                    onClick={() => remove(c.id)}
+                    onClick={() => handleRemove(c.id)}
                     style={{ color: "var(--adm-destructive)" }}
                     title="Xóa"
                   >
@@ -109,7 +110,7 @@ export default function AdminContactsPage() {
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && (
+            {!loading && !error && filtered.length === 0 && (
               <tr><td colSpan={6} className="adm-table-empty">Không có liên hệ nào</td></tr>
             )}
           </tbody>

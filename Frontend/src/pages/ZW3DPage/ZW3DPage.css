@@ -136,13 +136,74 @@
 .z3-hero {
   background: linear-gradient(135deg, #0a1a50 0%, #1340a0 55%, #1762e7 100%);
   padding: 100px 0 70px;
+  min-height: 830px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow tĩnh phía sau cho thêm chiều sâu */
+.z3-hero::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 70%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(86, 168, 255, 0.18) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .z3-hero__inner {
   display: flex;
   align-items: center;
   gap: 60px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
 }
+
+/* Hero entrance animation */
+@keyframes z3-hero-fade {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes z3-hero-fade-right {
+  from { opacity: 0; transform: translateX(40px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes z3-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.z3-hero__left > * {
+  opacity: 0;
+  animation: z3-hero-fade 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.z3-hero__left > .z3-hero__tag   { animation-delay: 0.10s; }
+.z3-hero__left > .z3-hero__title { animation-delay: 0.24s; }
+.z3-hero__left > .z3-hero__sub   { animation-delay: 0.40s; }
+.z3-hero__left > .z3-hero__btns  { animation-delay: 0.56s; }
+
+.z3-hero__right {
+  opacity: 0;
+  animation: z3-hero-fade-right 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.30s forwards;
+}
+.z3-hero__img {
+  animation: z3-hero-float 5s ease-in-out 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .z3-hero__left > *,
+  .z3-hero__right { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .z3-hero__img { animation: none !important; }
+}
+
+@media (max-width: 1500px) { .z3-hero { min-height: 700px; } }
+@media (max-width: 992px)  { .z3-hero { min-height: 734px; } }
+@media (max-width: 760px)  { .z3-hero { min-height: 0; padding: 70px 0 60px; } }
 
 .z3-hero__left {
   flex: 1;
@@ -150,15 +211,26 @@
 }
 
 .z3-hero__tag {
-  display: inline-block;
-  border: 1px solid rgba(255, 255, 255, .45);
-  background: rgba(255, 255, 255, .1);
-  border-radius: 999px;
-  padding: 6px 18px;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 15px;
   font-weight: 700;
   color: #fff;
+  white-space: nowrap;
   margin-bottom: 20px;
+}
+
+.z3-hero__tag-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f0f2f7;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .z3-hero__title {

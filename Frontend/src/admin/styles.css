@@ -158,9 +158,10 @@
   background: var(--adm-card);
   border: 1px solid var(--adm-border);
   border-radius: var(--adm-radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
-.adm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.adm-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 13px; }
 .adm-table th,
 .adm-table td {
   padding: 12px 16px;
@@ -243,7 +244,44 @@
 .adm-divider { height: 1px; background: var(--adm-border); margin: 16px 0; border: 0; }
 .adm-error { color: var(--adm-destructive); font-size: 13px; }
 
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .adm-stats { grid-template-columns: repeat(2, 1fr); }
+  .adm-row-3 { grid-template-columns: repeat(2, 1fr); }
+  .adm-card__header { padding: 16px 18px 0; }
+  .adm-card__content { padding: 16px 18px 18px; }
+  .adm-card__footer { padding: 12px 18px; }
+}
+
 @media (max-width: 768px) {
-  .adm-row, .adm-row-3 { grid-template-columns: 1fr; }
-  .adm-stats { grid-template-columns: 1fr; }
+  .adm-h1 { font-size: 20px; }
+  .adm-h2 { font-size: 16px; }
+  .adm-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .adm-page-header .adm-btn { align-self: flex-start; }
+  .adm-row, .adm-row-3 { grid-template-columns: 1fr; gap: 12px; }
+  .adm-stats { grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
+  .adm-stat { padding: 16px 18px; }
+  .adm-stat__value { font-size: 24px; }
+  .adm-card__header { padding: 14px 16px 0; }
+  .adm-card__content { padding: 14px 16px 16px; }
+  .adm-card__footer { padding: 12px 16px; flex-wrap: wrap; }
+  .adm-card__footer .adm-btn { flex: 1 1 auto; }
+  .adm-table th, .adm-table td { padding: 10px 12px; }
+  .adm-table-actions { justify-content: flex-end; }
+  .adm-field { margin-bottom: 12px; }
+}
+
+@media (max-width: 480px) {
+  .adm-h1 { font-size: 18px; }
+  .adm-btn { height: 38px; padding: 0 12px; } /* tap target lớn hơn */
+  .adm-btn--icon { width: 38px; }
+  .adm-btn--sm { height: 30px; padding: 0 10px; }
+  .adm-btn--icon.adm-btn--sm { width: 30px; }
+  .adm-input, .adm-textarea, .adm-select { height: 40px; font-size: 14px; }
+  .adm-textarea { height: auto; min-height: 80px; }
 }

@@ -6,6 +6,15 @@ using ZwcadVietnam.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cho phép upload file lớn (file cài đặt ZWCAD có thể >1GB)
+const long MaxUploadBytes = 2L * 1024 * 1024 * 1024;
+builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = MaxUploadBytes);
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o =>
+{
+    o.MultipartBodyLengthLimit = MaxUploadBytes;
+    o.ValueLengthLimit = int.MaxValue;
+});
+
 // Database (PostgreSQL)
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
