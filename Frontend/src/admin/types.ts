@@ -6,9 +6,15 @@ export interface BaseEntity {
 
 export interface Banner extends BaseEntity {
   title: string;
+  titleEn?: string;
+  titleZh?: string;
   subtitle?: string;
+  subtitleEn?: string;
+  subtitleZh?: string;
   image: string;
   ctaLabel?: string;
+  ctaLabelEn?: string;
+  ctaLabelZh?: string;
   ctaHref?: string;
   order: number;
   active: boolean;
@@ -17,9 +23,15 @@ export interface Banner extends BaseEntity {
 export interface NewsItem extends BaseEntity {
   slug: string;
   title: string;
+  titleEn?: string;
+  titleZh?: string;
   category?: string;
   excerpt?: string;
+  excerptEn?: string;
+  excerptZh?: string;
   content?: string;
+  contentEn?: string;
+  contentZh?: string;
   image?: string;
   date?: string;
 }
@@ -27,7 +39,11 @@ export interface NewsItem extends BaseEntity {
 export interface FaqItem extends BaseEntity {
   slug: string;
   question: string;
+  questionEn?: string;
+  questionZh?: string;
   answer: string;
+  answerEn?: string;
+  answerZh?: string;
   order: number;
 }
 
@@ -44,6 +60,8 @@ export interface Product extends BaseEntity {
 export interface DownloadItem extends BaseEntity {
   slug: string;
   title: string;
+  titleEn?: string;
+  titleZh?: string;
   productSlug?: string;
   version?: string;
   fileUrl: string;

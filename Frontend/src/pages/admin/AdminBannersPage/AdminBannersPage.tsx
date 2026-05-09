@@ -1,13 +1,18 @@
 import { FormEvent, useState } from "react";
 import type { Banner } from "@/admin/types";
-import { Icon, FileUpload } from "@/admin/components";
+import { Icon, FileUpload, LangTabs } from "@/admin/components";
 import { resolveAssetUrl, useApiResource } from "@/admin/api";
 import "./AdminBannersPage.css";
 
+type Lang = "vi" | "en" | "zh";
 type Draft = Omit<Banner, "id" | "createdAt" | "updatedAt">;
+
 const EMPTY: Draft = {
-  title: "", subtitle: "", image: "",
-  ctaLabel: "", ctaHref: "",
+  title: "", titleEn: "", titleZh: "",
+  subtitle: "", subtitleEn: "", subtitleZh: "",
+  image: "",
+  ctaLabel: "", ctaLabelEn: "", ctaLabelZh: "",
+  ctaHref: "",
   order: 0, active: true,
 };
 
@@ -17,21 +22,27 @@ export default function AdminBannersPage() {
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [lang, setLang] = useState<Lang>("vi");
 
   const sorted = [...items].sort((a, b) => a.order - b.order);
 
   function startCreate() {
     setEditing(null);
     setDraft({ ...EMPTY, order: (sorted[sorted.length - 1]?.order ?? 0) + 1 });
+    setLang("vi");
     setShowForm(true);
   }
   function startEdit(b: Banner) {
     setEditing(b);
     setDraft({
-      title: b.title, subtitle: b.subtitle ?? "", image: b.image,
-      ctaLabel: b.ctaLabel ?? "", ctaHref: b.ctaHref ?? "",
+      title: b.title, titleEn: b.titleEn ?? "", titleZh: b.titleZh ?? "",
+      subtitle: b.subtitle ?? "", subtitleEn: b.subtitleEn ?? "", subtitleZh: b.subtitleZh ?? "",
+      image: b.image,
+      ctaLabel: b.ctaLabel ?? "", ctaLabelEn: b.ctaLabelEn ?? "", ctaLabelZh: b.ctaLabelZh ?? "",
+      ctaHref: b.ctaHref ?? "",
       order: b.order, active: b.active,
     });
+    setLang("vi");
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
@@ -59,6 +70,11 @@ export default function AdminBannersPage() {
     try { await update(b.id, { ...b, active: !b.active }); } catch (ex: any) { alert(ex?.message || "Cập nhật thất bại"); }
   }
 
+  // Helpers to get/set fields for current lang
+  const titleKey = lang === "vi" ? "title" : lang === "en" ? "titleEn" : "titleZh";
+  const subtitleKey = lang === "vi" ? "subtitle" : lang === "en" ? "subtitleEn" : "subtitleZh";
+  const ctaLabelKey = lang === "vi" ? "ctaLabel" : lang === "en" ? "ctaLabelEn" : "ctaLabelZh";
+
   return (
     <div className="adm-root">
       <div className="adm-page-header">
@@ -78,53 +94,73 @@ export default function AdminBannersPage() {
             <p className="adm-muted">Banner hiển thị ngay đầu trang chủ. Đảm bảo ảnh có tỷ lệ phù hợp.</p>
           </div>
           <div className="adm-card__content">
+            <LangTabs value={lang} onChange={setLang} />
+
             <div className="adm-field">
               <label className="adm-label">Tiêu đề</label>
-              <input className="adm-input" value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} required />
+              <input
+                className="adm-input"
+                value={(draft as any)[titleKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [titleKey]: e.target.value })}
+                required={lang === "vi"}
+              />
             </div>
             <div className="adm-field">
               <label className="adm-label">Mô tả phụ</label>
-              <textarea className="adm-textarea" value={draft.subtitle} onChange={(e) => setDraft({ ...draft, subtitle: e.target.value })} />
+              <textarea
+                className="adm-textarea"
+                value={(draft as any)[subtitleKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [subtitleKey]: e.target.value })}
+              />
             </div>
+
+            {lang === "vi" && (
+              <>
+                <div className="adm-field">
+                  <label className="adm-label">Ảnh banner</label>
+                  <input
+                    className="adm-input"
+                    value={draft.image}
+                    onChange={(e) => setDraft({ ...draft, image: e.target.value })}
+                    placeholder="Dán URL ảnh hoặc tải lên bên dưới"
+                  />
+                  <div style={{ marginTop: 8 }}>
+                    <FileUpload
+                      category="image"
+                      value={draft.image}
+                      onChange={(r) => setDraft((d) => ({ ...d, image: r.url }))}
+                      hint="JPG/PNG/WEBP/SVG · khuyến nghị 1920×800"
+                    />
+                  </div>
+                </div>
+                <div className="adm-row">
+                  <div className="adm-field">
+                    <label className="adm-label">Link CTA (dùng chung)</label>
+                    <input className="adm-input" value={draft.ctaHref} onChange={(e) => setDraft({ ...draft, ctaHref: e.target.value })} placeholder="/tai-ve/zwcad-trial" />
+                  </div>
+                  <div className="adm-field">
+                    <label className="adm-label">Thứ tự</label>
+                    <input className="adm-input" type="number" value={draft.order} onChange={(e) => setDraft({ ...draft, order: Number(e.target.value) })} />
+                  </div>
+                </div>
+                <div className="adm-field">
+                  <label className="adm-label">Trạng thái</label>
+                  <select className="adm-select" value={draft.active ? "1" : "0"} onChange={(e) => setDraft({ ...draft, active: e.target.value === "1" })}>
+                    <option value="1">Đang hiển thị</option>
+                    <option value="0">Đã tắt</option>
+                  </select>
+                </div>
+              </>
+            )}
+
             <div className="adm-field">
-              <label className="adm-label">Ảnh banner</label>
+              <label className="adm-label">Nhãn nút CTA</label>
               <input
                 className="adm-input"
-                value={draft.image}
-                onChange={(e) => setDraft({ ...draft, image: e.target.value })}
-                placeholder="Dán URL ảnh hoặc tải lên bên dưới"
+                value={(draft as any)[ctaLabelKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [ctaLabelKey]: e.target.value })}
+                placeholder="Tải về dùng thử"
               />
-              <div style={{ marginTop: 8 }}>
-                <FileUpload
-                  category="image"
-                  value={draft.image}
-                  onChange={(r) => setDraft((d) => ({ ...d, image: r.url }))}
-                  hint="JPG/PNG/WEBP/SVG · khuyến nghị 1920×800"
-                />
-              </div>
-            </div>
-            <div className="adm-row">
-              <div className="adm-field">
-                <label className="adm-label">Nhãn nút CTA</label>
-                <input className="adm-input" value={draft.ctaLabel} onChange={(e) => setDraft({ ...draft, ctaLabel: e.target.value })} placeholder="Tải về dùng thử" />
-              </div>
-              <div className="adm-field">
-                <label className="adm-label">Link CTA</label>
-                <input className="adm-input" value={draft.ctaHref} onChange={(e) => setDraft({ ...draft, ctaHref: e.target.value })} placeholder="/tai-ve/zwcad-trial" />
-              </div>
-            </div>
-            <div className="adm-row">
-              <div className="adm-field">
-                <label className="adm-label">Thứ tự</label>
-                <input className="adm-input" type="number" value={draft.order} onChange={(e) => setDraft({ ...draft, order: Number(e.target.value) })} />
-              </div>
-              <div className="adm-field">
-                <label className="adm-label">Trạng thái</label>
-                <select className="adm-select" value={draft.active ? "1" : "0"} onChange={(e) => setDraft({ ...draft, active: e.target.value === "1" })}>
-                  <option value="1">Đang hiển thị</option>
-                  <option value="0">Đã tắt</option>
-                </select>
-              </div>
             </div>
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>

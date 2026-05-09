@@ -40,6 +40,24 @@
       "path": "/#contact"
     }
   ],
+  "ui": {
+    "viewAll": "Xem tất cả →",
+    "viewDetail": "Xem chi tiết →",
+    "featuredProducts": "Danh mục sản phẩm nổi bật",
+    "news": "Tin tức",
+    "faq": "Câu hỏi thường gặp",
+    "slider": {
+      "cta": "Khám phá",
+      "label": "Sản phẩm nổi bật",
+      "prevSlide": "Slide trước",
+      "nextSlide": "Slide kế"
+    }
+  },
+  "slider": [
+    { "desc": "Phần mềm CAD 2D/3D tương thích DWG, hiệu năng cao với chi phí tối ưu cho mọi doanh nghiệp." },
+    { "desc": "Giải pháp CAD/CAM 3D toàn diện cho thiết kế và gia công cơ khí, hợp nhất quy trình từ ý tưởng tới sản phẩm." },
+    { "desc": "ZWCAD chuyên biệt cho ngành sản xuất với bộ công cụ MFG tích hợp, tăng năng suất tới 51%." }
+  ],
   "hero": {
     "eyebrow": "PHÂN PHỐI PHẦN MỀM ZWCAD TẠI VIỆT NAM",
     "slides": [

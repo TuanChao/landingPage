@@ -16,7 +16,7 @@ export default function FeatureSection() {
 
   return (
     <Section id="features" className="feature-section">
-      <SectionTitle>Danh mục sản phẩm nổi bật</SectionTitle>
+      <SectionTitle>{content.ui.featuredProducts}</SectionTitle>
 
       <div className="feature-grid">
         {content.products.map((item, index) => (
@@ -27,7 +27,7 @@ export default function FeatureSection() {
             </div>
             <h3 className="feature-title">{item.title}</h3>
             <p className="feature-desc">{item.description}</p>
-            <span className="feature-link">Xem chi tiết →</span>
+            <span className="feature-link">{content.ui.viewDetail}</span>
           </Link>
         ))}
       </div>

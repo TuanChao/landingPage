@@ -12,8 +12,8 @@ export default function SupportSection() {
   return (
     <Section className="support-section">
       <div className="support-section__head">
-        <SectionTitle>Câu hỏi thường gặp</SectionTitle>
-        <Link to="/cau-hoi-thuong-gap" className="support-section__more">Xem tất cả →</Link>
+        <SectionTitle>{content.ui.faq}</SectionTitle>
+        <Link to="/cau-hoi-thuong-gap" className="support-section__more">{content.ui.viewAll}</Link>
       </div>
       <div className="support-section__faq">
         {content.faq.map((item) => {

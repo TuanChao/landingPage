@@ -221,6 +221,36 @@
 .adm-stat__value { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
 .adm-stat__hint { color: var(--adm-muted); font-size: 12px; }
 
+/* LangTabs */
+.adm-lang-tabs {
+  display: inline-flex;
+  background: var(--adm-muted-bg);
+  border-radius: var(--adm-radius-sm);
+  padding: 3px;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+.adm-lang-tab {
+  padding: 4px 12px;
+  height: 28px;
+  border: none;
+  border-radius: calc(var(--adm-radius-sm) - 2px);
+  background: transparent;
+  color: var(--adm-muted);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.adm-lang-tab:hover { color: var(--adm-fg); }
+.adm-lang-tab.is-active {
+  background: var(--adm-bg);
+  color: var(--adm-fg);
+  box-shadow: var(--adm-shadow-sm);
+}
+
 /* Misc */
 .adm-thumb {
   width: 56px;

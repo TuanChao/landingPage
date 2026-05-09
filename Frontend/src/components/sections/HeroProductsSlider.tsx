@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import routesName from "~routes/enum.routes";
+import { useSiteContent } from "../../hooks/useSiteContent";
 import "./HeroProductsSlider.css";
 
 interface ProductSlide {
   name: string;
   tagline: string;
-  desc: string;
   href: string;
   logo: string;
   bg: string;
@@ -18,7 +18,6 @@ const SLIDES: ProductSlide[] = [
   {
     name: "ZWCAD",
     tagline: "Create Amazing Things",
-    desc: "Phần mềm CAD 2D/3D tương thích DWG, hiệu năng cao với chi phí tối ưu cho mọi doanh nghiệp.",
     href: routesName.SAN_PHAM_ZWCAD,
     logo: "/zwcad-mfg/zwcad.png",
     bg: "/image-zwcad/zwcad/bg-section.png",
@@ -27,7 +26,6 @@ const SLIDES: ProductSlide[] = [
   {
     name: "ZW3D",
     tagline: "Unify Design, Simulation & Manufacturing",
-    desc: "Giải pháp CAD/CAM 3D toàn diện cho thiết kế và gia công cơ khí, hợp nhất quy trình từ ý tưởng tới sản phẩm.",
     href: routesName.SAN_PHAM_ZW3D,
     logo: "/image-zwcad/logo/zwc3d",
     bg: "/public/zw3dhomebanner.jpg",
@@ -36,7 +34,6 @@ const SLIDES: ProductSlide[] = [
   {
     name: "ZWCAD MFG",
     tagline: "Advanced 2D CAD for Manufacturing",
-    desc: "ZWCAD chuyên biệt cho ngành sản xuất với bộ công cụ MFG tích hợp, tăng năng suất tới 51%.",
     href: routesName.SAN_PHAM_ZWCAD_MFG,
     logo: "/image-zwcad/logo/zwcadmfg",
     bg: "https://zwcdn.zwsoft.com/web/images/zwcad_mfg_ov/zwcad-mfg-2026.jpg",
@@ -47,6 +44,10 @@ const SLIDES: ProductSlide[] = [
 const AUTO_INTERVAL = 8000;
 
 export default function HeroProductsSlider() {
+  const content = useSiteContent();
+  const ui = content.ui.slider;
+  const sliderDescs = content.slider;
+
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -64,7 +65,7 @@ export default function HeroProductsSlider() {
   return (
     <section
       className={`hps${paused ? " is-paused" : ""}`}
-      aria-label="Sản phẩm nổi bật"
+      aria-label={ui.label}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -74,7 +75,7 @@ export default function HeroProductsSlider() {
           className="hps-track"
           style={{ transform: `translateX(-${active * 100}%)` }}
         >
-          {SLIDES.map((s) => (
+          {SLIDES.map((s, i) => (
             <article
               key={s.name}
               className="hps-slide"
@@ -90,9 +91,9 @@ export default function HeroProductsSlider() {
                     <span className="hps-slide__name">{s.name}</span>
                   </div>
                   <h2 className="hps-slide__title">{s.tagline}</h2>
-                  <p className="hps-slide__desc">{s.desc}</p>
+                  <p className="hps-slide__desc">{sliderDescs[i]?.desc ?? ""}</p>
                   <Link to={s.href} className="hps-slide__cta" style={{ background: s.accent }}>
-                    Khám phá {s.name}
+                    {ui.cta} {s.name}
                     <ArrowRight size={16} />
                   </Link>
                 </div>
@@ -106,7 +107,7 @@ export default function HeroProductsSlider() {
         type="button"
         className="hps-arrow hps-arrow--prev"
         onClick={() => goTo(active - 1)}
-        aria-label="Slide trước"
+        aria-label={ui.prevSlide}
       >
         <ChevronLeft size={20} />
       </button>
@@ -114,7 +115,7 @@ export default function HeroProductsSlider() {
         type="button"
         className="hps-arrow hps-arrow--next"
         onClick={() => goTo(active + 1)}
-        aria-label="Slide kế"
+        aria-label={ui.nextSlide}
       >
         <ChevronRight size={20} />
       </button>
@@ -126,7 +127,7 @@ export default function HeroProductsSlider() {
             type="button"
             role="tab"
             aria-selected={i === active}
-            aria-label={`Sản phẩm ${s.name}`}
+            aria-label={`${ui.cta} ${s.name}`}
             className={`hps-dot${i === active ? " is-active" : ""}`}
             onClick={() => goTo(i)}
           />

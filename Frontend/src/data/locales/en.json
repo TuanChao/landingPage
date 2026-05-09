@@ -40,6 +40,24 @@
       "path": "/#contact"
     }
   ],
+  "ui": {
+    "viewAll": "View all →",
+    "viewDetail": "View detail →",
+    "featuredProducts": "Featured Products",
+    "news": "News",
+    "faq": "FAQ",
+    "slider": {
+      "cta": "Explore",
+      "label": "Featured Products",
+      "prevSlide": "Previous slide",
+      "nextSlide": "Next slide"
+    }
+  },
+  "slider": [
+    { "desc": "Cost-effective 2D/3D CAD software with DWG compatibility and high performance for every business." },
+    { "desc": "Comprehensive 3D CAD/CAM solution for mechanical design and manufacturing, unifying the process from concept to product." },
+    { "desc": "ZWCAD specialized for manufacturing with integrated MFG toolset, boosting productivity by up to 51%." }
+  ],
   "hero": {
     "eyebrow": "ZWCAD DISTRIBUTOR IN VIETNAM",
     "slides": [

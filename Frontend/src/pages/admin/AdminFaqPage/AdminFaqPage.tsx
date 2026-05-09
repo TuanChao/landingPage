@@ -1,11 +1,18 @@
 import { FormEvent, useState } from "react";
 import type { FaqItem } from "@/admin/types";
-import { Icon } from "@/admin/components";
+import { Icon, LangTabs } from "@/admin/components";
 import { useApiResource } from "@/admin/api";
 import "./AdminFaqPage.css";
 
+type Lang = "vi" | "en" | "zh";
 type Draft = Omit<FaqItem, "id" | "createdAt" | "updatedAt">;
-const EMPTY: Draft = { slug: "", question: "", answer: "", order: 0 };
+
+const EMPTY: Draft = {
+  slug: "",
+  question: "", questionEn: "", questionZh: "",
+  answer: "", answerEn: "", answerZh: "",
+  order: 0,
+};
 
 export default function AdminFaqPage() {
   const { items, loading, error, create, update, remove } = useApiResource<FaqItem>("faq");
@@ -13,13 +20,25 @@ export default function AdminFaqPage() {
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [lang, setLang] = useState<Lang>("vi");
 
   const sorted = [...items].sort((a, b) => a.order - b.order);
 
-  function startCreate() { setEditing(null); setDraft({ ...EMPTY, order: (sorted[sorted.length - 1]?.order ?? 0) + 1 }); setShowForm(true); }
+  function startCreate() {
+    setEditing(null);
+    setDraft({ ...EMPTY, order: (sorted[sorted.length - 1]?.order ?? 0) + 1 });
+    setLang("vi");
+    setShowForm(true);
+  }
   function startEdit(f: FaqItem) {
     setEditing(f);
-    setDraft({ slug: f.slug, question: f.question, answer: f.answer, order: f.order });
+    setDraft({
+      slug: f.slug,
+      question: f.question, questionEn: f.questionEn ?? "", questionZh: f.questionZh ?? "",
+      answer: f.answer, answerEn: f.answerEn ?? "", answerZh: f.answerZh ?? "",
+      order: f.order,
+    });
+    setLang("vi");
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
@@ -37,6 +56,9 @@ export default function AdminFaqPage() {
     if (!confirm(`Xóa câu hỏi này?`)) return;
     try { await remove(f.id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
+
+  const questionKey = lang === "vi" ? "question" : lang === "en" ? "questionEn" : "questionZh";
+  const answerKey = lang === "vi" ? "answer" : lang === "en" ? "answerEn" : "answerZh";
 
   return (
     <div className="adm-root">
@@ -56,23 +78,39 @@ export default function AdminFaqPage() {
             <h2 className="adm-h2">{editing ? "Chỉnh sửa câu hỏi" : "Câu hỏi mới"}</h2>
           </div>
           <div className="adm-card__content">
-            <div className="adm-row">
-              <div className="adm-field">
-                <label className="adm-label">Câu hỏi</label>
-                <input className="adm-input" value={draft.question} onChange={(e) => setDraft({ ...draft, question: e.target.value })} required />
+            <LangTabs value={lang} onChange={setLang} />
+
+            {lang === "vi" && (
+              <div className="adm-row">
+                <div className="adm-field">
+                  <label className="adm-label">Slug</label>
+                  <input className="adm-input" value={draft.slug} onChange={(e) => setDraft({ ...draft, slug: e.target.value })} required />
+                </div>
+                <div className="adm-field" style={{ maxWidth: 200 }}>
+                  <label className="adm-label">Thứ tự</label>
+                  <input className="adm-input" type="number" value={draft.order} onChange={(e) => setDraft({ ...draft, order: Number(e.target.value) })} />
+                </div>
               </div>
-              <div className="adm-field">
-                <label className="adm-label">Slug</label>
-                <input className="adm-input" value={draft.slug} onChange={(e) => setDraft({ ...draft, slug: e.target.value })} required />
-              </div>
+            )}
+
+            <div className="adm-field">
+              <label className="adm-label">Câu hỏi</label>
+              <input
+                className="adm-input"
+                value={(draft as any)[questionKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [questionKey]: e.target.value })}
+                required={lang === "vi"}
+              />
             </div>
             <div className="adm-field">
               <label className="adm-label">Trả lời</label>
-              <textarea className="adm-textarea" rows={5} value={draft.answer} onChange={(e) => setDraft({ ...draft, answer: e.target.value })} required />
-            </div>
-            <div className="adm-field" style={{ maxWidth: 200 }}>
-              <label className="adm-label">Thứ tự</label>
-              <input className="adm-input" type="number" value={draft.order} onChange={(e) => setDraft({ ...draft, order: Number(e.target.value) })} />
+              <textarea
+                className="adm-textarea"
+                rows={5}
+                value={(draft as any)[answerKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [answerKey]: e.target.value })}
+                required={lang === "vi"}
+              />
             </div>
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>

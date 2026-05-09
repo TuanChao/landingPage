@@ -1,93 +1,52 @@
 {
   "searchPlaceholder": "输入搜索关键词",
   "nav": [
-    {
-      "label": "主页",
-      "path": "/"
-    },
+    { "label": "主页", "path": "/" },
     {
       "label": "产品",
       "path": "/san-pham/zwcad",
       "children": [
-        {
-          "label": "ZWCAD",
-          "path": "/san-pham/zwcad"
-        },
-        {
-          "label": "ZW3D",
-          "path": "/san-pham/zw3d"
-        },
-        {
-          "label": "ZWCAD MFG",
-          "path": "/san-pham/zwcad-mfg"
-        }
+        { "label": "ZWCAD", "path": "/san-pham/zwcad" },
+        { "label": "ZW3D", "path": "/san-pham/zw3d" },
+        { "label": "ZWCAD MFG", "path": "/san-pham/zwcad-mfg" }
       ]
     },
-    {
-      "label": "新闻",
-      "path": "/tin-tuc"
-    },
-    {
-      "label": "下载",
-      "path": "/tai-ve"
-    },
-    {
-      "label": "常见问题",
-      "path": "/cau-hoi-thuong-gap"
-    },
-    {
-      "label": "联系我们",
-      "path": "/#contact"
-    }
+    { "label": "新闻", "path": "/tin-tuc" },
+    { "label": "下载", "path": "/tai-ve" },
+    { "label": "常见问题", "path": "/cau-hoi-thuong-gap" },
+    { "label": "联系我们", "path": "/#contact" }
   ],
   "hero": {
     "eyebrow": "越南 ZWCAD 官方代理",
     "slides": [
-      {
-        "title": "ZWCAD 2025",
-        "subtitle": "创造更多精彩",
-        "cta": "立即购买",
-        "theme": "slide-1"
-      },
-      {
-        "title": "CADbro 2025",
-        "subtitle": "更快的多格式 3D 审阅",
-        "cta": "立即查看",
-        "theme": "slide-2"
-      },
-      {
-        "title": "ZWCAD MFG",
-        "subtitle": "优化 2D 机械制图流程",
-        "cta": "了解更多",
-        "theme": "slide-3"
-      }
+      { "title": "ZWCAD 2025", "subtitle": "创造更多精彩", "cta": "立即购买", "theme": "slide-1" },
+      { "title": "CADbro 2025", "subtitle": "更快的多格式 3D 审阅", "cta": "立即查看", "theme": "slide-2" },
+      { "title": "ZWCAD MFG", "subtitle": "优化 2D 机械制图流程", "cta": "了解更多", "theme": "slide-3" }
     ]
   },
-  "products": [
-    {
-      "slug": "zwcad",
-      "title": "ZWCAD",
-      "description": "高性价比 CAD 平台，DWG 兼容性强。",
-      "badge": "最受欢迎"
-    },
-    {
-      "slug": "zw3d",
-      "title": "ZW3D",
-      "description": "集成 3D 设计与加工的专业软件。",
-      "badge": ""
-    },
-    {
-      "slug": "zwcad-mfg",
-      "title": "ZWCAD MFG",
-      "description": "专业 2D 机械制图功能。",
-      "badge": ""
-    },
-    {
-      "slug": "zwcad",
-      "title": "CADbro",
-      "description": "用于协作的 3D 查看与多格式转换工具。",
-      "badge": "免费"
+  "ui": {
+    "viewAll": "查看全部 →",
+    "viewDetail": "查看详情 →",
+    "featuredProducts": "特色产品",
+    "news": "新闻动态",
+    "faq": "常见问题",
+    "slider": {
+      "cta": "探索",
+      "label": "特色产品",
+      "prevSlide": "上一张",
+      "nextSlide": "下一张"
     }
+  },
+  "slider": [
+    { "desc": "高性价比 2D/3D CAD 软件，兼容 DWG，高效稳定，适合各类企业。" },
+    { "desc": "综合 3D CAD/CAM 解决方案，统一从概念到产品的整个机械设计与制造流程。" },
+    { "desc": "专为制造业优化的 ZWCAD，内置 MFG 工具组，生产效率提升高达 51%。" }
+  ],
+  "products": [
+    { "slug": "zwcad", "title": "ZWCAD", "description": "高性价比 CAD 平台，DWG 兼容性强。", "badge": "最受欢迎" },
+    { "slug": "zw3d", "title": "ZW3D", "description": "集成 3D 设计与加工的专业软件。", "badge": "" },
+    { "slug": "zwcad-mfg", "title": "ZWCAD MFG", "description": "专业 2D 机械制图功能。", "badge": "" },
+    { "slug": "zwcad", "title": "CADbro", "description": "用于协作的 3D 查看与多格式转换工具。", "badge": "免费" }
   ],
   "news": [
     {
@@ -110,33 +69,13 @@
     }
   ],
   "downloads": [
-    {
-      "slug": "zwcad-trial",
-      "name": "ZWCAD Trial",
-      "version": "2025"
-    },
-    {
-      "slug": "cadbro-trial",
-      "name": "CADbro Trial",
-      "version": "2025"
-    }
+    { "slug": "zwcad-trial", "name": "ZWCAD Trial", "version": "2025" },
+    { "slug": "cadbro-trial", "name": "CADbro Trial", "version": "2025" }
   ],
   "faq": [
-    {
-      "slug": "what-is-zwcad",
-      "question": "什么是 ZWCAD？",
-      "answer": "ZWCAD 是一款支持 DWG 的 2D/3D CAD 设计软件。"
-    },
-    {
-      "slug": "vietnam-support",
-      "question": "在越南是否提供技术支持？",
-      "answer": "是的，FocusTech 提供部署、培训和维护支持。"
-    },
-    {
-      "slug": "perpetual-license",
-      "question": "是否有永久授权？",
-      "answer": "有，具体取决于所选套餐和业务需求。"
-    }
+    { "slug": "what-is-zwcad", "question": "什么是 ZWCAD？", "answer": "ZWCAD 是一款支持 DWG 的 2D/3D CAD 设计软件。" },
+    { "slug": "vietnam-support", "question": "在越南是否提供技术支持？", "answer": "是的，FocusTech 提供部署、培训和维护支持。" },
+    { "slug": "perpetual-license", "question": "是否有永久授权？", "answer": "有，具体取决于所选套餐和业务需求。" }
   ],
   "contact": {
     "title": "联系我们",
@@ -149,13 +88,8 @@
       "邮箱：contact@focustech.com.vn"
     ],
     "form": {
-      "placeholders": [
-        "??",
-        "????",
-        "??",
-        "????"
-      ],
-      "submit": "????"
+      "placeholders": ["姓名", "电话号码", "电子邮件", "您的需求"],
+      "submit": "提交"
     }
   }
 }

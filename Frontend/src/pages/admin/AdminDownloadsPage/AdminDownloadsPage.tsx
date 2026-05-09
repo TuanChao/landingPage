@@ -1,11 +1,16 @@
 import { FormEvent, useState } from "react";
 import type { DownloadItem } from "@/admin/types";
-import { Icon, FileUpload } from "@/admin/components";
+import { Icon, FileUpload, LangTabs } from "@/admin/components";
 import { formatBytes, useApiResource } from "@/admin/api";
 import "./AdminDownloadsPage.css";
 
+type Lang = "vi" | "en" | "zh";
 type Draft = Omit<DownloadItem, "id" | "createdAt" | "updatedAt">;
-const EMPTY: Draft = { slug: "", title: "", productSlug: "", version: "", fileUrl: "", fileSize: "" };
+
+const EMPTY: Draft = {
+  slug: "", title: "", titleEn: "", titleZh: "",
+  productSlug: "", version: "", fileUrl: "", fileSize: "",
+};
 
 export default function AdminDownloadsPage() {
   const { items, loading, error, create, update, remove } = useApiResource<DownloadItem>("downloads");
@@ -13,14 +18,17 @@ export default function AdminDownloadsPage() {
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [lang, setLang] = useState<Lang>("vi");
 
-  function startCreate() { setEditing(null); setDraft(EMPTY); setShowForm(true); }
+  function startCreate() { setEditing(null); setDraft(EMPTY); setLang("vi"); setShowForm(true); }
   function startEdit(d: DownloadItem) {
     setEditing(d);
     setDraft({
-      slug: d.slug, title: d.title, productSlug: d.productSlug ?? "",
-      version: d.version ?? "", fileUrl: d.fileUrl, fileSize: d.fileSize ?? "",
+      slug: d.slug, title: d.title, titleEn: d.titleEn ?? "", titleZh: d.titleZh ?? "",
+      productSlug: d.productSlug ?? "", version: d.version ?? "",
+      fileUrl: d.fileUrl, fileSize: d.fileSize ?? "",
     });
+    setLang("vi");
     setShowForm(true);
   }
   function cancel() { setShowForm(false); setEditing(null); }
@@ -38,6 +46,8 @@ export default function AdminDownloadsPage() {
     if (!confirm(`Xóa "${d.title}"?`)) return;
     try { await remove(d.id); } catch (ex: any) { alert(ex?.message || "Xóa thất bại"); }
   }
+
+  const titleKey = lang === "vi" ? "title" : lang === "en" ? "titleEn" : "titleZh";
 
   return (
     <div className="adm-root">
@@ -57,69 +67,81 @@ export default function AdminDownloadsPage() {
             <h2 className="adm-h2">{editing ? "Chỉnh sửa file" : "File mới"}</h2>
           </div>
           <div className="adm-card__content">
-            <div className="adm-row">
-              <div className="adm-field">
-                <label className="adm-label">Tiêu đề</label>
-                <input className="adm-input" value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} required />
-              </div>
-              <div className="adm-field">
-                <label className="adm-label">Slug</label>
-                <input className="adm-input" value={draft.slug} onChange={(e) => setDraft({ ...draft, slug: e.target.value })} required />
-              </div>
-            </div>
+            <LangTabs value={lang} onChange={setLang} />
+
             <div className="adm-field">
-              <label className="adm-label">File</label>
+              <label className="adm-label">Tiêu đề</label>
               <input
                 className="adm-input"
-                value={draft.fileUrl}
-                onChange={(e) => setDraft({ ...draft, fileUrl: e.target.value })}
-                placeholder="Dán URL hoặc tải lên bên dưới"
-                required
+                value={(draft as any)[titleKey] ?? ""}
+                onChange={(e) => setDraft({ ...draft, [titleKey]: e.target.value })}
+                required={lang === "vi"}
               />
-              <div style={{ marginTop: 8 }}>
-                <FileUpload
-                  category="installer"
-                  value={draft.fileUrl}
-                  onChange={(r) =>
-                    setDraft((d) => ({
-                      ...d,
-                      fileUrl: r.url,
-                      fileSize: d.fileSize || formatBytes(r.size),
-                    }))
-                  }
-                  hint="ZIP / EXE / MSI / RAR / 7Z · tối đa 2 GB"
-                />
-              </div>
-              <div style={{ marginTop: 8 }}>
-                <FileUpload
-                  category="doc"
-                  value=""
-                  onChange={(r) =>
-                    setDraft((d) => ({
-                      ...d,
-                      fileUrl: r.url,
-                      fileSize: d.fileSize || formatBytes(r.size),
-                    }))
-                  }
-                  label="Hoặc tải lên tài liệu"
-                  hint="PDF / DOC / DOCX / XLSX / PPTX"
-                />
-              </div>
             </div>
-            <div className="adm-row-3">
-              <div className="adm-field">
-                <label className="adm-label">Sản phẩm (slug)</label>
-                <input className="adm-input" value={draft.productSlug} onChange={(e) => setDraft({ ...draft, productSlug: e.target.value })} placeholder="zwcad / zw3d" />
-              </div>
-              <div className="adm-field">
-                <label className="adm-label">Phiên bản</label>
-                <input className="adm-input" value={draft.version} onChange={(e) => setDraft({ ...draft, version: e.target.value })} />
-              </div>
-              <div className="adm-field">
-                <label className="adm-label">Kích thước</label>
-                <input className="adm-input" value={draft.fileSize} onChange={(e) => setDraft({ ...draft, fileSize: e.target.value })} placeholder="1.2 GB" />
-              </div>
-            </div>
+
+            {lang === "vi" && (
+              <>
+                <div className="adm-row">
+                  <div className="adm-field">
+                    <label className="adm-label">Slug</label>
+                    <input className="adm-input" value={draft.slug} onChange={(e) => setDraft({ ...draft, slug: e.target.value })} required />
+                  </div>
+                </div>
+                <div className="adm-field">
+                  <label className="adm-label">File</label>
+                  <input
+                    className="adm-input"
+                    value={draft.fileUrl}
+                    onChange={(e) => setDraft({ ...draft, fileUrl: e.target.value })}
+                    placeholder="Dán URL hoặc tải lên bên dưới"
+                    required
+                  />
+                  <div style={{ marginTop: 8 }}>
+                    <FileUpload
+                      category="installer"
+                      value={draft.fileUrl}
+                      onChange={(r) =>
+                        setDraft((d) => ({
+                          ...d,
+                          fileUrl: r.url,
+                          fileSize: d.fileSize || formatBytes(r.size),
+                        }))
+                      }
+                      hint="ZIP / EXE / MSI / RAR / 7Z · tối đa 2 GB"
+                    />
+                  </div>
+                  <div style={{ marginTop: 8 }}>
+                    <FileUpload
+                      category="doc"
+                      value=""
+                      onChange={(r) =>
+                        setDraft((d) => ({
+                          ...d,
+                          fileUrl: r.url,
+                          fileSize: d.fileSize || formatBytes(r.size),
+                        }))
+                      }
+                      label="Hoặc tải lên tài liệu"
+                      hint="PDF / DOC / DOCX / XLSX / PPTX"
+                    />
+                  </div>
+                </div>
+                <div className="adm-row-3">
+                  <div className="adm-field">
+                    <label className="adm-label">Sản phẩm (slug)</label>
+                    <input className="adm-input" value={draft.productSlug} onChange={(e) => setDraft({ ...draft, productSlug: e.target.value })} placeholder="zwcad / zw3d" />
+                  </div>
+                  <div className="adm-field">
+                    <label className="adm-label">Phiên bản</label>
+                    <input className="adm-input" value={draft.version} onChange={(e) => setDraft({ ...draft, version: e.target.value })} />
+                  </div>
+                  <div className="adm-field">
+                    <label className="adm-label">Kích thước</label>
+                    <input className="adm-input" value={draft.fileSize} onChange={(e) => setDraft({ ...draft, fileSize: e.target.value })} placeholder="1.2 GB" />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
           <div className="adm-card__footer" style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
             <button className="adm-btn adm-btn--outline" type="button" onClick={cancel} disabled={saving}>Hủy</button>
