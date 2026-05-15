@@ -34,7 +34,9 @@
       "cta": "探索",
       "label": "特色产品",
       "prevSlide": "上一张",
-      "nextSlide": "下一张"
+      "nextSlide": "下一张",
+      "learnMore": "了解更多",
+      "pricing": "查看价格"
     }
   },
   "slider": [

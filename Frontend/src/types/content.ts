@@ -29,6 +29,8 @@ export interface SiteContent {
       label: string;
       prevSlide: string;
       nextSlide: string;
+      learnMore: string;
+      pricing: string;
     };
   };
   slider: Array<{ desc: string }>;

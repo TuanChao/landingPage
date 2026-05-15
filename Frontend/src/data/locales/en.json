@@ -50,7 +50,9 @@
       "cta": "Explore",
       "label": "Featured Products",
       "prevSlide": "Previous slide",
-      "nextSlide": "Next slide"
+      "nextSlide": "Next slide",
+      "learnMore": "Learn More",
+      "pricing": "See Pricing"
     }
   },
   "slider": [

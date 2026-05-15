@@ -50,7 +50,9 @@
       "cta": "Khám phá",
       "label": "Sản phẩm nổi bật",
       "prevSlide": "Slide trước",
-      "nextSlide": "Slide kế"
+      "nextSlide": "Slide kế",
+      "learnMore": "Tìm hiểu thêm",
+      "pricing": "Xem giá"
     }
   },
   "slider": [
