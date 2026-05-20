@@ -1,8 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { routesData } from "./data.routes";
 import { IRouterData } from "./type.routes";
 import NotFoundPage from "@/pages/NotFoundPage";
+
+function RouteFallback() {
+  return <div style={{ padding: 40, textAlign: "center", color: "#666" }}>Đang tải…</div>;
+}
 
 const renderRoutes = (routes: IRouterData[]) =>
   routes.map((route, index) => {
@@ -28,9 +32,11 @@ const renderRoutes = (routes: IRouterData[]) =>
 
 export default function AppRouter() {
   return (
-    <Routes>
-      {renderRoutes(routesData)}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        {renderRoutes(routesData)}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 }

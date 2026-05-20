@@ -1,3 +1,4 @@
+import { lazy } from "react";
 import MainLayout from "@/layouts/MainLayout";
 import AdminLayout from "@/layouts/AdminLayout";
 import LandingPage from "@/pages/LandingPage";
@@ -12,14 +13,20 @@ import DownloadDetailPage from "@/pages/DownloadDetailPage";
 import FaqPage from "@/pages/FaqPage";
 import FaqDetailPage from "@/pages/FaqDetailPage";
 import ContactPage from "@/pages/ContactPage";
-import AdminLoginPage from "@/pages/admin/AdminLoginPage";
-import AdminDashboardPage from "@/pages/admin/AdminDashboardPage";
-import AdminBannersPage from "@/pages/admin/AdminBannersPage";
-import AdminNewsPage from "@/pages/admin/AdminNewsPage";
-import AdminFaqPage from "@/pages/admin/AdminFaqPage";
-import AdminDownloadsPage from "@/pages/admin/AdminDownloadsPage";
-import AdminContactsPage from "@/pages/admin/AdminContactsPage";
-// Folder-based pages (mỗi page có index.ts re-export default)
+
+// Admin + CustomPage lazy-load: cô lập Puck/Tiptap khỏi bundle public.
+const AdminLoginPage      = lazy(() => import("@/pages/admin/AdminLoginPage/AdminLoginPage"));
+const AdminDashboardPage  = lazy(() => import("@/pages/admin/AdminDashboardPage/AdminDashboardPage"));
+const AdminBannersPage    = lazy(() => import("@/pages/admin/AdminBannersPage/AdminBannersPage"));
+const AdminNewsPage       = lazy(() => import("@/pages/admin/AdminNewsPage/AdminNewsPage"));
+const AdminFaqPage        = lazy(() => import("@/pages/admin/AdminFaqPage/AdminFaqPage"));
+const AdminDownloadsPage  = lazy(() => import("@/pages/admin/AdminDownloadsPage/AdminDownloadsPage"));
+const AdminContactsPage   = lazy(() => import("@/pages/admin/AdminContactsPage/AdminContactsPage"));
+const AdminPagesPage      = lazy(() => import("@/pages/admin/AdminPagesPage/AdminPagesPage"));
+const AdminPageEditorPage  = lazy(() => import("@/pages/admin/AdminPageEditorPage/AdminPageEditorPage"));
+const AdminPagePreviewPage = lazy(() => import("@/pages/admin/AdminPagePreviewPage/AdminPagePreviewPage"));
+const CustomPage           = lazy(() => import("@/pages/CustomPage/CustomPage"));
+
 import routesName from "./enum.routes";
 import { IRouterData } from "./type.routes";
 
@@ -125,5 +132,26 @@ export const routesData: IRouterData[] = [
     path: routesName.ADMIN_CONTACTS,
     layout: AdminLayout,
     component: AdminContactsPage,
+  },
+  {
+    path: routesName.ADMIN_PAGES,
+    layout: AdminLayout,
+    component: AdminPagesPage,
+  },
+  {
+    path: routesName.ADMIN_PAGE_EDITOR,
+    layout: AdminLayout,
+    component: AdminPageEditorPage,
+  },
+  {
+    // Preview KHÔNG dùng AdminLayout (toàn màn, có thanh báo riêng).
+    path: routesName.ADMIN_PAGE_PREVIEW,
+    layout: MainLayout,
+    component: AdminPagePreviewPage,
+  },
+  {
+    path: routesName.CUSTOM_PAGE,
+    layout: MainLayout,
+    component: CustomPage,
   },
 ];

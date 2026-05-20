@@ -1,78 +1,78 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import routesName from "~routes/enum.routes";
 import { useSiteContent } from "../../hooks/useSiteContent";
+import { PublicApi, useFetch, useLang, pick, type BannerDto } from "@/lib/publicApi";
 import "./HeroProductsSlider.css";
-
-interface ProductSlide {
-  name: string;
-  tagline: string;
-  href: string;
-  pricingHref: string;
-  img: string;
-}
-
-const SLIDES: ProductSlide[] = [
-  {
-    name: "ZWCAD",
-    tagline: "ZWCAD - DWG-Compatible CAD for Better Productivity",
-    href: routesName.SAN_PHAM_ZWCAD,
-    pricingHref: routesName.SAN_PHAM_ZWCAD,
-    img: "/image-zwcad/zwcad/bg-section.png",
-  },
-  {
-    name: "ZW3D",
-    tagline: "ZW3D - Affordable All-in-One 3D CAD/CAE/CAM",
-    href: routesName.SAN_PHAM_ZW3D,
-    pricingHref: routesName.SAN_PHAM_ZW3D,
-    img: "/zw3dhomebanner.jpg",
-  },
-  {
-    name: "ZWCAD MFG",
-    tagline: "ZWCAD MFG - Advanced 2D CAD for Manufacturing",
-    href: routesName.SAN_PHAM_ZWCAD_MFG,
-    pricingHref: routesName.SAN_PHAM_ZWCAD_MFG,
-    img: "/zwcad-mfg/zwcad-mfg-2026.jpg",
-  },
-];
 
 const AUTO_INTERVAL = 7000;
 
 export default function HeroProductsSlider() {
   const content = useSiteContent();
-  const sliderDescs = content.slider;
   const ui = content.ui.slider;
+  const lang = useLang();
+  const { data: banners, loading, error } = useFetch<BannerDto[]>(() => PublicApi.banners(), []);
+
+  const slides = useMemo(() => {
+    const list = (banners ?? []).filter((b) => b.active).sort((a, b) => a.order - b.order);
+    return list.map((b) => ({
+      id: b.id,
+      title: pick(b, "title", lang),
+      desc: pick(b, "subtitle", lang),
+      ctaLabel: pick(b, "ctaLabel", lang) || ui.learnMore,
+      href: b.ctaHref || "#",
+      img: b.image,
+    }));
+  }, [banners, lang, ui.learnMore]);
 
   const [active, setActive] = useState(0);
-  const [activations, setActivations] = useState<number[]>(SLIDES.map(() => 1));
+  const [activations, setActivations] = useState<number[]>([]);
   const [paused, setPaused] = useState(false);
 
+  // Reset activations khi số lượng slide thay đổi
   useEffect(() => {
-    if (paused) return;
+    setActivations(slides.map(() => 1));
+    setActive(0);
+  }, [slides.length]);
+
+  useEffect(() => {
+    if (paused || slides.length < 2) return;
     const t = window.setInterval(() => {
       setActive((cur) => {
-        const next = (cur + 1) % SLIDES.length;
+        const next = (cur + 1) % slides.length;
         setActivations((prev) => {
           const a = [...prev];
-          a[next]++;
+          a[next] = (a[next] ?? 0) + 1;
           return a;
         });
         return next;
       });
     }, AUTO_INTERVAL);
     return () => window.clearInterval(t);
-  }, [paused]);
+  }, [paused, slides.length]);
 
   const goTo = (i: number) => {
-    const idx = ((i % SLIDES.length) + SLIDES.length) % SLIDES.length;
+    if (slides.length === 0) return;
+    const idx = ((i % slides.length) + slides.length) % slides.length;
     if (idx === active) return;
     setActive(idx);
     setActivations((prev) => {
       const a = [...prev];
-      a[idx]++;
+      a[idx] = (a[idx] ?? 0) + 1;
       return a;
     });
   };
+
+  if (loading || slides.length === 0) {
+    return (
+      <div className="hps hps--placeholder">
+        <div className="hps-viewport">
+          <div className="hps-slide hps-slide--empty">
+            {error && <p style={{ color: "#fff", padding: 24 }}>{error}</p>}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -80,38 +80,24 @@ export default function HeroProductsSlider() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Slider viewport */}
       <div className="hps-viewport">
-        <div
-          className="hps-track"
-          style={{ transform: `translateX(-${active * 100}%)` }}
-        >
-          {SLIDES.map((s, i) => (
-            <article key={s.name} className="hps-slide">
-              {/* Full-bleed background image */}
+        <div className="hps-track" style={{ transform: `translateX(-${active * 100}%)` }}>
+          {slides.map((s, i) => (
+            <article key={s.id} className="hps-slide">
               <img
-                key={`img-${i}-${activations[i]}`}
+                key={`img-${i}-${activations[i] ?? 0}`}
                 src={s.img}
-                alt={s.name}
+                alt={s.title}
                 className="hps-slide__img"
               />
-              {/* Gradient overlay */}
               <div className="hps-slide__overlay" />
-
-              {/* Text content */}
               <div className="container hps-slide__body">
-                <div
-                  key={`inner-${i}-${activations[i]}`}
-                  className="hps-slide__inner"
-                >
-                  <h2 className="hps-slide__title">{s.tagline}</h2>
-                  <p className="hps-slide__desc">{sliderDescs[i]?.desc ?? ""}</p>
+                <div key={`inner-${i}-${activations[i] ?? 0}`} className="hps-slide__inner">
+                  <h2 className="hps-slide__title">{s.title}</h2>
+                  <p className="hps-slide__desc">{s.desc}</p>
                   <div className="hps-slide__btns">
                     <Link to={s.href} className="hps-btn hps-btn--primary">
-                      {ui.learnMore}
-                    </Link>
-                    <Link to={s.pricingHref} className="hps-btn hps-btn--ghost">
-                      {ui.pricing}
+                      {s.ctaLabel}
                     </Link>
                   </div>
                 </div>
@@ -121,25 +107,21 @@ export default function HeroProductsSlider() {
         </div>
       </div>
 
-      {/* Bottom tab nav — nằm absolute bên trong banner */}
       <nav className="hps-bottom">
         <div className="hps-bottom__inner">
-        {SLIDES.map((s, i) => (
-          <button
-            key={s.name}
-            type="button"
-            className={`hps-tab${i === active ? " is-active" : ""}`}
-            onClick={() => goTo(i)}
-          >
-            {i === active && (
-              <span
-                key={`bar-${i}-${activations[i]}`}
-                className="hps-tab__bar"
-              />
-            )}
-            <span className="hps-tab__text">{s.tagline}</span>
-          </button>
-        ))}
+          {slides.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              className={`hps-tab${i === active ? " is-active" : ""}`}
+              onClick={() => goTo(i)}
+            >
+              {i === active && (
+                <span key={`bar-${i}-${activations[i] ?? 0}`} className="hps-tab__bar" />
+              )}
+              <span className="hps-tab__text">{s.title}</span>
+            </button>
+          ))}
         </div>
       </nav>
     </div>

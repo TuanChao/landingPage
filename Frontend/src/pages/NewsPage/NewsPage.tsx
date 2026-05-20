@@ -1,23 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Seo from "../../seo/Seo";
-import { useSiteContent } from "../../hooks/useSiteContent";
+import { PublicApi, useFetch, useLang, pick, type NewsDto } from "@/lib/publicApi";
 import "./NewsPage.css";
 
 const PER_PAGE = 8;
 
-function formatDate(dateStr?: string) {
+function formatDate(dateStr?: string | null) {
   if (!dateStr) return "";
   const d = new Date(dateStr);
   return d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 export default function NewsPage() {
-  const content = useSiteContent();
+  const lang = useLang();
+  const { data, loading, error } = useFetch<NewsDto[]>(() => PublicApi.news(), []);
   const [page, setPage] = useState(1);
 
-  const totalPages = Math.ceil(content.news.length / PER_PAGE);
-  const items = content.news.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+  const news = data ?? [];
+  const totalPages = Math.max(1, Math.ceil(news.length / PER_PAGE));
+  const items = news.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   return (
     <main className="np-page">
@@ -27,7 +29,6 @@ export default function NewsPage() {
         keywords="tin tuc zwcad, zwcad viet nam"
       />
 
-      {/* ── Banner ── */}
       <div className="np-banner">
         <img
           src="/image-zwcad/news/banner-city.png"
@@ -39,7 +40,6 @@ export default function NewsPage() {
 
       <div className="container np-wrap">
 
-        {/* ── Breadcrumb ── */}
         <nav className="np-breadcrumb">
           <Link to="/">Trang chủ</Link>
           <span className="np-bc-sep">/</span>
@@ -48,30 +48,35 @@ export default function NewsPage() {
           <span>Tin tức</span>
         </nav>
 
-        {/* ── Grid ── */}
+        {loading && <p>Đang tải...</p>}
+        {error && <p style={{ color: "crimson" }}>{error}</p>}
+
         <div className="np-grid">
-          {items.map((item) => (
-            <Link key={item.slug} to={`/tin-tuc/${item.slug}`} className="np-card">
-              <div className="np-card__thumb">
-                {item.image ? (
-                  <img src={item.image} alt={item.title} />
-                ) : (
-                  <div className="np-card__noimgbox">
-                    <span className="np-card__noimg">NO<br />IMAGE<br />AVAILABLE</span>
-                  </div>
-                )}
-              </div>
-              <div className="np-card__body">
-                {item.category && <span className="np-card__cat">{item.category}</span>}
-                <h2 className="np-card__title">{item.title}</h2>
-                <p className="np-card__excerpt">{item.excerpt}</p>
-                {item.date && <span className="np-card__date">{formatDate(item.date)}</span>}
-              </div>
-            </Link>
-          ))}
+          {items.map((item) => {
+            const title = pick(item, "title", lang);
+            const excerpt = pick(item, "excerpt", lang);
+            return (
+              <Link key={item.id} to={`/tin-tuc/${item.slug}`} className="np-card">
+                <div className="np-card__thumb">
+                  {item.image ? (
+                    <img src={item.image} alt={title} />
+                  ) : (
+                    <div className="np-card__noimgbox">
+                      <span className="np-card__noimg">NO<br />IMAGE<br />AVAILABLE</span>
+                    </div>
+                  )}
+                </div>
+                <div className="np-card__body">
+                  {item.category && <span className="np-card__cat">{item.category}</span>}
+                  <h2 className="np-card__title">{title}</h2>
+                  <p className="np-card__excerpt">{excerpt}</p>
+                  {item.publishedAt && <span className="np-card__date">{formatDate(item.publishedAt)}</span>}
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
-        {/* ── Pagination ── */}
         {totalPages > 1 && (
           <div className="np-pager">
             <span className="np-pager__info">Trang {page}/{totalPages}</span>

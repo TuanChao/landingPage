@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSiteContent } from "../../hooks/useSiteContent";
+import { PublicApi, useFetch, useLang, pick, type NewsDto } from "@/lib/publicApi";
 import Section from "../ui/Section";
 import "./NewsSection.css";
 
 const LOCALE_MAP: Record<string, string> = { vi: "vi-VN", en: "en-US", zh: "zh-CN" };
 
-function formatDate(dateStr: string | undefined, lang: string) {
+function formatDate(dateStr: string | undefined | null, lang: string) {
   if (!dateStr) return "";
   return new Date(dateStr).toLocaleDateString(LOCALE_MAP[lang] ?? "vi-VN", {
     day: "2-digit", month: "2-digit", year: "numeric",
@@ -16,8 +17,11 @@ function formatDate(dateStr: string | undefined, lang: string) {
 export default function NewsSection() {
   const content = useSiteContent();
   const { i18n } = useTranslation();
-  const lang = i18n.resolvedLanguage ?? "vi";
-  const items = content.news;
+  const lang = useLang();
+  const dateLang = i18n.resolvedLanguage ?? "vi";
+  const { data, loading } = useFetch<NewsDto[]>(() => PublicApi.news(), []);
+
+  const items = (data ?? []).slice(0, 8);
 
   return (
     <Section className="ns-section">
@@ -26,26 +30,32 @@ export default function NewsSection() {
         <Link to="/tin-tuc" className="ns-more">{content.ui.viewAll}</Link>
       </div>
 
-      <div className="ns-marquee">
-        <div className="ns-track">
-          {[...items, ...items].map((item, i) => (
-            <Link key={i} to={`/tin-tuc/${item.slug}`} className="ns-card">
-              <div className="ns-card__thumb">
-                {item.image
-                  ? <img src={item.image} alt={item.title} />
-                  : <div className="ns-card__noimg" />
-                }
-              </div>
-              <div className="ns-card__body">
-                {item.category && <span className="ns-card__cat">{item.category}</span>}
-                <h3 className="ns-card__title">{item.title}</h3>
-                <p className="ns-card__excerpt">{item.excerpt}</p>
-                {item.date && <time className="ns-card__date">{formatDate(item.date, lang)}</time>}
-              </div>
-            </Link>
-          ))}
+      {loading || items.length === 0 ? null : (
+        <div className="ns-marquee">
+          <div className="ns-track">
+            {[...items, ...items].map((item, i) => {
+              const title = pick(item, "title", lang);
+              const excerpt = pick(item, "excerpt", lang);
+              return (
+                <Link key={`${item.id}-${i}`} to={`/tin-tuc/${item.slug}`} className="ns-card">
+                  <div className="ns-card__thumb">
+                    {item.image
+                      ? <img src={item.image} alt={title} />
+                      : <div className="ns-card__noimg" />
+                    }
+                  </div>
+                  <div className="ns-card__body">
+                    {item.category && <span className="ns-card__cat">{item.category}</span>}
+                    <h3 className="ns-card__title">{title}</h3>
+                    <p className="ns-card__excerpt">{excerpt}</p>
+                    {item.publishedAt && <time className="ns-card__date">{formatDate(item.publishedAt, dateLang)}</time>}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </Section>
   );
 }

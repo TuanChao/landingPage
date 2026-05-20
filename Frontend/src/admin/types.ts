@@ -68,6 +68,15 @@ export interface DownloadItem extends BaseEntity {
   fileSize?: string;
 }
 
+export interface Page extends BaseEntity {
+  slug: string;
+  title: string;
+  titleEn?: string;
+  titleZh?: string;
+  data: string; // Puck JSON (stringified)
+  published: boolean;
+}
+
 export interface ContactSubmission extends BaseEntity {
   name: string;
   email: string;

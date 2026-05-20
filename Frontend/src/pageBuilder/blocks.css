@@ -1,0 +1,123 @@
+/* Responsive overrides cho các block của Page Builder.
+   Block render dùng inline-style (grid-template-columns cố định) — class .pb-grid
+   bên dưới override khi viewport hẹp. */
+
+@media (max-width: 768px) {
+  .pb-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .pb-grid--2up {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .pb-hero {
+    padding: 40px 20px !important;
+  }
+  .pb-hero h1 {
+    font-size: 28px !important;
+  }
+  .pb-cta-banner {
+    padding: 32px 20px !important;
+  }
+  .pb-cta-banner h2 {
+    font-size: 24px !important;
+  }
+  .pb-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .pb-grid--2up {
+    grid-template-columns: 1fr !important;
+  }
+  .pb-stats {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Container nội bộ giữ max-width nhưng padding nhỏ lại trên mobile */
+@media (max-width: 768px) {
+  .pb-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* ── Animations on scroll ───────────────────────────────────────────────── */
+.pb-anim {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.pb-anim--fadeUp { transform: translateY(24px); }
+.pb-anim--fadeIn { transform: none; }
+.pb-anim--zoomIn { transform: scale(0.96); }
+.pb-anim.is-visible { opacity: 1; transform: none; }
+
+/* Editor: luôn hiển thị (không animation trong editor) */
+[data-puck-component] .pb-anim { opacity: 1 !important; transform: none !important; }
+
+/* ── Tabs ───────────────────────────────────────────────────────────────── */
+.pb-tabs__nav {
+  display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.pb-tabs__tab {
+  background: none; border: none; padding: 10px 18px; font-size: 15px; font-weight: 500;
+  color: #555; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
+}
+.pb-tabs__tab.is-active { color: #e63946; border-bottom-color: #e63946; }
+
+/* ── Steps ──────────────────────────────────────────────────────────────── */
+.pb-steps { padding: 16px 0; }
+.pb-step {
+  display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid #eef0f3;
+}
+.pb-step:last-child { border-bottom: none; }
+.pb-step__num {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  background: #e63946; color: #fff; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Quote ──────────────────────────────────────────────────────────────── */
+.pb-quote {
+  padding: 24px 32px; border-left: 4px solid #e63946;
+  background: #fafafa; border-radius: 0 6px 6px 0;
+}
+.pb-quote__text { font-size: 20px; line-height: 1.55; color: #222; margin: 0 0 12px; font-style: italic; }
+.pb-quote__author { color: #777; font-size: 14px; }
+
+/* ── Countdown ──────────────────────────────────────────────────────────── */
+.pb-countdown { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; padding: 16px 0; }
+.pb-countdown__cell {
+  background: #0b1a2b; color: #fff; padding: 12px 16px; border-radius: 6px;
+  min-width: 72px; text-align: center;
+}
+.pb-countdown__val { font-size: 32px; font-weight: 700; line-height: 1; }
+.pb-countdown__lbl { font-size: 11px; opacity: 0.7; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── Sticky CTA bar ─────────────────────────────────────────────────────── */
+.pb-sticky-cta {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+  background: rgba(11, 26, 43, 0.96); color: #fff;
+  padding: 12px 20px; display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(100%); transition: transform 0.3s ease;
+}
+.pb-sticky-cta.is-shown { transform: translateY(0); }
+.pb-sticky-cta__text { flex: 1; font-size: 15px; }
+
+/* ── Lead form ──────────────────────────────────────────────────────────── */
+.pb-leadform {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px;
+  max-width: 480px; margin: 16px auto; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.pb-leadform input, .pb-leadform textarea {
+  width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+  margin-bottom: 10px; font-size: 14px; box-sizing: border-box;
+}
+.pb-leadform button {
+  width: 100%; padding: 12px; background: #e63946; color: #fff; border: none;
+  border-radius: 6px; font-weight: 600; font-size: 15px; cursor: pointer;
+}
+.pb-leadform button:disabled { opacity: 0.6; cursor: wait; }

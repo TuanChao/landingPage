@@ -20,6 +20,10 @@ const routesName = {
   ADMIN_FAQ: "/admin/faq",
   ADMIN_DOWNLOADS: "/admin/downloads",
   ADMIN_CONTACTS: "/admin/contacts",
+  ADMIN_PAGES: "/admin/pages",
+  ADMIN_PAGE_EDITOR: "/admin/pages/:id/edit",
+  ADMIN_PAGE_PREVIEW: "/admin/pages/:id/preview",
+  CUSTOM_PAGE: "/p/:slug",
 } as const;
 
 export default routesName;

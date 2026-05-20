@@ -18,6 +18,7 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: str
       { to: "/admin/banners", label: "Banner trang chủ", icon: "banner" },
       { to: "/admin/news", label: "Tin tức", icon: "news" },
       { to: "/admin/faq", label: "Câu hỏi thường gặp", icon: "faq" },
+      { to: "/admin/pages", label: "Trang tùy biến", icon: "page" },
     ],
   },
   {

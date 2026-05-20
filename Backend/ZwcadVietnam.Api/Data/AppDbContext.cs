@@ -13,6 +13,14 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products => Set<Product>();
     public DbSet<DownloadItem> Downloads => Set<DownloadItem>();
     public DbSet<ContactSubmission> Contacts => Set<ContactSubmission>();
+    public DbSet<Page> Pages => Set<Page>();
+
+    protected override void OnModelCreating(ModelBuilder b)
+    {
+        base.OnModelCreating(b);
+        b.Entity<Page>().HasIndex(p => p.Slug).IsUnique();
+        b.Entity<Page>().Property(p => p.Data).HasColumnType("jsonb");
+    }
 
     public override int SaveChanges()
     {
