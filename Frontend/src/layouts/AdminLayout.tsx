@@ -19,6 +19,7 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: str
       { to: "/admin/news", label: "Tin tức", icon: "news" },
       { to: "/admin/faq", label: "Câu hỏi thường gặp", icon: "faq" },
       { to: "/admin/pages", label: "Trang tùy biến", icon: "page" },
+      { to: "/admin/analytics", label: "Analytics", icon: "dashboard" },
     ],
   },
   {
@@ -43,6 +44,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const initial = email.charAt(0).toUpperCase();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem("adm_sidebar_collapsed") === "1");
+
+  function toggleCollapse() {
+    setCollapsed((v) => {
+      const next = !v;
+      localStorage.setItem("adm_sidebar_collapsed", next ? "1" : "0");
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/admin/login", { replace: true });
@@ -67,7 +77,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className={`adm-root adm-shell${drawerOpen ? " adm-shell--drawer-open" : ""}`}>
+    <div className={`adm-root adm-shell${drawerOpen ? " adm-shell--drawer-open" : ""}${collapsed ? " adm-shell--collapsed" : ""}`}>
       <aside className="adm-sidebar" aria-hidden={!drawerOpen && undefined}>
         <div className="adm-sidebar__brand">
           <div className="adm-sidebar__logo">Z</div>
@@ -75,6 +85,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <div className="adm-sidebar__brand-name">ZWCAD Admin</div>
             <div className="adm-sidebar__brand-sub">Vietnam</div>
           </div>
+          {/* Nút thu/mở sidebar — chỉ hiện desktop */}
+          <button
+            type="button"
+            className="adm-sidebar__collapse-btn"
+            aria-label={collapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
+            onClick={toggleCollapse}
+            title={collapsed ? "Mở rộng" : "Thu gọn"}
+          >
+            <Icon name={collapsed ? "chevronRight" : "chevronLeft"} size={16} />
+          </button>
+          {/* Nút đóng drawer — chỉ hiện mobile */}
           <button
             type="button"
             className="adm-sidebar__close"

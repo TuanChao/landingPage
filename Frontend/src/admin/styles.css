@@ -315,3 +315,38 @@
   .adm-input, .adm-textarea, .adm-select { height: 40px; font-size: 14px; }
   .adm-textarea { height: auto; min-height: 80px; }
 }
+
+/* ===== Puck page-builder editor shell ===== */
+/*
+ * adm-content có padding 24px top + 40px bottom + 32px sides.
+ * Puck nằm bên trong nên dùng negative margin để chiếm full-width/height.
+ * Đồng thời override Puck's hardcoded height:100dvh → 100% để sidebar
+ * không tràn ra ngoài container.
+ */
+.puck-editor-shell {
+  margin: -24px -32px -40px;
+  height: calc(100vh - 60px); /* 60px = adm-topbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+@media (max-width: 1024px) {
+  .puck-editor-shell { margin: -20px -20px -32px; }
+}
+@media (max-width: 768px) {
+  .puck-editor-shell { margin: -16px -16px -32px; }
+}
+@media (max-width: 480px) {
+  .puck-editor-shell { margin: -12px -12px -28px; }
+}
+
+/* Puck inner layout: dùng height: 100% thay vì 100dvh cứng */
+.puck-editor-shell [class*="PuckLayout-inner"] {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+/* Đảm bảo chain height từ canvas xuống tới Puck root và layout */
+.puck-editor-canvas { height: 100%; }
+.puck-editor-canvas > div { height: 100%; }
+.puck-editor-canvas [class*="PuckLayout"],
+.puck-editor-canvas [class*="_Puck_"] { height: 100%; }

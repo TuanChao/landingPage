@@ -14,12 +14,18 @@ public class AppDbContext : DbContext
     public DbSet<DownloadItem> Downloads => Set<DownloadItem>();
     public DbSet<ContactSubmission> Contacts => Set<ContactSubmission>();
     public DbSet<Page> Pages => Set<Page>();
+    public DbSet<PageView> PageViews => Set<PageView>();
+    public DbSet<BlockPreset> BlockPresets => Set<BlockPreset>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
         base.OnModelCreating(b);
         b.Entity<Page>().HasIndex(p => p.Slug).IsUnique();
         b.Entity<Page>().Property(p => p.Data).HasColumnType("jsonb");
+        b.Entity<Page>().Property(p => p.DataB).HasColumnType("jsonb");
+        b.Entity<PageView>().HasIndex(v => v.Slug);
+        b.Entity<PageView>().HasIndex(v => v.CreatedAt);
+        b.Entity<BlockPreset>().Property(p => p.Data).HasColumnType("jsonb");
     }
 
     public override int SaveChanges()

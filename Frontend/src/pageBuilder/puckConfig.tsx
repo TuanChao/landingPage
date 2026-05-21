@@ -25,6 +25,29 @@ const ANIM_OPTIONS = [
 
 const ANIM_FIELD = { type: "select" as const, label: "Hiệu ứng vào màn", options: ANIM_OPTIONS };
 
+const WIDTH_OPTIONS = [
+  { label: "Auto",  value: "auto" },
+  { label: "25%",   value: "25" },
+  { label: "33%",   value: "33" },
+  { label: "50%",   value: "50" },
+  { label: "66%",   value: "66" },
+  { label: "75%",   value: "75" },
+  { label: "100%",  value: "100" },
+];
+const WIDTH_FIELD = { type: "select" as const, label: "Chiều rộng", options: WIDTH_OPTIONS };
+
+// Bọc block trong wrapper align + width. Container ngoài cho phép căn trái/giữa/phải.
+function widthWrapStyle(widthPct?: string, align: string = "center"): React.CSSProperties {
+  const w = widthPct && widthPct !== "auto" ? `${widthPct}%` : undefined;
+  const justify = align === "left" ? "flex-start" : align === "right" ? "flex-end" : "center";
+  return { display: "flex", justifyContent: justify, padding: "8px 0" };
+}
+function widthInnerStyle(widthPct?: string): React.CSSProperties {
+  return widthPct && widthPct !== "auto"
+    ? { width: `${widthPct}%`, maxWidth: "100%" }
+    : { width: "auto", maxWidth: "100%" };
+}
+
 // Wrapper class cho animation. Đặt ở element ngoài cùng của render.
 function animClass(animate?: string) {
   return animate ? `pb-anim pb-anim--${animate}` : "";
@@ -53,16 +76,16 @@ type HeroProps = {
 };
 type HeadingProps = { text: string; level: "h1"|"h2"|"h3"|"h4"; align: "left"|"center"|"right"; color: string; anchor: string };
 type RichTextBlockProps = { html: string };
-type ImageBlockProps = { src: string; alt: string; maxWidth: number; align: "left"|"center"|"right"; rounded: number };
+type ImageBlockProps = { src: string; alt: string; maxWidth: number; widthPct: string; height: number; fit: "cover"|"contain"|"fill"|"none"; align: "left"|"center"|"right"; rounded: number };
 type ButtonProps = { label: string; href: string; variant: "primary"|"ghost"|"outline"; size: "sm"|"md"|"lg"; align: "left"|"center"|"right"; bgColor: string; textColor: string };
 type SpacerProps = { height: number };
 type DividerProps = { color: string; thickness: number; marginY: number };
-type ContainerProps = { bgColor: string; bgImage: string; padding: number; maxWidth: number; minHeight: number; rounded: number; align: "left"|"center"|"right"; anchor: string; animate: string };
-type ColumnsProps = { count: 2|3|4; gap: number };
+type ContainerProps = { bgColor: string; bgImage: string; padding: number; maxWidth: number; minHeight: number; rounded: number; align: "left"|"center"|"right"; anchor: string; animate: string; hideOn: string };
+type ColumnsProps = { count: 2|3|4; gap: number; colSizes: string };
 
 type CardItem = { image: string; title: string; text: string; href: string; ctaLabel: string };
-type CardProps = CardItem & { rounded: number; shadow: boolean };
-type CardGridProps = { items: CardItem[]; cols: 2|3|4; gap: number };
+type CardProps = CardItem & { rounded: number; shadow: boolean; widthPct: string; align: "left"|"center"|"right"; imageHeight: number };
+type CardGridProps = { items: CardItem[]; cols: 2|3|4; gap: number; imageHeight: number };
 
 type FeatureItem = { icon: string; title: string; text: string };
 type FeatureListProps = { items: FeatureItem[]; cols: 1|2|3|4 };
@@ -70,9 +93,9 @@ type FeatureListProps = { items: FeatureItem[]; cols: 1|2|3|4 };
 type AccordionItem = { question: string; answer: string };
 type AccordionProps = { items: AccordionItem[] };
 
-type TestimonialProps = { avatar: string; name: string; role: string; quote: string; align: "left"|"center" };
+type TestimonialProps = { avatar: string; name: string; role: string; quote: string; align: "left"|"center"; widthPct: string };
 
-type PricingProps = { title: string; price: string; period: string; features: string; ctaLabel: string; ctaHref: string; highlight: boolean };
+type PricingProps = { title: string; price: string; period: string; features: string; ctaLabel: string; ctaHref: string; highlight: boolean; widthPct: string; align: "left"|"center"|"right" };
 
 type LogoStripProps = { items: { src: string; alt: string }[]; height: number };
 
@@ -90,12 +113,13 @@ type GalleryProps = { items: { src: string; alt: string }[]; cols: 2|3|4; gap: n
 type TabsProps = { tabs: { label: string }[] };
 type StepItem = { title: string; text: string };
 type StepsProps = { items: StepItem[]; numbered: boolean };
-type QuoteProps = { text: string; author: string; role: string };
+type QuoteProps = { text: string; author: string; role: string; widthPct: string; align: "left"|"center"|"right" };
 type CountdownProps = { targetDate: string; expiredText: string };
 type StickyCtaProps = { text: string; ctaLabel: string; ctaHref: string; showAfterPx: number };
 type LeadFormProps = {
   title: string; subtitle: string; submitLabel: string; successMessage: string;
   showPhone: boolean; messagePlaceholder: string; tag: string;
+  widthPct: string; align: "left"|"center"|"right";
 };
 
 export type Components = {
@@ -192,10 +216,15 @@ export const puckConfig: Config<Components, RootProps> = {
         align: { type: "radio", options: ALIGN_OPTIONS },
         anchor: { type: "text", label: "Anchor ID (deep link: #id)" },
         animate: ANIM_FIELD,
+        hideOn: { type: "select", label: "Ẩn trên", options: [
+          { label: "Không ẩn", value: "" },
+          { label: "Mobile (≤768px)", value: "mobile" },
+          { label: "Desktop (>768px)", value: "desktop" },
+        ]},
       },
-      defaultProps: { bgColor: "", bgImage: "", padding: 48, maxWidth: 1100, minHeight: 0, rounded: 0, align: "left", anchor: "", animate: "" },
-      render: ({ bgColor, bgImage, padding, maxWidth, minHeight, rounded, align: a, anchor, animate }) => (
-        <div id={anchor || undefined} className={combineCls("pb-container", animClass(animate))} style={{
+      defaultProps: { bgColor: "", bgImage: "", padding: 48, maxWidth: 1100, minHeight: 0, rounded: 0, align: "left", anchor: "", animate: "", hideOn: "" },
+      render: ({ bgColor, bgImage, padding, maxWidth, minHeight, rounded, align: a, anchor, animate, hideOn }) => (
+        <div id={anchor || undefined} className={combineCls("pb-container", animClass(animate), hideOn === "mobile" && "pb-hide-mobile", hideOn === "desktop" && "pb-hide-desktop")} style={{
           background: bgImage ? `url(${imgUrl(bgImage)}) center/cover` : (bgColor || undefined),
           padding: `${padding}px 16px`,
           borderRadius: rounded,
@@ -209,21 +238,32 @@ export const puckConfig: Config<Components, RootProps> = {
     },
 
     Columns: {
-      label: "Cột",
+      label: "Cột / Hàng",
       fields: {
         count: { type: "select", label: "Số cột", options: [
           { label: "2", value: 2 }, { label: "3", value: 3 }, { label: "4", value: 4 },
         ]},
+        colSizes: { type: "text", label: "Tỷ lệ cột (vd: 1,2,1 hoặc 30%,70%)" },
         gap: { type: "number", label: "Khoảng cách (px)" },
       },
-      defaultProps: { count: 2, gap: 24 },
-      render: ({ count, gap }) => (
-        <div className="pb-grid" style={{ display: "grid", gridTemplateColumns: `repeat(${count}, 1fr)`, gap, padding: "16px 0" }}>
-          {Array.from({ length: count }, (_, i) => (
-            <DropZone key={i} zone={`col-${i + 1}`} />
-          ))}
-        </div>
-      ),
+      defaultProps: { count: 2, gap: 24, colSizes: "" },
+      render: ({ count, gap, colSizes }) => {
+        // Parse "1,2,1" → "1fr 2fr 1fr"; "30%,70%" → "30% 70%"; rỗng → equal
+        const parts = (colSizes || "").split(",").map((s) => s.trim()).filter(Boolean);
+        let template: string;
+        if (parts.length === count) {
+          template = parts.map((p) => /%|px|fr|auto/.test(p) ? p : `${p}fr`).join(" ");
+        } else {
+          template = `repeat(${count}, 1fr)`;
+        }
+        return (
+          <div className="pb-grid" style={{ display: "grid", gridTemplateColumns: template, gap, padding: "16px 0" }}>
+            {Array.from({ length: count }, (_, i) => (
+              <DropZone key={i} zone={`col-${i + 1}`} />
+            ))}
+          </div>
+        );
+      },
     },
 
     Spacer: {
@@ -330,20 +370,20 @@ export const puckConfig: Config<Components, RootProps> = {
       fields: {
         src: ImagePickerField("Ảnh"),
         alt: { type: "text", label: "Alt text" },
-        maxWidth: { type: "number", label: "Max width (px)" },
+        widthPct: WIDTH_FIELD,
+        maxWidth: { type: "number", label: "Max width (px) — khi Auto" },
+        height: { type: "number", label: "Chiều cao cố định (px) — 0 = auto" },
+        fit: { type: "select", label: "Crop mode (khi có height)", options: [
+          { label: "Cover (lấp đầy, crop ngoài)", value: "cover" },
+          { label: "Contain (vừa khung, để khoảng trắng)", value: "contain" },
+          { label: "Fill (kéo dãn)", value: "fill" },
+          { label: "None (không crop)", value: "none" },
+        ]},
         align: { type: "radio", options: ALIGN_OPTIONS },
         rounded: { type: "number", label: "Bo góc (px)" },
       },
-      defaultProps: { src: "", alt: "", maxWidth: 800, align: "center", rounded: 0 },
-      render: ({ src, alt, maxWidth, align: a, rounded }) => (
-        <div style={{ ...align(a), padding: "8px 0" }}>
-          {src ? (
-            <img src={imgUrl(src)} alt={alt} style={{ maxWidth, width: "100%", height: "auto", borderRadius: rounded }} />
-          ) : (
-            <div style={{ background: "#eee", padding: 40, color: "#999", display: "inline-block" }}>Chưa có ảnh — upload ở panel phải</div>
-          )}
-        </div>
-      ),
+      defaultProps: { src: "", alt: "", widthPct: "auto", maxWidth: 800, height: 0, fit: "cover", align: "center", rounded: 0 },
+      render: (props) => <ImageBlock {...props} />,
     },
 
     Button: {
@@ -441,25 +481,33 @@ export const puckConfig: Config<Components, RootProps> = {
         text: { type: "textarea" },
         href: { type: "text", label: "Link card" },
         ctaLabel: { type: "text", label: "Nhãn CTA" },
+        widthPct: WIDTH_FIELD,
+        imageHeight: { type: "number", label: "Chiều cao ảnh (px)" },
+        align: { type: "radio", options: ALIGN_OPTIONS },
         rounded: { type: "number", label: "Bo góc (px)" },
         shadow: { type: "radio", options: [
           { label: "Có", value: true as any }, { label: "Không", value: false as any },
         ]},
       },
-      defaultProps: { image: "", title: "Tiêu đề card", text: "Mô tả ngắn cho card.", href: "#", ctaLabel: "Xem thêm", rounded: 8, shadow: true },
-      render: ({ image, title, text, href, ctaLabel, rounded, shadow }) => (
-        <a href={href || "#"} style={{
-          display: "block", textDecoration: "none", color: "inherit",
-          border: "1px solid #e5e7eb", borderRadius: rounded, overflow: "hidden",
-          boxShadow: shadow ? "0 2px 8px rgba(0,0,0,.08)" : "none", background: "#fff",
-        }}>
-          {image && <img src={imgUrl(image)} alt={title} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} />}
-          <div style={{ padding: 16 }}>
-            <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>{title}</h3>
-            <p style={{ margin: "0 0 12px", color: "#555", lineHeight: 1.6 }}>{text}</p>
-            {ctaLabel && <span style={{ color: "#e63946", fontWeight: 600 }}>{ctaLabel} →</span>}
+      defaultProps: { image: "", title: "Tiêu đề card", text: "Mô tả ngắn cho card.", href: "#", ctaLabel: "Xem thêm", widthPct: "auto", imageHeight: 180, align: "center", rounded: 8, shadow: true },
+      render: ({ image, title, text, href, ctaLabel, widthPct, imageHeight, align: a, rounded, shadow }) => (
+        <div style={widthWrapStyle(widthPct, a)}>
+          <div style={widthInnerStyle(widthPct)}>
+            <a href={href || "#"} style={{
+              display: "block", textDecoration: "none", color: "inherit",
+              border: "1px solid #e5e7eb", borderRadius: rounded, overflow: "hidden",
+              boxShadow: shadow ? "0 2px 8px rgba(0,0,0,.08)" : "none", background: "#fff",
+              maxWidth: widthPct === "auto" ? 360 : undefined,
+            }}>
+              {image && <img src={imgUrl(image)} alt={title} style={{ width: "100%", height: imageHeight, objectFit: "cover", display: "block" }} />}
+              <div style={{ padding: 16 }}>
+                <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>{title}</h3>
+                <p style={{ margin: "0 0 12px", color: "#555", lineHeight: 1.6 }}>{text}</p>
+                {ctaLabel && <span style={{ color: "#e63946", fontWeight: 600 }}>{ctaLabel} →</span>}
+              </div>
+            </a>
           </div>
-        </a>
+        </div>
       ),
     },
 
@@ -470,6 +518,7 @@ export const puckConfig: Config<Components, RootProps> = {
           { label: "2", value: 2 }, { label: "3", value: 3 }, { label: "4", value: 4 },
         ]},
         gap: { type: "number", label: "Khoảng cách (px)" },
+        imageHeight: { type: "number", label: "Chiều cao ảnh (px)" },
         items: { type: "array", arrayFields: {
           image: ImagePickerField("Ảnh"),
           title: { type: "text" },
@@ -479,14 +528,14 @@ export const puckConfig: Config<Components, RootProps> = {
         }, defaultItemProps: { image: "", title: "Card", text: "Mô tả...", href: "#", ctaLabel: "Xem thêm" }},
       },
       defaultProps: {
-        cols: 3, gap: 20,
+        cols: 3, gap: 20, imageHeight: 160,
         items: [
           { image: "", title: "Card 1", text: "Mô tả 1.", href: "#", ctaLabel: "Xem thêm" },
           { image: "", title: "Card 2", text: "Mô tả 2.", href: "#", ctaLabel: "Xem thêm" },
           { image: "", title: "Card 3", text: "Mô tả 3.", href: "#", ctaLabel: "Xem thêm" },
         ],
       },
-      render: ({ items, cols, gap }) => (
+      render: ({ items, cols, gap, imageHeight }) => (
         <div className="pb-grid pb-grid--2up" style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap, padding: "16px 0" }}>
           {items.map((c, i) => (
             <a key={i} href={c.href || "#"} style={{
@@ -494,7 +543,7 @@ export const puckConfig: Config<Components, RootProps> = {
               border: "1px solid #e5e7eb", borderRadius: 8, overflow: "hidden",
               boxShadow: "0 2px 8px rgba(0,0,0,.06)", background: "#fff",
             }}>
-              {c.image && <img src={imgUrl(c.image)} alt={c.title} style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />}
+              {c.image && <img src={imgUrl(c.image)} alt={c.title} style={{ width: "100%", height: imageHeight, objectFit: "cover", display: "block" }} />}
               <div style={{ padding: 14 }}>
                 <h3 style={{ margin: "0 0 6px", fontSize: 17 }}>{c.title}</h3>
                 <p style={{ margin: "0 0 10px", color: "#555", lineHeight: 1.55, fontSize: 14 }}>{c.text}</p>
@@ -572,19 +621,22 @@ export const puckConfig: Config<Components, RootProps> = {
         name: { type: "text" },
         role: { type: "text" },
         quote: { type: "textarea" },
+        widthPct: WIDTH_FIELD,
         align: { type: "radio", options: [
           { label: "Trái", value: "left" }, { label: "Giữa", value: "center" },
         ]},
       },
-      defaultProps: { avatar: "", name: "Nguyễn Văn A", role: "Giám đốc kỹ thuật", quote: "Sản phẩm tuyệt vời, đội ngũ hỗ trợ chuyên nghiệp.", align: "center" },
-      render: ({ avatar, name, role, quote, align: a }) => (
-        <div style={{ ...align(a), padding: "24px 0", maxWidth: 720, margin: "0 auto" }}>
-          <p style={{ fontSize: 20, fontStyle: "italic", color: "#222", lineHeight: 1.6, margin: "0 0 16px" }}>"{quote}"</p>
-          <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: a === "center" ? "center" : "flex-start" }}>
-            {avatar && <img src={imgUrl(avatar)} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover" }} />}
-            <div>
-              <div style={{ fontWeight: 600 }}>{name}</div>
-              <div style={{ color: "#777", fontSize: 14 }}>{role}</div>
+      defaultProps: { avatar: "", name: "Nguyễn Văn A", role: "Giám đốc kỹ thuật", quote: "Sản phẩm tuyệt vời, đội ngũ hỗ trợ chuyên nghiệp.", widthPct: "auto", align: "center" },
+      render: ({ avatar, name, role, quote, widthPct, align: a }) => (
+        <div style={widthWrapStyle(widthPct, a)}>
+          <div style={{ ...widthInnerStyle(widthPct), maxWidth: widthPct === "auto" ? 720 : undefined, textAlign: a as any, padding: "16px 0" }}>
+            <p style={{ fontSize: 20, fontStyle: "italic", color: "#222", lineHeight: 1.6, margin: "0 0 16px" }}>"{quote}"</p>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: a === "center" ? "center" : "flex-start" }}>
+              {avatar && <img src={imgUrl(avatar)} alt={name} style={{ width: 48, height: 48, borderRadius: "50%", objectFit: "cover" }} />}
+              <div>
+                <div style={{ fontWeight: 600 }}>{name}</div>
+                <div style={{ color: "#777", fontSize: 14 }}>{role}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -603,18 +655,23 @@ export const puckConfig: Config<Components, RootProps> = {
         highlight: { type: "radio", options: [
           { label: "Nổi bật", value: true as any }, { label: "Thường", value: false as any },
         ]},
+        widthPct: WIDTH_FIELD,
+        align: { type: "radio", options: ALIGN_OPTIONS },
       },
       defaultProps: {
         title: "Pro", price: "499.000đ", period: "/tháng",
         features: "Tính năng A\nTính năng B\nTính năng C",
         ctaLabel: "Chọn gói này", ctaHref: "#", highlight: false,
+        widthPct: "auto", align: "center",
       },
-      render: ({ title, price, period, features, ctaLabel, ctaHref, highlight }) => (
+      render: ({ title, price, period, features, ctaLabel, ctaHref, highlight, widthPct, align: a }) => (
+        <div style={widthWrapStyle(widthPct, a)}>
         <div style={{
+          ...widthInnerStyle(widthPct),
           border: highlight ? "2px solid #e63946" : "1px solid #e5e7eb",
           borderRadius: 10, padding: 24, background: "#fff",
           boxShadow: highlight ? "0 8px 24px rgba(230,57,70,.15)" : "0 1px 4px rgba(0,0,0,.06)",
-          maxWidth: 360, margin: "16px auto",
+          maxWidth: widthPct === "auto" ? 360 : undefined,
         }}>
           <h3 style={{ margin: "0 0 12px", fontSize: 22, textAlign: "center" }}>{title}</h3>
           <div style={{ textAlign: "center", margin: "0 0 16px" }}>
@@ -629,6 +686,7 @@ export const puckConfig: Config<Components, RootProps> = {
           {ctaLabel && (
             <a href={ctaHref || "#"} style={{ ...btnStyle(highlight ? "primary" : "outline", "md"), width: "100%", textAlign: "center", boxSizing: "border-box" }}>{ctaLabel}</a>
           )}
+        </div>
         </div>
       ),
     },
@@ -695,15 +753,7 @@ export const puckConfig: Config<Components, RootProps> = {
         }, defaultItemProps: { src: "", alt: "" }},
       },
       defaultProps: { cols: 3, gap: 12, items: [{ src: "", alt: "" }, { src: "", alt: "" }, { src: "", alt: "" }] },
-      render: ({ items, cols, gap }) => (
-        <div className="pb-grid pb-grid--2up" style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap, padding: "16px 0" }}>
-          {items.map((g, i) => (
-            g.src
-              ? <img key={i} src={imgUrl(g.src)} alt={g.alt} style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 6 }} />
-              : <div key={i} style={{ height: 200, background: "#f3f4f6", borderRadius: 6 }} />
-          ))}
-        </div>
-      ),
+      render: ({ items, cols, gap }) => <GalleryBlock items={items} cols={cols} gap={gap} />,
     },
 
     // ── Advanced ─────────────────────────────────────────────────────────
@@ -786,19 +836,23 @@ export const puckConfig: Config<Components, RootProps> = {
         text: { type: "textarea", label: "Trích dẫn" },
         author: { type: "text" },
         role: { type: "text", label: "Chức vụ / công ty" },
+        widthPct: WIDTH_FIELD,
+        align: { type: "radio", options: ALIGN_OPTIONS },
       },
-      defaultProps: { text: "Sản phẩm tuyệt vời, thay đổi cách chúng tôi làm việc.", author: "Nguyễn Văn A", role: "Giám đốc kỹ thuật" },
-      render: ({ text, author, role }) => (
-        <blockquote className="pb-quote">
-          <p className="pb-quote__text">"{text}"</p>
-          {(author || role) && (
-            <footer className="pb-quote__author">
-              {author && <strong>{author}</strong>}
-              {author && role && " — "}
-              {role}
-            </footer>
-          )}
-        </blockquote>
+      defaultProps: { text: "Sản phẩm tuyệt vời, thay đổi cách chúng tôi làm việc.", author: "Nguyễn Văn A", role: "Giám đốc kỹ thuật", widthPct: "auto", align: "left" },
+      render: ({ text, author, role, widthPct, align: a }) => (
+        <div style={widthWrapStyle(widthPct, a)}>
+          <blockquote className="pb-quote" style={widthInnerStyle(widthPct)}>
+            <p className="pb-quote__text">"{text}"</p>
+            {(author || role) && (
+              <footer className="pb-quote__author">
+                {author && <strong>{author}</strong>}
+                {author && role && " — "}
+                {role}
+              </footer>
+            )}
+          </blockquote>
+        </div>
       ),
     },
 
@@ -836,6 +890,8 @@ export const puckConfig: Config<Components, RootProps> = {
         ]},
         messagePlaceholder: { type: "text" },
         tag: { type: "text", label: "Tag (để phân loại trong Liên hệ)" },
+        widthPct: WIDTH_FIELD,
+        align: { type: "radio", options: ALIGN_OPTIONS },
       },
       defaultProps: {
         title: "Nhận tư vấn miễn phí",
@@ -845,20 +901,131 @@ export const puckConfig: Config<Components, RootProps> = {
         showPhone: true,
         messagePlaceholder: "Bạn muốn được tư vấn gì?",
         tag: "lead",
+        widthPct: "auto", align: "center",
       },
-      render: (props) => <LeadFormBlock {...props} />,
+      render: (props) => (
+        <div style={widthWrapStyle(props.widthPct, props.align)}>
+          <div style={{ ...widthInnerStyle(props.widthPct), maxWidth: props.widthPct === "auto" ? 480 : undefined }}>
+            <LeadFormBlock {...props} />
+          </div>
+        </div>
+      ),
     },
   },
 };
 
-// ── Interactive block implementations (cần hooks, tách riêng) ──────────────
+// ── Block implementations (cần hooks/tách riêng) ───────────────────────────
+function ImageBlock({ src, alt, widthPct, maxWidth, height, fit, align: a, rounded }: ImageBlockProps) {
+  const wrap = widthWrapStyle(widthPct, a);
+  const inner = widthInnerStyle(widthPct);
+  const hasHeight = height > 0;
+  const imgStyle: React.CSSProperties = {
+    width: "100%",
+    height: hasHeight ? height : "auto",
+    objectFit: hasHeight ? fit : "fill",
+    borderRadius: rounded,
+    maxWidth: widthPct === "auto" ? maxWidth : "100%",
+    display: "block",
+  };
+  return (
+    <div style={wrap}>
+      <div style={inner}>
+        {src ? (
+          <img src={imgUrl(src)} alt={alt} style={imgStyle} />
+        ) : (
+          <div style={{ background: "#eee", padding: 40, color: "#999", textAlign: "center" }}>Chưa có ảnh — upload ở panel phải</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+function GalleryBlock({ items, cols, gap }: { items: { src: string; alt: string }[]; cols: 2|3|4; gap: number }) {
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  // Đóng bằng Esc, qua lại bằng arrow.
+  useEffect(() => {
+    if (openIdx === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenIdx(null);
+      else if (e.key === "ArrowLeft") setOpenIdx((i) => (i === null ? null : (i - 1 + items.length) % items.length));
+      else if (e.key === "ArrowRight") setOpenIdx((i) => (i === null ? null : (i + 1) % items.length));
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [openIdx, items.length]);
+
+  const validItems = items.filter((g) => g.src);
+  const open = openIdx !== null ? validItems[openIdx] : null;
+
+  return (
+    <>
+      <div className="pb-gallery pb-grid pb-grid--2up" style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap, padding: "16px 0" }}>
+        {items.map((g, i) => {
+          const validIdx = validItems.indexOf(g);
+          return g.src ? (
+            <img
+              key={i} src={imgUrl(g.src)} alt={g.alt}
+              onClick={() => setOpenIdx(validIdx >= 0 ? validIdx : null)}
+              style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: 6 }}
+            />
+          ) : (
+            <div key={i} style={{ height: 200, background: "#f3f4f6", borderRadius: 6 }} />
+          );
+        })}
+      </div>
+
+      {open && openIdx !== null && (
+        <div className="pb-lightbox" onClick={(e) => { if (e.target === e.currentTarget) setOpenIdx(null); }}>
+          <img className="pb-lightbox__img" src={imgUrl(open.src)} alt={open.alt} />
+          <button className="pb-lightbox__close" onClick={() => setOpenIdx(null)} aria-label="Đóng">×</button>
+          {validItems.length > 1 && (
+            <>
+              <button className="pb-lightbox__nav pb-lightbox__nav--prev"
+                onClick={() => setOpenIdx((openIdx - 1 + validItems.length) % validItems.length)}
+                aria-label="Trước">‹</button>
+              <button className="pb-lightbox__nav pb-lightbox__nav--next"
+                onClick={() => setOpenIdx((openIdx + 1) % validItems.length)}
+                aria-label="Tiếp">›</button>
+              <div className="pb-lightbox__counter">{openIdx + 1} / {validItems.length}</div>
+            </>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+// ── Interactive block implementations ──────────────────────────────────────
 function TabsBlock({ tabs }: { tabs: { label: string }[] }) {
-  const [active, setActive] = useState(0);
+  // Sync với URL hash kiểu #tab=2 — shareable link tới tab cụ thể.
+  // Bỏ qua khi đang trong Puck editor (URL editor không phản ánh page).
+  const isEditor = typeof window !== "undefined" && window.location.pathname.includes("/admin/pages/");
+  const initial = (() => {
+    if (isEditor) return 0;
+    const m = window?.location?.hash?.match(/tab=(\d+)/);
+    if (m) {
+      const n = parseInt(m[1], 10) - 1;
+      if (n >= 0 && n < tabs.length) return n;
+    }
+    return 0;
+  })();
+  const [active, setActive] = useState(initial);
+
+  function switchTo(i: number) {
+    setActive(i);
+    if (!isEditor && typeof window !== "undefined") {
+      const hash = `#tab=${i + 1}`;
+      window.history.replaceState(null, "", window.location.pathname + window.location.search + hash);
+    }
+  }
+
   return (
     <div style={{ padding: "16px 0" }}>
       <div className="pb-tabs__nav">
         {tabs.map((t, i) => (
-          <button key={i} className={"pb-tabs__tab" + (active === i ? " is-active" : "")} onClick={() => setActive(i)}>
+          <button key={i} className={"pb-tabs__tab" + (active === i ? " is-active" : "")} onClick={() => switchTo(i)}>
             {t.label}
           </button>
         ))}
@@ -909,17 +1076,34 @@ function Cell({ v, l }: { v: number; l: string }) {
 }
 
 function StickyCtaBlock({ text, ctaLabel, ctaHref, showAfterPx }: StickyCtaProps) {
+  const STORAGE_KEY = "pb_sticky_dismissed_" + (typeof window !== "undefined" ? window.location.pathname : "");
   const [shown, setShown] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
   useEffect(() => {
+    // Check dismissed cookie/sessionStorage 1 lần
+    try {
+      if (typeof window !== "undefined" && sessionStorage.getItem(STORAGE_KEY) === "1") {
+        setDismissed(true);
+      }
+    } catch {}
     const onScroll = () => setShown(window.scrollY > showAfterPx);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [showAfterPx]);
+  }, [showAfterPx, STORAGE_KEY]);
+
+  function dismiss() {
+    setDismissed(true);
+    try { sessionStorage.setItem(STORAGE_KEY, "1"); } catch {}
+  }
+
+  if (dismissed) return null;
   return (
     <div className={"pb-sticky-cta" + (shown ? " is-shown" : "")}>
       <div className="pb-sticky-cta__text">{text}</div>
       <a href={ctaHref || "#"} style={btnStyle("primary", "md")}>{ctaLabel}</a>
+      <button className="pb-sticky-cta__close" onClick={dismiss} aria-label="Đóng">×</button>
     </div>
   );
 }
@@ -940,10 +1124,15 @@ function LeadFormBlock({ title, subtitle, submitLabel, successMessage, showPhone
     }
     setStatus("sending"); setErrMsg("");
     try {
+      // Đọc nguồn từ CustomPage để tính conversion. Không có thì gửi blank.
+      const source = (window as any).__pbPageSource as { slug?: string; variant?: string } | undefined;
       const body = {
         name: name.trim(), email: email.trim(),
         phone: phone.trim() || undefined,
-        message: (message.trim() ? message.trim() + "\n\n" : "") + `[${tag || "lead"}]`,
+        message: message.trim(),
+        tag: tag || "lead",
+        sourceSlug: source?.slug,
+        sourceVariant: source?.variant,
       };
       const res = await fetch(`${API_BASE_URL}/api/contacts`, {
         method: "POST",

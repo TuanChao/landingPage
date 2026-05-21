@@ -75,6 +75,8 @@ export interface Page extends BaseEntity {
   titleZh?: string;
   data: string; // Puck JSON (stringified)
   published: boolean;
+  dataB?: string | null;     // A/B variant
+  variantBWeight?: number;   // % chọn B (0-100, mặc định 50)
 }
 
 export interface ContactSubmission extends BaseEntity {
@@ -84,4 +86,14 @@ export interface ContactSubmission extends BaseEntity {
   company?: string;
   message: string;
   status: "new" | "read" | "replied";
+  tag?: string;
+  sourceSlug?: string;
+  sourceVariant?: string;
+}
+
+export interface BlockPreset extends BaseEntity {
+  name: string;
+  description?: string;
+  thumbnail?: string;
+  data: string; // Puck JSON
 }

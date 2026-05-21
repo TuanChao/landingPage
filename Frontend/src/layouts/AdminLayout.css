@@ -18,6 +18,8 @@
   flex-shrink: 0;
   border-right: 1px solid var(--adm-sidebar-border);
   z-index: 30;
+  transition: width 0.22s ease;
+  overflow: hidden;
 }
 
 .adm-sidebar__brand {
@@ -43,6 +45,24 @@
 }
 .adm-sidebar__brand-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
 .adm-sidebar__brand-sub { font-size: 11px; color: var(--adm-sidebar-muted); margin-top: 2px; }
+
+/* Nút thu/mở sidebar — chỉ hiện desktop */
+.adm-sidebar__collapse-btn {
+  display: inline-flex;
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--adm-sidebar-muted);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+.adm-sidebar__collapse-btn:hover { color: var(--adm-sidebar-fg); background: var(--adm-sidebar-accent); }
 
 /* Nút đóng drawer — chỉ hiện trên mobile */
 .adm-sidebar__close {
@@ -200,6 +220,20 @@
   background: var(--adm-bg);
 }
 
+/* ===== Sidebar collapsed (desktop toggle) ===== */
+.adm-shell--collapsed .adm-sidebar { width: 64px; }
+.adm-shell--collapsed .adm-sidebar__brand { padding: 18px 12px; justify-content: center; }
+.adm-shell--collapsed .adm-sidebar__brand-name,
+.adm-shell--collapsed .adm-sidebar__brand-sub { display: none; }
+/* Thu cả nút collapse về giữa khi collapsed, ẩn margin-left auto */
+.adm-shell--collapsed .adm-sidebar__collapse-btn { margin-left: 0; }
+.adm-shell--collapsed .adm-sidebar__group-label,
+.adm-shell--collapsed .adm-sidebar__link span { display: none; }
+.adm-shell--collapsed .adm-sidebar__link { justify-content: center; padding: 10px; }
+/* Tooltip khi hover vào link icon */
+.adm-shell--collapsed .adm-sidebar__link { position: relative; }
+.adm-shell--collapsed .adm-sidebar__nav { padding: 12px 4px; }
+
 /* ===== Tablet (≤1024px): sidebar thu gọn icon-only nhưng ở lại ===== */
 @media (max-width: 1024px) {
   .adm-sidebar { width: 64px; }
@@ -209,12 +243,17 @@
   .adm-sidebar__group-label,
   .adm-sidebar__link span { display: none; }
   .adm-sidebar__link { justify-content: center; padding: 10px; }
+  /* Nút collapse vẫn dùng được trên tablet, nhưng thu margin-left auto */
+  .adm-sidebar__collapse-btn { margin-left: 0; }
   .adm-topbar__search { width: 220px; flex-basis: 220px; }
   .adm-content { padding: 20px 20px 32px; }
 }
 
 /* ===== Mobile (≤768px): sidebar trở thành drawer slide-in ===== */
 @media (max-width: 768px) {
+  /* Ẩn nút collapse trên mobile (dùng drawer thay thế) */
+  .adm-sidebar__collapse-btn { display: none; }
+
   .adm-sidebar {
     position: fixed;
     top: 0;
@@ -225,15 +264,22 @@
     transition: transform 0.25s ease;
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
   }
-  .adm-shell--drawer-open .adm-sidebar { transform: translateX(0); }
+  /* Khi drawer mở: override collapsed state để show full */
+  .adm-shell--drawer-open .adm-sidebar { transform: translateX(0); width: 280px; }
 
   /* Khi drawer mở, hiện lại full content của sidebar */
-  .adm-sidebar__brand { padding: 18px 20px; justify-content: flex-start; }
+  .adm-sidebar__brand,
+  .adm-shell--collapsed .adm-sidebar__brand { padding: 18px 20px; justify-content: flex-start; }
   .adm-sidebar__brand-name,
   .adm-sidebar__brand-sub,
   .adm-sidebar__group-label,
-  .adm-sidebar__link span { display: revert; }
-  .adm-sidebar__link { justify-content: flex-start; padding: 8px 12px; }
+  .adm-sidebar__link span,
+  .adm-shell--collapsed .adm-sidebar__brand-name,
+  .adm-shell--collapsed .adm-sidebar__brand-sub,
+  .adm-shell--collapsed .adm-sidebar__group-label,
+  .adm-shell--collapsed .adm-sidebar__link span { display: revert; }
+  .adm-sidebar__link,
+  .adm-shell--collapsed .adm-sidebar__link { justify-content: flex-start; padding: 8px 12px; }
   .adm-sidebar__close { display: inline-flex; }
 
   .adm-sidebar__overlay { display: block; pointer-events: none; }

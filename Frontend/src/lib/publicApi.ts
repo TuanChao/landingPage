@@ -86,7 +86,9 @@ export interface PageDto {
   id: number;
   slug: string;
   title: string; titleEn?: string | null; titleZh?: string | null;
-  data: string; // JSON string (Puck)
+  data: string; // JSON string (Puck) — variant A
+  dataB?: string | null; // variant B (nếu có A/B)
+  variantBWeight?: number; // % chọn B (0-100)
   published: boolean;
 }
 
@@ -97,6 +99,8 @@ export const PublicApi = {
   faq:     () => getJson<FaqDto[]>("/api/faq"),
   downloads: () => getJson<DownloadDto[]>("/api/downloads"),
   pageBySlug: (slug: string) => getJson<PageDto>(`/api/pages/by-slug/${encodeURIComponent(slug)}`),
+  logPageView: (slug: string, variant?: string) =>
+    postJson<{ ok: boolean }>("/api/page-views", { slug, variant }).catch(() => null),
   submitContact: (data: { name: string; email: string; phone?: string; company?: string; message: string }) =>
     postJson<{ id: number }>("/api/contacts", data),
 };

@@ -25,6 +25,8 @@ const AdminContactsPage   = lazy(() => import("@/pages/admin/AdminContactsPage/A
 const AdminPagesPage      = lazy(() => import("@/pages/admin/AdminPagesPage/AdminPagesPage"));
 const AdminPageEditorPage  = lazy(() => import("@/pages/admin/AdminPageEditorPage/AdminPageEditorPage"));
 const AdminPagePreviewPage = lazy(() => import("@/pages/admin/AdminPagePreviewPage/AdminPagePreviewPage"));
+const AdminBlockPresetsPage = lazy(() => import("@/pages/admin/AdminBlockPresetsPage/AdminBlockPresetsPage"));
+const AdminAnalyticsPage    = lazy(() => import("@/pages/admin/AdminAnalyticsPage/AdminAnalyticsPage"));
 const CustomPage           = lazy(() => import("@/pages/CustomPage/CustomPage"));
 
 import routesName from "./enum.routes";
@@ -148,6 +150,16 @@ export const routesData: IRouterData[] = [
     path: routesName.ADMIN_PAGE_PREVIEW,
     layout: MainLayout,
     component: AdminPagePreviewPage,
+  },
+  {
+    path: routesName.ADMIN_BLOCK_PRESETS,
+    layout: AdminLayout,
+    component: AdminBlockPresetsPage,
+  },
+  {
+    path: routesName.ADMIN_ANALYTICS,
+    layout: AdminLayout,
+    component: AdminAnalyticsPage,
   },
   {
     path: routesName.CUSTOM_PAGE,

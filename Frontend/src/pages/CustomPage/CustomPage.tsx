@@ -9,11 +9,36 @@ import { resolveAssetUrl } from "@/admin/api";
 import { useHideChromeIf } from "@/contexts/LayoutChrome";
 import { useScrollAnimations, useScrollToAnchor } from "@/pageBuilder/useScrollAnimations";
 
+const VARIANT_COOKIE_PREFIX = "pb_variant_";
+const COOKIE_DAYS = 30;
+
+function getCookie(name: string): string | null {
+  const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  return m ? decodeURIComponent(m[1]) : null;
+}
+function setCookie(name: string, value: string, days: number) {
+  const expires = new Date(Date.now() + days * 86400000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
+/** Pick A/B variant: pin per visitor qua cookie để mỗi visitor luôn thấy cùng variant. */
+function pickVariant(slug: string, hasB: boolean, weight: number): "A" | "B" {
+  if (!hasB) return "A";
+  const cookieKey = VARIANT_COOKIE_PREFIX + slug;
+  const existing = getCookie(cookieKey);
+  if (existing === "A" || existing === "B") return existing;
+  const w = Math.max(0, Math.min(100, weight ?? 50));
+  const chosen: "A" | "B" = Math.random() * 100 < w ? "B" : "A";
+  setCookie(cookieKey, chosen, COOKIE_DAYS);
+  return chosen;
+}
+
 export default function CustomPage() {
   const { slug } = useParams();
   const lang = useLang();
   const [page, setPage] = useState<PageDto | null>(null);
   const [data, setData] = useState<Data | null>(null);
+  const [variant, setVariant] = useState<"A" | "B">("A");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,13 +49,18 @@ export default function CustomPage() {
     PublicApi.pageBySlug(slug)
       .then((p) => {
         setPage(p);
+        const hasB = !!(p.dataB && p.dataB.trim() && p.dataB !== "{}");
+        const v = pickVariant(p.slug, hasB, p.variantBWeight ?? 50);
+        setVariant(v);
+        const raw = v === "B" ? (p.dataB || "{}") : (p.data || "{}");
         try {
-          const parsed = JSON.parse(p.data || "{}");
-          if (parsed && parsed.content) setData(parsed);
-          else setData({ content: [], root: {} } as any);
+          const parsed = JSON.parse(raw);
+          setData(parsed?.content ? parsed : ({ content: [], root: {} } as any));
         } catch {
           setData({ content: [], root: {} } as any);
         }
+        // Log view (fire-and-forget, không await để không block render)
+        PublicApi.logPageView(p.slug, hasB ? v : undefined);
       })
       .catch((e) => setError(e?.message?.includes("404") ? "Trang không tồn tại" : "Không tải được trang"))
       .finally(() => setLoading(false));
@@ -42,10 +72,16 @@ export default function CustomPage() {
   const seoDesc = root.description || title;
   const ogImage = root.ogImage ? resolveAssetUrl(root.ogImage) : "";
 
-  // Hooks PHẢI gọi trước mọi early-return để giữ thứ tự hooks ổn định.
   useHideChromeIf(!!root.hideChrome);
-  useScrollAnimations([data]);
+  useScrollAnimations([data, variant]);
   useScrollToAnchor([data]);
+
+  // LeadForm block đọc nguồn từ đây để gắn vào conversion.
+  useEffect(() => {
+    if (!page) return;
+    (window as any).__pbPageSource = { slug: page.slug, variant };
+    return () => { delete (window as any).__pbPageSource; };
+  }, [page, variant]);
 
   useEffect(() => {
     if (!ogImage) return;

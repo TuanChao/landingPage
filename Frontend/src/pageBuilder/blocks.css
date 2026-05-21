@@ -43,6 +43,19 @@
   }
 }
 
+/* ── Per-block visibility ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pb-hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .pb-hide-desktop { display: none !important; }
+}
+/* Trong editor hiện tất cả để admin còn sửa được */
+[data-puck-component].pb-hide-mobile,
+[data-puck-component] .pb-hide-mobile,
+[data-puck-component].pb-hide-desktop,
+[data-puck-component] .pb-hide-desktop { display: revert !important; }
+
 /* ── Animations on scroll ───────────────────────────────────────────────── */
 .pb-anim {
   opacity: 0;
@@ -54,6 +67,7 @@
 .pb-anim.is-visible { opacity: 1; transform: none; }
 
 /* Editor: luôn hiển thị (không animation trong editor) */
+[data-puck-component].pb-anim,
 [data-puck-component] .pb-anim { opacity: 1 !important; transform: none !important; }
 
 /* ── Tabs ───────────────────────────────────────────────────────────────── */
@@ -106,11 +120,46 @@
 }
 .pb-sticky-cta.is-shown { transform: translateY(0); }
 .pb-sticky-cta__text { flex: 1; font-size: 15px; }
+.pb-sticky-cta__close {
+  background: rgba(255,255,255,.12); color: #fff; border: none;
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; font-size: 18px; line-height: 1;
+}
+.pb-sticky-cta__close:hover { background: rgba(255,255,255,.25); }
+
+/* ── Lightbox (Gallery click-to-zoom) ──────────────────────────────────── */
+.pb-lightbox {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.pb-lightbox__img {
+  max-width: 92vw; max-height: 86vh; object-fit: contain;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+.pb-lightbox__close, .pb-lightbox__nav {
+  position: absolute; background: rgba(255, 255, 255, 0.12);
+  border: none; color: #fff; cursor: pointer;
+  width: 44px; height: 44px; border-radius: 50%;
+  font-size: 22px; line-height: 1; display: grid; place-items: center;
+}
+.pb-lightbox__close { top: 16px; right: 16px; }
+.pb-lightbox__nav  { top: 50%; transform: translateY(-50%); }
+.pb-lightbox__nav--prev { left: 16px; }
+.pb-lightbox__nav--next { right: 16px; }
+.pb-lightbox__close:hover, .pb-lightbox__nav:hover { background: rgba(255, 255, 255, 0.25); }
+.pb-lightbox__counter {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  color: #fff; font-size: 14px; background: rgba(0, 0, 0, 0.4); padding: 4px 12px; border-radius: 12px;
+}
+.pb-gallery img { cursor: pointer; transition: transform .2s; }
+.pb-gallery img:hover { transform: scale(1.02); }
 
 /* ── Lead form ──────────────────────────────────────────────────────────── */
 .pb-leadform {
   background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 24px;
-  max-width: 480px; margin: 16px auto; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 .pb-leadform input, .pb-leadform textarea {
   width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px;

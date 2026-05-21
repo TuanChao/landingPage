@@ -23,6 +23,8 @@ const routesName = {
   ADMIN_PAGES: "/admin/pages",
   ADMIN_PAGE_EDITOR: "/admin/pages/:id/edit",
   ADMIN_PAGE_PREVIEW: "/admin/pages/:id/preview",
+  ADMIN_BLOCK_PRESETS: "/admin/block-presets",
+  ADMIN_ANALYTICS: "/admin/analytics",
   CUSTOM_PAGE: "/p/:slug",
 } as const;
 
